@@ -8,25 +8,44 @@ if sys.version_info[0] >= 3:
 # The name "schema" is used rather than "type" to avoid conflicts with Python's builtin.
 class Schema(object):
     """The schema of a dataset describes the data type of its members."""
+
+    def supported(self):
+        """In the top-level typesystem module, all types are supported."""
+        return True
+
     def isinstance(self, datum):
         """In the top-level typesystem module, isinstance checks to see if a datum is a pure Python instance of the type (no Numpy, etc.)."""
         raise NotImplementedError
+    
+    def isdataset(self, data):
+        """In the top-level typesystem module, isdataset checks to see if a dataset is a pure Python collection of the type (no Numpy, etc.)."""
+        try:
+            return all(self.isinstance(x) for x in data)
+        except TypeError:
+            return False
+
     def issubtype(self, schema):
         """supertype.issubtype(subtype) returns True; a member of subtype could be used where supertype is required."""
         return self._issubtype(schema, schema)
+
     def _issubtype(self, schema, top):
         raise NotImplementedError
+
     def dereference(self, *path):
         if len(path) == 0:
             return self
         else:
             raise TypeError("{0} cannot be dereferenced".format(self.__class__.__name__))
+
     def __repr__(self):
         return self.__class__.__name__ + "()"
+
     def __lt__(self, other):
         return self.order < other.order
+
     def __eq__(self, other):
         return self.__class__ == other.__class__
+
     def __hash__(self):
         return hash((self.__class__,))
 
@@ -156,6 +175,14 @@ class String(Schema):
     def __repr__(self):
         return "{0}(\"{1}\", {2})".format(self.__class__.__name__, self.charset, self.maxlength)
 
+    def supported(self):
+        if self.charset not in ("bytes", "utf-8"):
+            return False
+        if self.maxlength is not None and self.maxlength < 0:
+            return False
+        # made it!
+        return True
+
     def isinstance(self, datum):
         ok = False
         if sys.version_info[0] >= 3:
@@ -222,6 +249,12 @@ class Tensor(Schema):
 
     def __repr__(self):
         return "{0}({1}, {2})".format(self.__class__.__name__, self.items, ", ".join(map(repr, self.dimensions)))
+
+    def supported(self):
+        if len(self.dimensions) < 1:
+            return False
+        else:
+            return self.items.supported()
 
     def isinstance(self, datum):
         def check(dat, dim):
@@ -306,6 +339,12 @@ class Collection(Schema):
     def __repr__(self):
         return "{0}({1}, {2}, {3})".format(self.__class__.__name__, self.items, self.ordered, self.maxlength)
 
+    def supported(self):
+        if self.maxlength is not None and self.maxlength < 0:
+            return False
+        else:
+            return self.items.supported()
+
     def isinstance(self, datum):
         if not isinstance(datum, (list, tuple, set)):
             # pure Python lists, tuples, and sets can be Collections; ignore general iterables
@@ -389,6 +428,9 @@ class Mapping(Schema):
     def __repr__(self):
         return "{0}({1}, {2})".format(self.__class__.__name__, self.keys, self.values)
 
+    def supported(self):
+        return self.keys.supported() and self.values.supported()
+
     def isinstance(self, datum):
         if not isinstance(datum, dict):
             return False
@@ -453,6 +495,9 @@ class Record(Schema):
 
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, ", ".join(n + "=" + repr(t) for n, t in sorted(self.fields.items())))
+
+    def supported(self):
+        return all(t.supported() for t in self.fields.values())
 
     def isinstance(self, datum):
         # pure Python representation of a Record is a class instance
@@ -540,6 +585,9 @@ class Union(Schema):
 
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, ", ".join(map(repr, self.possibilities)))
+
+    def supported(self):
+        return all(t.supported() for t in self.possibilities)
 
     def isinstance(self, datum):
         for t in self.possibilities:
