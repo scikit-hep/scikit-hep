@@ -127,7 +127,7 @@ class Number(Schema):
         return "{0}({1}, {2}, {3})".format(self.__class__.__name__, self.whole, self.signed, self.nbytes)
 
     def isinstance(self, datum):
-        if self.signed or self.nbytes != 8:
+        if not self.signed or self.nbytes != 8:
             return False    # pure Python numbers are never unsigned or not 64-bit
         if self.whole:
             return isinstance(datum, (int, long))

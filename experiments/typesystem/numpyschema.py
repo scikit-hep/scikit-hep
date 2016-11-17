@@ -32,6 +32,9 @@ class Boolean(NumpySchema, typesystem.Boolean):
     def supported(self):
         return True
     def isinstance(self, datum):
+        if not isinstance(datum, numpy.generic):
+            # if not Numpy, check as pure Python
+            return typesystem.Boolean().isinstance(datum)
         return isinstance(datum, numpy.bool_)
     def isdataset(self, data):
         if isinstance(data, numpy.ndarray):
@@ -51,6 +54,9 @@ class Number(NumpySchema, typesystem.Number):
         return True
 
     def isinstance(self, datum):
+        if not isinstance(datum, numpy.generic):
+            # if not Numpy, check as pure Python
+            return typesystem.Number(self.whole, self.signed, self.nbytes).isinstance(datum)
         ok = False
         if self.whole:
             if self.signed:
@@ -95,6 +101,9 @@ class String(NumpySchema, typesystem.String):
         return True
 
     def isinstance(self, datum):
+        if not isinstance(datum, numpy.generic):
+            # if not Numpy, check as pure Python
+            return typesystem.String(self.charset, self.maxlength).isinstance(datum)
         ok = False
         if self.charset == "bytes":
             ok = isinstance(datum, numpy.string_)
@@ -108,9 +117,9 @@ class String(NumpySchema, typesystem.String):
     def isdataset(self, data):
         ok = False
         if self.charset == "bytes":
-            ok = isinstance(data.dtype.type, numpy.string_)
+            ok = issubclass(data.dtype.type, numpy.string_)
         if self.charset == "utf-32le":
-            ok = isinstance(data.dtype.type, numpy.unicode_)
+            ok = issubclass(data.dtype.type, numpy.unicode_)
         if ok and self.maxlength is not None:
             ok = ok and data.dtype.itemsize <= self.maxlength
         return ok
@@ -123,7 +132,7 @@ class Tensor(NumpySchema, typesystem.Tensor):
             return False
 
     def isdataset(self, data):
-        if isinstance(datum, numpy.ndarray):
+        if isinstance(data, numpy.ndarray):
             return self.isinstance(data.__array__()[0])
         else:
             return False
@@ -134,11 +143,17 @@ class Collection(NumpySchema, typesystem.Collection):
             if self.maxlength is not None and datum.__array__().shape[0] > self.maxlength:
                 return False
             return self.items.isinstance(datum.__array__()[0])
+        elif isinstance(datum, (list, tuple)):
+            if self.maxlength is not None and len(datum) > self.maxlength:
+                return False
+            return all(self.items.isinstance(x) for x in datum)
         else:
             return False
 
     def isdataset(self, data):
-        if isinstance(datum, numpy.ndarray):
+        if isinstance(data, numpy.ndarray) and issubclass(data.dtype.type, numpy.object_):
+            return all(self.isinstance(x) for x in data.__array__())
+        elif isinstance(data, numpy.ndarray):
             return self.isinstance(data.__array__()[0])
         else:
             return False
