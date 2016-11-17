@@ -189,6 +189,22 @@ print(pretty(Union(String("bytes", None))))
 print(pretty(Record(table=Collection(Number(True, True, 8), True, None), pointer=Reference("table")))) 
 print(pretty(Record(table=Tensor(Number(True, True, 8), 4, 4), pointer=Reference("table", 2)))) 
 
+assert toNumpySchema(Boolean()).isinstance(numpy.array([True, False, True])[0])
+assert toNumpySchema(Number(True, True, 8)).isinstance(numpy.array([1, 2, 3])[0])
+assert toNumpySchema(Number(False, True, 8)).isinstance(numpy.array([1.1, 2.2, 3.3])[0])
+assert toNumpySchema(String("bytes", None)).isinstance(numpy.array([b"one", b"two", b"three"])[0])
+assert toNumpySchema(String("utf-32le", None)).isinstance(numpy.array([u"one", u"two", u"three"])[0])
+assert toNumpySchema(Tensor(Number(True, True, 8), 2, 2)).isinstance(numpy.array([[[1,0],[0,1]], [[0,1],[1,0]], [[1,1],[1,1]]])[0])
+assert toNumpySchema(Collection(Number(False, True, 8), False, None)).isinstance(numpy.array([[1.1, 1.1, 1.1], [2.2, 2.2, 2.2], [1.1, 2.2, 3.3]])[0])
+assert toNumpySchema(Collection(Number(False, True, 8), False, None)).isinstance(numpy.array([[], [1.1], [1.1, 2.2], [1.1, 2.2, 3.3]])[0])
+assert toNumpySchema(Record(a=longint, b=double, c=string)).isinstance(
+    numpy.core.records.fromarrays([[1, 2, 3], [1.1, 2.2, 3.3], [b"one", b"two", b"three"]], names=["a", "b", "c"])[0])
+assert toNumpySchema(Union(Null(), longint)).isinstance(numpy.ma.array([1, 2, 3], mask=[True, False, False])[0])
+assert toNumpySchema(Union(Null(), Record(a=longint, b=double, c=string))).isinstance(
+    numpy.ma.array(numpy.core.records.fromarrays([[1, 2, 3], [1.1, 2.2, 3.3], [b"one", b"two", b"three"]], names=["a", "b", "c"]), mask=[True, False, False])[0])
+assert toNumpySchema(Union(Null(), Record(a=longint, b=double, c=string))).isinstance(
+    numpy.ma.array(numpy.core.records.fromarrays([[1, 2, 3], [1.1, 2.2, 3.3], [b"one", b"two", b"three"]], names=["a", "b", "c"]), mask=[True, False, False])[1])
+
 assert toNumpySchema(Boolean()).isdataset(numpy.array([True, False, True]))
 assert toNumpySchema(Number(True, True, 8)).isdataset(numpy.array([1, 2, 3]))
 assert toNumpySchema(Number(False, True, 8)).isdataset(numpy.array([1.1, 2.2, 3.3]))

@@ -174,7 +174,9 @@ class Record(NumpySchema, typesystem.Record):
                    t.supported() for t in self.fields.values())
 
     def isinstance(self, datum):
-        if isinstance(datum, numpy.core.records.record) and datum.dtype.names is not None and set(self.fields.keys()).issubset(set(datum.dtype.names)):
+        if ((hasattr(datum, "dtype") and issubclass(datum.dtype.type, numpy.core.records.record)) or \
+            isinstance(datum, numpy.core.records.record)) and \
+            datum.dtype.names is not None and set(self.fields.keys()).issubset(set(datum.dtype.names)):
             for n, t in self.fields.items():
                 if not t.isinstance(datum[n]):
                     return False
@@ -216,7 +218,9 @@ class Union(NumpySchema, typesystem.Union):
         elif len(self.possibilities) == 2 and any(isinstance(x, Null) for x in self.possibilities):
             # support Union(Null(), X) for any X (i.e. "nullable X")
             subtype = [x for x in self.possibilities if not isinstance(x, Null)][0]
-            return isinstance(datum, numpy.ma.core.MaskedConstant) or subtype.isinstance(datum)
+            return isinstance(datum, numpy.ma.core.MaskedConstant) or \
+                   (issubclass(datum.dtype.type, numpy.core.records.record) and all(datum.mask)) or \
+                   subtype.isinstance(datum)
 
         else:
             # don't support any other cases
