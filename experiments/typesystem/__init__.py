@@ -9,6 +9,9 @@ if sys.version_info[0] >= 3:
 class Schema(object):
     """The schema of a dataset describes the data type of its members."""
 
+    def copy(self, classTable={}):
+        raise NotImplementedError
+
     def supported(self):
         """In the top-level typesystem module, all types are supported."""
         return True
@@ -54,6 +57,8 @@ class Anything(Schema):
 
     Useful for describing schemaless data like JSON."""
     order = 0
+    def copy(self, classTable={}):
+        return classTable.get("Anything", Anything)()
     def isinstance(self, datum):
         return True
     def _issubtype(self, schema, top):
@@ -64,6 +69,8 @@ class Nothing(Schema):
 
     Useful for describing the return type of exceptions and infinite loops."""
     order = 1
+    def copy(self, classTable={}):
+        return classTable.get("Nothing", Nothing)()
     def isinstance(self, datum):
         return False
     def _issubtype(self, schema, top):
@@ -74,6 +81,8 @@ class Null(Schema):
 
     Useful when combined with a union to make nullable data."""
     order = 2
+    def copy(self, classTable={}):
+        return classTable.get("Null", Null)()
     def isinstance(self, datum):
         return datum is None
     def _issubtype(self, schema, top):
@@ -86,6 +95,8 @@ class Boolean(Schema):
 
     Useful for descring logical truth/falsehood, such as the predicate of a filter."""
     order = 3
+    def copy(self, classTable={}):
+        return classTable.get("Boolean", Boolean)()
     def isinstance(self, datum):
         return isinstance(datum, bool)
     def _issubtype(self, schema, top):
@@ -108,6 +119,9 @@ class Number(Schema):
         self.whole = whole
         self.signed = signed
         self.nbytes = nbytes
+
+    def copy(self, classTable={}):
+        return classTable.get("Number", Number)(self.whole, self.signed, self.nbytes)
 
     def __repr__(self):
         return "{0}({1}, {2}, {3})".format(self.__class__.__name__, self.whole, self.signed, self.nbytes)
@@ -171,6 +185,9 @@ class String(Schema):
     def __init__(self, charset, maxlength):
         self.charset = charset
         self.maxlength = maxlength
+
+    def copy(self, classTable={}):
+        return classTable.get("String", String)(self.charset, self.maxlength)
 
     def __repr__(self):
         return "{0}(\"{1}\", {2})".format(self.__class__.__name__, self.charset, self.maxlength)
@@ -246,6 +263,9 @@ class Tensor(Schema):
     def __init__(self, items, *dimensions):
         self.items = items
         self.dimensions = dimensions
+
+    def copy(self, classTable={}):
+        return classTable.get("Tensor", Tensor)(self.items.copy(classTable), *self.dimensions)
 
     def __repr__(self):
         return "{0}({1}, {2})".format(self.__class__.__name__, self.items, ", ".join(map(repr, self.dimensions)))
@@ -336,6 +356,9 @@ class Collection(Schema):
         self.ordered = ordered
         self.maxlength = maxlength
 
+    def copy(self, classTable={}):
+        return classTable.get("Collection", Collection)(self.items.copy(classTable), self.ordered, self.maxlength)
+
     def __repr__(self):
         return "{0}({1}, {2}, {3})".format(self.__class__.__name__, self.items, self.ordered, self.maxlength)
 
@@ -425,6 +448,9 @@ class Mapping(Schema):
         self.keys = keys
         self.values = values
 
+    def copy(self, classTable={}):
+        return classTable.get("Mapping", Mapping)(self.keys.copy(classTable), self.values.copy(classTable))
+
     def __repr__(self):
         return "{0}({1}, {2})".format(self.__class__.__name__, self.keys, self.values)
 
@@ -492,6 +518,9 @@ class Record(Schema):
 
     def __init__(self, **fields):
         self.fields = fields
+
+    def copy(self, classTable={}):
+        return classTable.get("Record", Record)(**dict((n, t.copy(classTable)) for n, t in self.fields.items()))
 
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, ", ".join(n + "=" + repr(t) for n, t in sorted(self.fields.items())))
@@ -583,6 +612,9 @@ class Union(Schema):
 
         self.possibilities = tuple(sorted(self.possibilities))
 
+    def copy(self, classTable={}):
+        return classTable.get("Union", Union)(*(p.copy(classTable) for p in self.possibilities))
+
     def __repr__(self):
         return "{0}({1})".format(self.__class__.__name__, ", ".join(map(repr, self.possibilities)))
 
@@ -637,8 +669,11 @@ class Reference(Schema):
     def __init__(self, *path):
         self.path = path
 
+    def copy(self, classTable={}):
+        return classTable.get("Reference", Reference)(*self.path)
+
     def __repr__(self):
-        return "{0}({1})".format(self.__class__.__name__, ", ".join(map(repr, self.path)))
+        return "{0}({1})".format(self.__class__.__name__, ", ".join(['"' + p + '"' if isinstance(p, basestring) else repr(p) for p in self.path]))
 
     def schema(self, top):
         return top.dereference(*(self.path + (0,)))
@@ -723,8 +758,11 @@ def _pretty(schema, depth, comma):
     else:
         raise Exception("shouldn't get here")
 
-def pretty(schema):
-    return "\n".join("{0}{1}".format("  " * depth, line) for depth, line, subschema in _pretty(schema, 0, ""))
+def pretty(schema, highlight=lambda t: ""):
+    return "\n".join("{0}{1}{2}".format(highlight(subschema), "  " * depth, line) for depth, line, subschema in _pretty(schema, 0, ""))
+
+def unsupported(schema):
+    return pretty(schema, lambda t: "--> " if not t.supported() else "    ")
 
 def compare(one, two, between=lambda t1, t2: " " if t1 == t2 or t1 is None or t2 is None else ">", width=None):
     one = _pretty(one, 0, "")

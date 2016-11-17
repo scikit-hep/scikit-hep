@@ -231,3 +231,18 @@ class Reference(NumpySchema, typesystem.Reference):
         return False
     def isdataset(self, data):
         return False
+
+def toNumpySchema(schema):
+    return schema.copy({
+        "Anything": Anything,
+        "Nothing": Nothing,
+        "Null": Null,
+        "Boolean": Boolean,
+        "Number": Number,
+        "String": String,
+        "Tensor": Tensor,
+        "Collection": Collection,
+        "Mapping": Mapping,
+        "Record": Record,
+        "Union": Union,
+        "Reference": Reference})
