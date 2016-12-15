@@ -1,0 +1,24 @@
+# ######################
+# SCIKITHEPRC TEMPLATE #
+# ######################
+
+# Sample scikit-hep configuration file. It contains reasonable settings for general usage of the project.
+
+# This file is best viewed in an editor which supports python mode syntax highlighting.
+# Blank lines, or lines starting with a comment # symbol, are ignored, as are trailing comments.
+
+# ------------------------------------------------------------------------------
+# Location of rc files for dependencies
+[RCFiles]
+
+IPython = $HOME/.ipython/ipythonrc
+
+matplotlib = $HOME/.matplotlib/matplotlibrc
+
+# ROOT: .rootrc is a file containing global defaults for a ROOT session.
+# There are three locations where the system looks for this file:
+# $ROOTSYS/system.rootrc, ~/.rootrc and ./.rootrc
+# the latter taking precedence over the former
+ROOT = $HOME/.rootrc
+
+# ------------------------------------------------------------------------------
