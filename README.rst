@@ -10,7 +10,7 @@ Project status
 --------------
 The project started in Autumn 2016 and its core is actively being defined.
 
-The project and releases are `registered on PyPI <https://github.com/scikit-hep/scikit-hep>`_.
+The project and releases are `registered on PyPI <http://pypi.python.org/pypi/scikit-hep>`_.
 The development is occurring at the
 `project's GitHub page <http://github.com/scikit-hep/scikit-hep>`_.
 
