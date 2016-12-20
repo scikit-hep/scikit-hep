@@ -6,9 +6,13 @@ The scikit-hep project (http://scikit-hep.org/) is a community-focused Python so
 intended to contain much of the core functionality and common tools needed in
 High Energy Physics.
 
-Project Status
+Project status
 --------------
 The project started in Autumn 2016 and its core is actively being defined.
+
+The project and releases are `registered on PyPI <https://github.com/scikit-hep/scikit-hep>`_.
+The development is occurring at the
+`project's GitHub page <http://github.com/scikit-hep/scikit-hep>`_.
 
 License
 -------
