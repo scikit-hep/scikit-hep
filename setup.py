@@ -32,6 +32,7 @@ setup(
     name='scikit-hep',
     version='0.0.1',
     license='new BSD',
+    test_suite = "tests",
     classifiers=[
         'Intended Audience :: Science/Research',
         'Intended Audience :: Developers',

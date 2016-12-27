@@ -30,51 +30,51 @@ class Test(unittest.TestCase):
         self.test_energy()
 
     def test_length(self):
-        self.assertEqual(3 * mm, m * 0.003)
-        self.assertEqual(3 * mm, cm * 0.03)
-        self.assertEqual(3 * mm, km * 0.000003)
-        self.assertEqual(3 * mm, micrometer * 3000)
-        self.assertEqual(3 * mm, nanometer * 3000000)
-        self.assertEqual(3 * mm, angstrom * 30000000)
-        self.assertEqual(3 * mm, fermi * 3000000000)
+        self.assertAlmostEqual(3 * mm, m * 0.003)
+        self.assertAlmostEqual(3 * mm, cm * 0.3)
+        self.assertAlmostEqual(3 * mm, km * 0.000003)
+        self.assertAlmostEqual(3 * mm, micrometer * 3000)
+        self.assertAlmostEqual(3 * mm, nanometer * 3000000)
+        self.assertAlmostEqual(3 * mm, angstrom * 30000000)
+        self.assertAlmostEqual(3 * mm, fermi * 3e12)
 
     def test_area(self):
-        self.assertEqual((3 * mm)**2, 9 * mm2)
-        self.assertEqual((3 * cm)**2, 9 * cm2)
-        self.assertEqual((3 * km)**2, 9 * km2)
-        self.assertEqual(2e-28 * meter2, 2 * barn)
+        self.assertAlmostEqual((3 * mm)**2, 9 * mm2)
+        self.assertAlmostEqual((3 * cm)**2, 9 * cm2)
+        self.assertAlmostEqual((3 * km)**2, 9 * km2)
+        self.assertAlmostEqual(2e-28 * meter2, 2 * barn)
 
     def test_crosssection(self):
-        self.assertEqual(3e-31 * barn, 9 * millibarn)
-        self.assertEqual(3e-34 * barn, 9 * microbarn)
-        self.assertEqual(3e-37 * barn, 9 * nanobarn)
-        self.assertEqual(3e-40 * barn, 9 * picobarn)
+        self.assertAlmostEqual(3e-31 * barn, 9 * millibarn)
+        self.assertAlmostEqual(3e-34 * barn, 9 * microbarn)
+        self.assertAlmostEqual(3e-37 * barn, 9 * nanobarn)
+        self.assertAlmostEqual(3e-40 * barn, 9 * picobarn)
 
     def test_volume(self):
-        self.assertEqual((3 * mm)**3, 27 * mm3)
-        self.assertEqual((3 * cm)**3, 27 * cm3)
-        self.assertEqual((3 * m)**3, 27 * m3)
+        self.assertAlmostEqual((3 * mm)**3, 27 * mm3)
+        self.assertAlmostEqual((3 * cm)**3, 27 * cm3)
+        self.assertAlmostEqual((3 * m)**3, 27 * m3)
 
     def test_time(self):
-        self.assertEqual(3 * ns, 3e9 * s)
-        self.assertEqual(3 * ns, 3e6 * ms)
-        self.assertEqual(3 * ns, 3e3 * microsecond)
-        self.assertEqual(3 * ns, 0.003 * picosecond)
-        self.assertEqual(3 * ns, 0.000003 * femtosecond)
+        self.assertAlmostEqual(3 * ns, 3e-9 * s)
+        self.assertAlmostEqual(3 * ns, 3e-6 * ms)
+        self.assertAlmostEqual(3 * ns, 3e-3 * microsecond)
+        self.assertAlmostEqual(3 * ns, 3000 * picosecond)
+        self.assertAlmostEqual(3 * ns, 3000000 * femtosecond)
 
     def test_frequency(self):
-        self.assertEqual(second**-1, Hz)
-        self.assertEqual(1000 * hertz, kHz)
-        self.assertEqual(1000000 * hertz, MHz)
-        self.assertEqual(1000000000 * hertz, GHz)
+        self.assertAlmostEqual(second**-1, Hz)
+        self.assertAlmostEqual(1000 * hertz, kHz)
+        self.assertAlmostEqual(1000000 * hertz, MHz)
+        self.assertAlmostEqual(1000000000 * hertz, GHz)
 
     def test_energy(self):
-        self.assertEqual(1e3 * eV, keV)
-        self.assertEqual(1e6 * eV, MeV)
-        self.assertEqual(1e9 * eV, GeV)
-        self.assertEqual(1e12 * eV, TeV)
-        self.assertEqual(1e15 * eV, PeV)
-        self.assertEqual(1e18 * eV, EeV)
+        self.assertAlmostEqual(1e3 * eV, keV)
+        self.assertAlmostEqual(1e6 * eV, MeV)
+        self.assertAlmostEqual(1e9 * eV, GeV)
+        self.assertAlmostEqual(1e12 * eV, TeV)
+        self.assertAlmostEqual(1e15 * eV, PeV)
+        self.assertAlmostEqual(1e18 * eV, EeV)
 
     # no integrated luminosity???
 
