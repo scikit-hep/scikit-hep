@@ -1,14 +1,17 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
-___  __ .    . ___       ___ ___
-|_  |   | |/ |  |  _ |_| |_  |_|
-__| |__ | |\ |  |    | | |__ |     {0}
-
-A community-driven and oriented Python software project for High Energy Physics.
+Trivial module to deal with Python 2 and 3 compatibility.
 """
 
+#-----------------------------------------------------------------------------
+# Import statements
+#-----------------------------------------------------------------------------
 import sys
 
+
+#-----------------------------------------------------------------------------
+# Python 2 and 3 "conversions"
+#-----------------------------------------------------------------------------
 if sys.version_info[0] > 2:
     string_types = (bytes, str)
     xrange = range
