@@ -8,6 +8,13 @@ High Energy Physics.
 
 Project status
 --------------
+
+.. image:: https://travis-ci.org/scikit-hep/scikit-hep.svg
+   :target: https://travis-ci.org/scikit-hep/scikit-hep
+
+Project info
+------------
+
 The project started in Autumn 2016 and its core is actively being defined.
 
 The project and releases are `registered on PyPI <http://pypi.python.org/pypi/scikit-hep>`_.
