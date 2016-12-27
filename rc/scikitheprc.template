@@ -7,8 +7,9 @@
 # This file is best viewed in an editor which supports python mode syntax highlighting.
 # Blank lines, or lines starting with a comment # symbol, are ignored, as are trailing comments.
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Location of rc files for dependencies
+ --------------------------------------
 [RCFiles]
 
 IPython = $HOME/.ipython/ipythonrc
@@ -21,4 +22,12 @@ matplotlib = $HOME/.matplotlib/matplotlibrc
 # the latter taking precedence over the former
 ROOT = $HOME/.rootrc
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# Particle Data Group table
+# -------------------------
+# e.g. http://pdg.lbl.gov/2016/mcdata/mass_width_2016.mcd for the 2016 edition
+[PDG]
+
+year = '2016'
+
+# ----------------------------------------------------------------------------
