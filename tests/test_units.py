@@ -17,6 +17,7 @@
 import unittest
 
 from skhep.units import *
+from skhep.py23 import *
 
 class Test(unittest.TestCase):
     def runTest(self):

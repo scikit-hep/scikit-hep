@@ -36,7 +36,6 @@ from math import pi
 
 from .prefixes import *
 
-
 # --------------------------------------------------------------------
 # Units of length
 # ---------------
