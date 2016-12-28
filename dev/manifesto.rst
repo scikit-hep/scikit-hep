@@ -190,7 +190,7 @@ Miscellaneous
 **JP:** The main `LICENSE` file has to be top-level (without extensions?) for GitHub to recognize it.
 
 **ci/**
-  We may well need in the near future a place to add scripts and material for continuous integration.
+  We may well need in the near future a place to add scripts and material for continuous integration.  **JP:** When we need it. As much as possible, we should strive to have a simple CI, simple installation procedure, etc.
 
 Configuration and requirement files
 -----------------------------------
@@ -223,20 +223,22 @@ Tutorials
 
 Subpackage **tutorials/** for:
 
-* **examples/**: simple self-contained scripts.
-* **notebooks/**: for more advanced (per topic) tutorials, nicely prepared as Jupyter notebooks.
+* **examples/**: simple self-contained scripts.  **JP:** As stated above, I prefer these to be on something like Gist, where there's zero overhead to adding a new one, users can contribute and comment, and (most importantly) there's no expectation that they're up-to-date.
+* **notebooks/**: for more advanced (per topic) tutorials, nicely prepared as Jupyter notebooks.  **JP:** Jupyter notebooks are a great idea for presenting incrementally executable examples with embedded explanations and plots. `These can also be Gists <https://www.google.com/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#safe=off&q=jupyter+gist>`_, which would be particularly good for Jupyter because it would both shorten the time to creation and also (very importantly) the time for a user to view it and get started using it. If the notebooks were in a directory on GitHub, the users would have to (1) install Jupyter and (2) download the notebook to load it locally. With it auto-rendered on a website, they can peruse before deciding to look closely at any one example.
 
 Tests
 -----
 
-ER: shall these be in a directory *tests/* at the top level, or rather under **skhep/<module>/tests/** or ... ?
+**ER:** shall these be in a directory **tests/** at the top level, or rather under **skhep/<module>/tests/** or ... ?
 
 In any case we are almost sure to need a subdirectory **data/** to hold data (e.g. ROOT files) for tests.
+
+**JP:** If there's a **data/** directory with large files, required only for tests, then that's another argument for a top level **tests/**. That would make it easy to strip off everything not required for normal execution to make a small tarball. (Sometimes you have to do these awful things...)
 
 Scripts
 -------
 
-Scripts are extremely handy fo well-defined and simple tasks. They avoid the need to write
+Scripts are extremely handy for well-defined and simple tasks. They avoid the need to write
 code snippets for common tasks.
 
 Example of useful scripts could be:
@@ -251,15 +253,17 @@ Example of useful scripts could be:
 
    skhep-print-units
 
+**JP:** As in the above examples, these scripts should have a common prefix. Unless the user is using virtualenv, they're invading his/her PATH, so it should be obvious which ones are Scikit-HEP related. I like the ``skhep-`` prefix used here (with hyphens).
+
 Aggregation and datasets
 ------------------------
 
 For now separated into 2 different subpackages **skhep/aggregation/** and **skhep/datasets/**.
-Unclear whether this separation is needed ... probably.
+Unclear whether this separation is needed ... probably.  **JP:** Yes, they're very different things.
 
 Datasets should be seen as ntuples in the sense of ROOT.
 
-ER: idea for histograms, maybe too naive/unrealistic/...:
+**ER:** idea for histograms, maybe too naive/unrealistic/...:
 implementation of a base class with the ability to convert among various backends and read/write from the same backends.
 The module should have a natural pythonic interface for the representation of histograms
 and a straightforward conversion to specific histogram classes in wide-spread packages such as ROOT, etc.
@@ -295,11 +299,16 @@ These ``.to(...)`` methods would call behind the scenes the relevant modules
 ``io.root``, ``io.numpy``, etc., implementing the ``read`` and ``write`` methods
 of each backend.
 
+**JP:** Histogrammar covers a lot of this: it could be the first "associated package." The Scikit-HEP wrapper would be necessary to bind it to Scikit-HEP's notion of datasets and visualizations. Once we have at least datasets, I can merge Histogrammar in.
+
+
 Python configurations
 ---------------------
 
 Subpackage **skhep/config/*** to collect python configuration-related code.
 The astropy project, for example, puts here code to deal with affiliated packages.
+
+**JP:** I don't understand what would be configured here. Much like **rc/**, I think these sorts of global configurations should be set by Python code (at the top of each script that uses customizations, so that it's clear how the behavior is non-standard). An example of this is Numpy's ``seterror`` function that specifies how to handle NaNs and such.
 
 Units and constants
 -------------------
@@ -318,6 +327,8 @@ Possible candidates for data files under **skhep/data/**:
 * CODATA_<year>.py.
 * mass_width_<year>.mcd that is the PDG particle data table (see comment on the PyPDT project under "Affiliated projects").
 
+**JP:** Another model to follow is the timezone data package (tzdata?), which is versioned by YYYYl where l is a letter (26 possible updates per year). If it's versioned separately from Scikit-HEP itself (because of when new data comes out), it should be another "associated package."
+
 Exceptions
 ----------
 
@@ -325,6 +336,8 @@ ER: do we want/need a dedicated suite for exception handling? Most probably.
 The exceptions should also take care of non-implemented features.
 
 Obvious place is **skhep/exceptions/**.
+
+**JP:** Or just a **defs.py** or **core.py** with all the basic, essential stuff. Exception classes are one-liners, and there won't be many of them.
 
 External packages
 -----------------
@@ -334,10 +347,14 @@ They are distributed along to avoid an extra dependency.
 
 We can simply prepare the usecase with a subpackage **skhep/extern/**.
 
+**JP:** Much better to do dependencies in the standard way (PIP) than absorb them like ROOT or Geant4. This will be a dependency-heavy project, anyway.
+
 Input/output
 ------------
 
 Likely to be a very important subpackage, **skhep/io/**, to deal with the I/O from/to the various backends the project will consider.
+
+**JP:** Probably each part, like datasets, aggregations, visualizations, will have their own I/O. I don't see what a top-level **io/** directory would do.
 
 Logging
 -------
@@ -346,10 +363,14 @@ Do we want/need extra code for logging purposes? Most probably.
 
 Package logging code can go in **skhep/logger/**.
 
+**JP:** We should use Python's built-in logger, which can be configured in the **defs.py** or **core.py**.
+
 Mathematics and statistics
 --------------------------
 
-ER: need for both **skhep/math/** and **skhep/stats/** directories?
+**ER:** need for both **skhep/math/** and **skhep/stats/** directories?
+
+**JP:** Maybe **stats** under **math**?
 
 Modeling
 --------
@@ -358,15 +379,17 @@ A central part of the functionality scikit-hep will offer.
 Unclear at this stage whether to collect everything under a single **skhep/modeling/** subpackage
 or rather split into **skhep/models/** and  **skhep/fit/** for example.
 
+**JP:** Maybe **fit** under **modeling**?
+
 Simulation
 ----------
 
-ER: suggest a **skhep/simulation/** rather than **skhep/generators/** as originally suggested, since more general.
+**ER:** suggest a **skhep/simulation/** rather than **skhep/generators/** as originally suggested, since more general.  **JP:** Me, too.
 
 General utilities
 -----------------
 
-Subpackage **skhep/utils/** as a placeholder for what does not fit elsewhere.
+Subpackage **skhep/utils/** as a placeholder for what does not fit elsewhere.  **JP:** Sure.
 
 Visualization
 -------------
@@ -380,12 +403,12 @@ Affiliated packages
 
 More advanced topic to be discussed with lower priority for now.
 
-ER: ideas for affiliated packages:
+**ER:** ideas for affiliated packages:
 
 * hep_ml for reweighting of distributions (https://github.com/arogozhnikov/hep_ml).
 * A Python API for Hydra, a C++ header-only library designed for data analysis (https://github.com/MultithreadCorner/Hydra).
 
-ER: note that in some cases it might be useful to promote a package from affiliated to part of the core of scikit-hep.
+**ER:** note that in some cases it might be useful to promote a package from affiliated to part of the core of scikit-hep.
 The package PyPDT (https://pypi.python.org/pypi/PyPDT) seems like a very good candidate here. It would sit for example
 as  **skhep/simulation/pdt.py**.
 
@@ -419,6 +442,7 @@ There are all sorts of variations to the above. The important point is that the 
 towards a first release v1.0 to a wider audience. Versions v0.x would serve as examples when presenting the project
 to a smaller community and getting feedback; and this during the first months of the development phase.
 
+**JP:** Let's start with a three digit version, without a "v". We'll be happier later if we do. `PEP 440 <https://www.python.org/dev/peps/pep-0440/>`_ So X.Y.Z where Z is just bug-fixes. We'll probably want to maintain a separate branch for each X.Y combination, so that we can bug-fix on old versions. By that logic, "master" is the bleeding edge. Bug-fixes in the X.Y branches have to be pushed out to master. Histogrammar is already structured this way.
 
 Expanding the team
 ------------------
