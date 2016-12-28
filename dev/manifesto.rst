@@ -81,8 +81,13 @@ Datasets                   Noel & Vanya
 Units & constants          Eduardo
 Visualization              Dave & Noel
 Outreach                   Eduardo & Jim & ?
+Website (OK, not code)     ?
 =========================  ============================
 
+Website scikit-hep.org
+----------------------
+
+We need to start building the website with basic info and links. Seems natural to have something already available when going public at the DIANA/HEP topical meeting on 20/02/2017. Is anyone interested in taking care of this? Or else maybe one of us knows somebody who might be interested in contributing with a website design?
 
 Packaging
 =========
