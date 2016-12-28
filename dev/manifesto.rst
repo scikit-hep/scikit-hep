@@ -58,7 +58,7 @@ Core requirements
 
 * Community effort coordinated by a few people, to be identified in due time (set will grow with the project).
 * Provide core and common tools rather than try and do everything.  **JP:** What's needed most is a set of gateways between existing tools to normalize their different choices of conventions and automatically convert data among them. These are the barriers that currently exist and need to be broken down.
-* Exploit Astropy's idea of *affiliated packages*.  **JP:** And the Numpy/Scipy ecosystem, which I'm more familiar with than Astropy. Numpy had the advantage of _predating_ the scientific Python world, so they could establish the conventions used everywhere else. We have a situtation in which many tools exist with different conventions. Was that true of Astropy?
+* Exploit Astropy's idea of *affiliated packages*.  **JP:** And the Numpy/Scipy ecosystem, which I'm more familiar with than Astropy. Numpy had the advantage of *predating* the scientific Python world, so they could establish the conventions used everywhere else. We have a situtation in which many tools exist with different conventions. Was that true of Astropy?
 * Python package supporting Python 2.6, 2.7 and 3.4.
 * Strict requirements for well-documented code, with a test suite.
 * Code should be as generic as possible and various backends should be considered, be it for plotting or I/O. Obvious examples are ROOT and matplotlib.  **JP:** And Keras, TensorFlow, Scikit-Learn, PySpark.
@@ -71,13 +71,13 @@ First stab from ER. Feel free to edit ...:
 =========================  ==================
 Package and/or topic       Name
 =========================  ==================
-Continuous integration     ~~Jim & Sasha~~ done?
-Data aggregation           Jim ~~& Noel~~ (Histogrammar)
+Continuous integration     done?
+Data aggregation           Jim (Histogrammar)
 Documentation              All
 Histogramming              Jim & Noel & Vanya
 Scripts                    Eduardo & Vanya
 Simulation                 Eduardo & Noel
-~~Tuples~~ Datasets        Noel & Vanya
+Datasets                   Noel & Vanya
 Units & constants          Eduardo
 Visualization              Dave & Noel
 Outreach                   Eduardo & Jim & ?
@@ -119,10 +119,10 @@ One also needs to think about a living and self-generated (?) document such as t
 
 **JP:** Where documentation should go:
 
-* Python doc strings: top of each module, top of each class, top of each method. See [PEP 257](https://www.python.org/dev/peps/pep-0257/) on writing _brief, to the point_ docstrings.
+* Python doc strings: top of each module, top of each class, top of each method. See `PEP 257 <https://www.python.org/dev/peps/pep-0257/>`_ on writing *brief, to the point* docstrings.
 * I'm going to argue that comments are usually not necessary and often misleading, since they get out of date easily. We'll see if docstrings are wrong when reading the generated Sphinx docs, but we'll only see comments if we're actively reading the code. Assertions or assertion plus comment are much better than comments.
-* Sphinx documentation on [scikit-hep.org](http://scikit-hep.org). This is where most newcomers will start. Not only should the text here be introductory (unlike the docstrings), but it should also be clear _that_ this is the introduction. I've had the problem of users finding the fine-details documentation before finding the introduction and thinking it didn't have an introduction.
-* Complete examples should be presented as [Gists](https://gist.github.com/). If we put complete examples on [scikit-hep.org](http://scikit-hep.org) or in the repository, we'll be expected to keep them up-to-date, and the maintainance cost accretes. Gists have no social expectation of up-to-dateness, with a comments section for users to ~~complain~~ suggest updates. Users can also make their own Gists (most physicists have GitHub accounts) that are discoverable via the same search. See [Histogrammar documentation](http://histogrammar.org/docs/) for how this can work: search buttons for Gists and StackOverflow embedded in our own documentation.
+* Sphinx documentation on `scikit-hep.org <http://scikit-hep.org>`_. This is where most newcomers will start. Not only should the text here be introductory (unlike the docstrings), but it should also be clear *that* this is the introduction. I've had the problem of users finding the fine-details documentation before finding the introduction and thinking it didn't have an introduction.
+* Complete examples should be presented as `Gists <https://gist.github.com/>`_. If we put complete examples on `scikit-hep.org <http://scikit-hep.org>`_ or in the repository, we'll be expected to keep them up-to-date, and the maintainance cost accretes. Gists have no social expectation of up-to-dateness, with a comments section for users to suggest updates. Users can also make their own Gists (most physicists have GitHub accounts) that are discoverable via the same search. See `Histogrammar documentation <http://histogrammar.org/docs/>`_ for how this can work: search buttons for Gists and StackOverflow embedded in our own documentation.
 * A StackOverflow tag, and we should subscribe to it to hear user's problems. Gists and StackOverflow are a track toward developing a self-sustaining community. A mailing list like RootTalk leads to constant maintainance by the core group.
 
 
