@@ -1,0 +1,66 @@
+<pre>
+# Proposed structure for the scikit-hep core repository:
+
+scikit-hep/
+   .gitignore
+   README.rst
+   setup.py
+   ci/                       # continuous integration
+   docs/                     # documentation
+     logos/                  # for the official Scikit-HEP logos
+   licenses/
+      LICENSE.rst            # package license
+   rc/                       # for RC / configuration files
+      rootrc.template        # maybe handy to ship a template
+      scikitheprc.template   # the Scikit-HEP config file template
+      scikitheprc.default    # the Scikit-HEP config file default
+   requirements/             # place to specify dependencies
+      matplotlib.txt
+      ROOT.txt
+   scripts/                  # suite of Scikit-HEP scripts
+   skhep/                    # the actual repo for all python subpackages
+      __init__.py
+      aggregation/
+         __init__.py
+      config/                # place to collect modules for python configuration, see e.g. affiliated packages in astropy
+         __init__.py
+      constants/
+         __init__.py         # make it a configuration in the RC file which CODATA year to use, from data/
+         constants.py
+      data/                  # For all sorts of data files
+         CODATA_2014.py      # File taken from http://physics.nist.gov/cuu/Constants/
+      datasets/
+         __init__.py
+      exceptions/
+         __init__.py
+      extern/
+         __init__.py
+         pyroot.py
+         six.py
+      io/
+         __init__.py
+      logger/
+         __init__.py
+      math/
+         __init__.py
+      modeling/     # models and fitting related material
+         __init__.py
+      simulation/         # more general term than simply 'generators'
+         __init__.py
+      stats/
+          __init__.py
+      units/
+         __init__.py
+         prefixes.py
+         si.py
+      utils/
+         __init__.py
+      visualization/
+         __init__.py
+   tests/
+      data/
+      __init__.py
+   tutorials/        # for sure we will want tutorials,
+      examples/      # be it simple examples (via scripts)
+      notebooks/     # or more advanced (per topic) tutorials, nicely prepared as Jupyter notebooks
+</pre>

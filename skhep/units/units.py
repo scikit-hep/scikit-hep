@@ -83,6 +83,14 @@ millibarn  = milli * barn
 microbarn  = micro * barn
 nanobarn   = nano  * barn
 picobarn   = pico  * barn
+femtobarn  = femto * barn
+
+mb = millibarn
+pb = picobarn
+fb = femtobarn
+
+invpb = 1. / picobarn
+invfb = 1. / femtobarn
 
 # --------------------------------------------------------------------
 # Units of time
@@ -138,7 +146,7 @@ eplus = 1.    # positron charge
 
 # --------------------------------------------------------------------
 # Units of temperature
-# ---------------------
+# --------------------
 
 kelvin = 1.
 
@@ -172,3 +180,22 @@ mrad = milliradian
 sr   = steradian
 
 deg  = degree
+
+# --------------------------------------------------------------------
+# Derived units
+# -------------
+
+# Electric potential [E][Q^-1]
+megavolt = megaelectronvolt / eplus
+volt     = micro * megavolt
+kilovolt = kilo * volt
+
+# --------------------------------------------------------------------
+# Units derived from luminous intensity
+# -------------------------------------
+
+# Luminous flux [I]
+lumen = candela * steradian
+
+# Illuminance, i.e. amount of luminous flux per unit area [I][L^-2]
+lux = lumen / meter2 
