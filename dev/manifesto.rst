@@ -68,11 +68,11 @@ Proposal for initial project and package coordination
 
 First stab from ER. Feel free to edit ...:
 
-=========================  ==================
+=========================  ============================
 Package and/or topic       Name
-=========================  ==================
+=========================  ============================
 Continuous integration     done?
-Data aggregation           Jim (Histogrammar)
+Data aggregation           Jim (Histogrammar) & Noel
 Documentation              All
 Histogramming              Jim & Noel & Vanya
 Scripts                    Eduardo & Vanya
@@ -81,7 +81,7 @@ Datasets                   Noel & Vanya
 Units & constants          Eduardo
 Visualization              Dave & Noel
 Outreach                   Eduardo & Jim & ?
-=========================  ==================
+=========================  ============================
 
 
 Packaging
@@ -125,6 +125,7 @@ One also needs to think about a living and self-generated (?) document such as t
 * Complete examples should be presented as `Gists <https://gist.github.com/>`_. If we put complete examples on `scikit-hep.org <http://scikit-hep.org>`_ or in the repository, we'll be expected to keep them up-to-date, and the maintainance cost accretes. Gists have no social expectation of up-to-dateness, with a comments section for users to suggest updates. Users can also make their own Gists (most physicists have GitHub accounts) that are discoverable via the same search. See `Histogrammar documentation <http://histogrammar.org/docs/>`_ for how this can work: search buttons for Gists and StackOverflow embedded in our own documentation.
 * A StackOverflow tag, and we should subscribe to it to hear user's problems. Gists and StackOverflow are a track toward developing a self-sustaining community. A mailing list like RootTalk leads to constant maintainance by the core group.
 
+**ER**: lots of ideas but not sure at all whether that will fly for physists. Remember, physicists are not computing engineers and do not think and work the same way. We have to make it work for physicists. So, for example, StackOverflow does not convince me as a means to document a HEP software project. But I may change my mind ... This is yet another example where we will have to seek feedback from users and the community.
 
 Layout
 ------
@@ -189,8 +190,12 @@ Miscellaneous
 
 **JP:** The main `LICENSE` file has to be top-level (without extensions?) for GitHub to recognize it.
 
+**ER**: no, that is not true, see pargraph "Where does the license live on my repository?" at https://help.github.com/articles/open-source-licensing/. So I definitely prefer to collect all licenses in one place.
+
 **ci/**
   We may well need in the near future a place to add scripts and material for continuous integration.  **JP:** When we need it. As much as possible, we should strive to have a simple CI, simple installation procedure, etc.
+  
+  **ER**: Completely agree. Simplicity is always the way to go.
 
 Configuration and requirement files
 -----------------------------------
@@ -443,6 +448,8 @@ towards a first release v1.0 to a wider audience. Versions v0.x would serve as e
 to a smaller community and getting feedback; and this during the first months of the development phase.
 
 **JP:** Let's start with a three digit version, without a "v". We'll be happier later if we do. `PEP 440 <https://www.python.org/dev/peps/pep-0440/>`_ So X.Y.Z where Z is just bug-fixes. We'll probably want to maintain a separate branch for each X.Y combination, so that we can bug-fix on old versions. By that logic, "master" is the bleeding edge. Bug-fixes in the X.Y branches have to be pushed out to master. Histogrammar is already structured this way.
+
+**ER**: v0.x was just a way of saying version 0.x. Of course I did not mean to add v to the version number since that is not the Python way ;-). So we agree. And I also agree on your comments on master and x.y branches.
 
 Expanding the team
 ------------------
