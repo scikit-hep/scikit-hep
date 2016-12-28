@@ -147,6 +147,8 @@ Outreach and tutorials
 
 The way to reach to the community, train and explain. To be discussed and prepared in due time.
 
+**JP:** I expect to do a few of these at the Fermilab LPC.
+
 
 Community feedback
 ==================
@@ -162,6 +164,7 @@ ER: the first use case cries for a Google groups list. As for the second maybe o
 scikit-hep.org site provides already the possibility of a mailing list such as
 feedback@scikit-hep.org?
 
+**JP:** I'm not sure how we can set up a mailing address with our DNS (short of running a mail host at all times). If the mailing address is actually a CERN e-group but the link is clearly spelled out on the website, that will be good enough. It's not like people memorize a support e-mail address.
 
 scikit-hep package structure
 ============================
@@ -184,6 +187,8 @@ Miscellaneous
   Probably a handy directory to hold not only this package's license but also licenses for anything we decide to ship with it.
   Suggest ``LICENSE.rst`` for the package license and ``LICENSE_<PackageOrModuleName>.rst`` for license of a package/module shipped with scikit-hep.
 
+**JP:** The main `LICENSE` file has to be top-level (without extensions?) for GitHub to recognize it.
+
 **ci/**
   We may well need in the near future a place to add scripts and material for continuous integration.
 
@@ -199,13 +204,17 @@ ER: suggestion to prepare a directory **rc/** for these *run commands* files. Ex
 * A default rc file for scikit-hep to make it trivial for the user to know what are the defaults ;-).
 * A template file for ROOT, taken from the standard ROOT installation. And similarly for other packages.
 
+**JP:** What do these configuration files hold? Aren't these equivalent to Python global variables? If so, why not make them Python global variables, so that they can be configured programatically? If the skhep module's behavior is modified by something set outside of a script, such as a text-based configuration file, then it will be harder for users to diagnose each other's bugs.
+
 ER: do we also want a separate **requirements/** directory to specify installation/package dependencies similarly to what ``rootpy`` does?
 Seems reasonable to me.
+
+**JP:** Doesn't the setup.py file have a requirements section? Moreover, setup.py's requirements are automatically parsed by PIP to go fetch the dependencies. In this day and age, dependencies should not be manual.
 
 Documentation
 -------------
 
-Subpackage **docs/** for the user guide, the API and command/scripts references.
+Subpackage **docs/** for the user guide, the API and command/scripts references.  **JP:** We have a https://github.com/scikit-hep/scikit-hep.github.io for the tutorials; what would go in this directory?
 
 Place also to add scikit-hep logos, under **logos/**.
 
