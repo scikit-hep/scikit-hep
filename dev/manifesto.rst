@@ -61,6 +61,7 @@ Core requirements
 * Exploit Astropy's idea of *affiliated packages*.
 * Python package supporting Python 2.6, 2.7 and 3.4.
 * Strict requirements for well-documented code, with a test suite.
+* Code should be as generic as possible and various backends should be considered, be it for plotting or I/O. Obvious examples are ROOT and matplotlib.
 
 Proposal for initial project and package coordination
 -----------------------------------------------------
@@ -353,6 +354,7 @@ Visualization
 -------------
 
 Subpackage **skhep/visualization/** for all matters concerning visualization.
+This is far from a little subpackage since the code to develop will have to deal with the various backends we want to consider.
 
 
 Affiliated packages
@@ -406,8 +408,11 @@ Expanding the team
 We look forward to contributions from the community at large and need to dress a team with complementary expertise.
 This is not for the immediate future, but soon-ish once we reached a conclusion on most of the above.
 
+In fact the presentation of the project at the DIANA topical meeting of February 20th will be a good opportunity to get a feeling for who might be interested in joining the effort ...
+
 In particular we should welcome contacts from:
 
+* The ROOT team.
 * All LHC experiments.
 * Neutrino experiments, ongoing and planned.
 * Dark matter experiments.
