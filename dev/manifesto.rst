@@ -211,7 +211,11 @@ Subpackage **tutorials/** for:
 Tests
 -----
 
-ER: shall these be in a directory *tests/* at the top level, or rather under **skhep/<module>/tests/** or ... ?
+ER: shall these be in a directory **tests/** at the top level, or rather a series of directories
+under **skhep/<module>/tests/** or ... ?
+If we go for the first option then it is anyway a good idea to mirror the structure under **skhep/**,
+.i.e. have **tests/units/**, **tests/constants/**, etc. It might seem like a burden but let's not forget
+that some of the packages will have various modules and should hence have various dedicated test files.
 
 In any case we are almost sure to need a subdirectory **data/** to hold data (e.g. ROOT files) for tests.
 
