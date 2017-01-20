@@ -31,6 +31,7 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(3 * mm, nanometer * 3000000)
         self.assertAlmostEqual(3 * mm, angstrom * 30000000)
         self.assertAlmostEqual(3 * mm, fermi * 3e12)
+        self.assertAlmostEqual(100 * fm2, barn)
 
     def test_area(self):
         self.assertAlmostEqual((3 * mm)**2, 9 * mm2)

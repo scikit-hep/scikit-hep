@@ -36,6 +36,10 @@ It is largely based on the International System of units (SI) [2]_
 
 but augments it with handy definitions as well as changing the basic length and time units.
 
+Typical use case::
+
+>>> from skhep.units import MeV
+>>> massWindow = 100 * MeV  # define a 100 MeV mass window
 ----
 
 **References**

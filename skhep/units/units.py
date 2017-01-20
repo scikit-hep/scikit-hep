@@ -73,9 +73,16 @@ km2 = kilometer2
 km3 = kilometer3
 
 micrometer = micro * meter
+micron     = micrometer
 nanometer  = nano  * meter
 angstrom   = 1e-10 * meter
-fermi      = femto * meter
+
+femtometer = femto * meter
+fermi      = femtometer
+
+fm  = femtometer
+fm2 = femtometer * femtometer
+fm3 = femtometer * femtometer * femtometer
 
 barn = 1.e-28 * meter2
 
@@ -107,6 +114,7 @@ femtosecond = femto * second
 ns = nanosecond
 s  = second
 ms = millisecond
+ps = picosecond
 
 hertz = 1. / second
 kilohertz = kilo * hertz

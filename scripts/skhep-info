@@ -9,12 +9,14 @@ from skhep import *
 #-----------------------------------------------------------------------------
 # Print the project information - banner and package information
 #-----------------------------------------------------------------------------
-print( banner )
+_default = '\x1b[00m'
+_green   = '\x1b[32;32m'
 
-_proj_info = """Project URLs:
- Homepage %s
- GitHub   %s
- PyPI     %s
+print( _green + banner + _default )
+
+_proj_info = """Homepage %s
+GitHub   %s
+PyPI     %s
 """ % ( project_url, project_url_GitHub, project_url_PyPI )
 
 print( _proj_info )

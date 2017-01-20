@@ -26,10 +26,10 @@ __all__ = [ 'banner',
 #-----------------------------------------------------------------------------
 __version__ = '0.0.1'
 
-__doc__ = __doc__.format( __version__ )
-
-banner = __doc__
-
 project_url        = 'http://scikit-hep.org'
 project_url_GitHub = 'https://github.com/scikit-hep/scikit-hep'
 project_url_PyPI   = 'https://pypi.python.org/pypi/scikit-hep'
+
+__doc__ = __doc__.format( __version__, project_url )
+
+banner = __doc__
