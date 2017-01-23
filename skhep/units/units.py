@@ -39,7 +39,6 @@ from .prefixes import *
 # --------------------------------------------------------------------
 # Units of length
 # ---------------
-
 millimeter  = 1.
 millimeter2 = millimeter * millimeter
 millimeter3 = millimeter * millimeter * millimeter
@@ -102,7 +101,6 @@ invfb = 1. / femtobarn
 # --------------------------------------------------------------------
 # Units of time
 # -------------
-
 nanosecond  = 1.
 
 second      = giga  * nanosecond
@@ -128,7 +126,6 @@ GHz = giga * hertz
 # --------------------------------------------------------------------
 # Units of energy
 # ---------------
-
 megaelectronvolt = 1.
 
 electronvolt     = micro * megaelectronvolt
@@ -149,19 +146,16 @@ EeV = exaelectronvolt
 # --------------------------------------------------------------------
 # Units of electric charge
 # ------------------------
-
 eplus = 1.    # positron charge
 
 # --------------------------------------------------------------------
 # Units of temperature
 # --------------------
-
 kelvin = 1.
 
 # --------------------------------------------------------------------
 # Units of amount of substance
 # ----------------------------
-
 mole = 1.
 
 mol = mole
@@ -169,13 +163,11 @@ mol = mole
 # --------------------------------------------------------------------
 # Units of luminous intensity
 # ---------------------------
-
 candela = 1.
 
 # --------------------------------------------------------------------
 # Units of angles
 # ---------------
-
 radian      = 1.    # plane angle
 milliradian = milli * radian
 

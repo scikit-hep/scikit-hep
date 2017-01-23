@@ -30,6 +30,6 @@ project_url        = 'http://scikit-hep.org'
 project_url_GitHub = 'https://github.com/scikit-hep/scikit-hep'
 project_url_PyPI   = 'https://pypi.python.org/pypi/scikit-hep'
 
-__doc__ = __doc__.format( __version__, project_url )
+__doc__ = __doc__.format( __version__ )
 
 banner = __doc__

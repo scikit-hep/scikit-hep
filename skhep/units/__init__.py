@@ -39,7 +39,9 @@ but augments it with handy definitions as well as changing the basic length and 
 Typical use case::
 
 >>> from skhep.units import MeV
->>> massWindow = 100 * MeV  # define a 100 MeV mass window
+>>> massWindow = 100 * MeV    # define a 100 MeV mass window
+>>> pt = atrack.pt() / GeV    # obtain the pT of a track in GeV
+
 ----
 
 **References**
