@@ -36,11 +36,21 @@ It is largely based on the International System of units (SI) [2]_
 
 but augments it with handy definitions as well as changing the basic length and time units.
 
-Typical use case::
+Typical use cases::
 
->>> from skhep.units import MeV
+>>> # add two quantities with length units and get the result im meters
+>>> from skhep import units as u
+>>> (1 * u.meter + 5 * u.cm) / u.meter
+1.05
+
+>>> from skhep.units import MeV, GeV
 >>> massWindow = 100 * MeV    # define a 100 MeV mass window
->>> pt = atrack.pt() / GeV    # obtain the pT of a track in GeV
+>>> def energy_resolution():
+...    # returns the energy resolution of 100 MeV
+...    return 100 * MeV
+...
+>>> energy_resolution() / GeV # get the energy resolution in GeV
+0.1
 
 ----
 

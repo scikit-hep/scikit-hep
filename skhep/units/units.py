@@ -85,18 +85,24 @@ fm3 = femtometer * femtometer * femtometer
 
 barn = 1.e-28 * meter2
 
-millibarn  = milli * barn
-microbarn  = micro * barn
-nanobarn   = nano  * barn
-picobarn   = pico  * barn
-femtobarn  = femto * barn
+millibarn = milli * barn
+microbarn = micro * barn
+nanobarn  = nano  * barn
+picobarn  = pico  * barn
+femtobarn = femto * barn
+attobarn  = atto  * barn
 
 mb = millibarn
+nb = nanobarn
 pb = picobarn
 fb = femtobarn
+ab = attobarn
 
+invmb = 1. / millibarn
+invnb = 1. / nanobarn
 invpb = 1. / picobarn
 invfb = 1. / femtobarn
+invab = 1. / attobarn
 
 # --------------------------------------------------------------------
 # Units of time
@@ -113,6 +119,10 @@ ns = nanosecond
 s  = second
 ms = millisecond
 ps = picosecond
+
+minute = 60 * second
+hour   = 60 * minute
+day    = 24 * hour
 
 hertz = 1. / second
 kilohertz = kilo * hertz

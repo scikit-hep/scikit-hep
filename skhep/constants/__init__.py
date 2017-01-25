@@ -16,6 +16,8 @@ Typical use case::
 >>> print ctau_Bs   # result in HEP units, so mm ;-)
 0.449688687
 >>> print ctau_Bs / micrometer   # result in micrometers
+449.688687
+
 """
 
 #-----------------------------------------------------------------------------

@@ -19,8 +19,13 @@ def Kallen_function( x, y, z ):
     -------
     Calculate in the rest frame of a particle of mass M decaying to 2 particles labeled 1 and 2,
     P (M) -> p1 (m1) + p2 (m2), the momenta of 1 and 2 (p = |p1| = |p2|):
-    >>> from skhep.math import Kallen_function
+    >>> from skhep.math  import Kallen_function
+    >>> from skhep.units import MeV, GeV
+    >>> from math import sqrt
+    >>> M = 5.279 * GeV; m1 = 493.7 * MeV; m2 = 139.6 * MeV
     >>> p = sqrt( Kallen_function( M**2, m1**2, m2**2 ) ) / (2*M)
+    >>> print p / GeV   # print the CMS momentum in GeV
+    2.61453580221
 
     Reference
     ---------
