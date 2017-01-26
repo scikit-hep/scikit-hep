@@ -24,4 +24,4 @@ class Test(unittest.TestCase):
 		self.assertEqual( 4 * mega, 1./ 0.25 / micro )
 	
 	def test_prefixes_e24(self):
-		self.assertEqual( str(yotta * yocto), '1.0' )
+		self..assertAlmostEqual( yotta * yocto, 1. )

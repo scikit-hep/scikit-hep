@@ -12,9 +12,26 @@ Options
 #-----------------------------------------------------------------------------
 # Import statements
 #-----------------------------------------------------------------------------
-from os import walk, path
+from optparse import OptionParser
+from os       import walk, path
 import doctest
 import skhep
+
+#-----------------------------------------------------------------------------
+# Instantiate a handy parser
+#-----------------------------------------------------------------------------
+_usage = "%prog [options]"
+
+parser = OptionParser( _usage )
+
+parser.add_option( '-v',
+                   '--verbose',
+                   action = 'store_true',
+                   dest = 'verbose',
+                   help = 'run doctest in VERBOSE mode [default: False]'
+                   )
+
+( options, args ) = parser.parse_args()
 
 #-----------------------------------------------------------------------------
 # Recursively run doctest over all .py files
@@ -27,7 +44,7 @@ for root, dirs, files in walk( skheppath ):
     matches.extend( [ path.join(root,f) for f in py_files if py_files !=[] ] )
 
 for m in matches:
-    test_result = doctest.testfile(m, module_relative=False)
+    test_result = doctest.testfile(m, module_relative=False, verbose=options.verbose)
     if test_result.attempted > 0 :
        print 'Doctest: %-30s --> %2s tests, %2s OK' %\
 	 ( m.split('skhep/')[1], test_result.attempted, (test_result.attempted-test_result.failed) )
