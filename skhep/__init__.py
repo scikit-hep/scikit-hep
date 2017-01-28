@@ -15,11 +15,12 @@ A community-driven and oriented Python software project for High Energy Physics.
 #-----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-__all__ = [ 'banner',
-            'project_url',
-            'project_url_GitHub',
-            'project_url_PyPI'
-            ]
+# Information on supported backends
+from .backends import *
+
+# Set of scikit-hep exceptions
+from .exceptions import *
+
 
 #-----------------------------------------------------------------------------
 # Project and package info
