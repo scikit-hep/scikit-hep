@@ -11,6 +11,6 @@ Subpackage for converters to NumPy
 #-----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-#from root_numpy import tree2array
+from root_numpy import tree2array
 
-__all__ = []
+__all__ = [ 'tree2array' ]

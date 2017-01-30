@@ -11,6 +11,6 @@ Subpackage for converters to ROOT
 #-----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-#from root_numpy import array2tree
+from root_numpy import array2tree
 
-__all__ = []
+__all__ = [ 'array2tree' ]
