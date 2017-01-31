@@ -25,7 +25,7 @@ from .exceptions import *
 #-----------------------------------------------------------------------------
 # Project and package info
 #-----------------------------------------------------------------------------
-__version__ = '0.0.1'
+__version__ = '0.0.1.dev1'
 
 project_url        = 'http://scikit-hep.org'
 project_url_GitHub = 'https://github.com/scikit-hep/scikit-hep'

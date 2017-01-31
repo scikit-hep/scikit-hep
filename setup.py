@@ -31,7 +31,7 @@ sys.path.insert(0, local_path)
 setup(
     name='scikit-hep',
     author='The Scikit-HEP Developers',
-    version='0.0.1dev',
+    version='0.0.1.dev1',
     license='new BSD',
     url='http://github.com/scikit-hep/scikit-hep',
     description='Community-developed Particle Physics analysis toolkit',
