@@ -40,7 +40,7 @@ class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
         self._provenance = provenance
 
     @inheritdoc(Dataset)
-    def schema(self):
+    def datashape(self):
         raise NotImplementedError    # TODO!
 
     @inheritdoc(Dataset)
