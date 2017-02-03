@@ -7,7 +7,7 @@
 import unittest
 
 from skhep.math import *
-from skhep.py23 import *
+from skhep.util.py23 import *
 
 #-----------------------------------------------------------------------------
 # Actual tests
