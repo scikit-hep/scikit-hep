@@ -65,7 +65,7 @@ class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
         out = root_numpy.root2array()
 
         from .rootdataset import ROOTDataset
-        return NumpyDataset(out, Formatting("NumpyDataset"))
+        return NumpyDataset(out, self.provenance + (Formatting("NumpyDataset"),))
 
     def __getitem__(self, name):
         raise NotImplementedError    # TODO!

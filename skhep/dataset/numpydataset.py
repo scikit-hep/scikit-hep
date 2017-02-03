@@ -134,7 +134,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         root_numpy.array2root(data, fileName, mode="recreate")
 
         from .rootdataset import ROOTDataset
-        return ROOTDataset(fileName, Formatting("ROOTDataset", fileName))
+        return ROOTDataset(fileName, self.provenance + (Formatting("ROOTDataset", fileName),))
 
     def __getitem__(self, name):
         return self.data[name]
