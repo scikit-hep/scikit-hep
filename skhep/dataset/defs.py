@@ -36,8 +36,12 @@ class Dataset(object):
         return self._provenance
 
     @property
-    def schema(self):
-        """Every Dataset has a Schema, which describes its data types and possibly units in a unified way."""
+    def datashape(self):
+        """Every Dataset has a datashape, which describes its data types in a unified way."""
+        # There is a standard for this:
+        #     http://libndtypes.readthedocs.io/en/latest/datashape.html
+        # 
+        # We should use it! That's why I deleted typesystem.py.
         raise NotImplementedError
 
     @property
@@ -110,6 +114,32 @@ class FromFiles(FromPersistent):
         raise NotImplementedError
 
 class ToFiles(FromPersistent):
+    @staticmethod
+    def _openRolloverFiles(base, rolloverPattern=lambda base, n: base[:base.rindex(".")] + "_" + repr(n) + base[base.rindex("."):] if "." in base else base + "_" + repr(n)):
+        # generic method to generate an infinite series of files with _1, _2, etc. in their names
+        if isinstance(base, file):
+            f = base
+            base = f.name
+        elif isinstance(base, string_types):
+            f = None
+        else:
+            assert False, "base should be an open file or string filename."
+        n = 0
+        while True:
+            if f is None:
+                name = rolloverPattern(base, n)
+                f = open(name, "wb")
+            assert "w" in f.mode
+            yield f   # use the first file if given, otherwise start rollover with _0
+            f = None  # second file in rollover is always _1 and continuing from there
+
+    @staticmethod
+    def _openSingleFile(base):
+        if isinstance(base, string_types):
+            base = open(base, "wb")
+        assert isinstance(base, file) and "w" in base.mode
+        return base
+
     def toFiles(self, base, **options):
         """Save this Dataset to a file or collection of files."""
         raise NotImplementedError

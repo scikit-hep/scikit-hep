@@ -10,7 +10,7 @@ class Provenance(object):
 
     @property
     def detail(self):
-        """String providing more detail about the origin or transformation."""
+        """String providing more detail about the origin, transformation, or formatting."""
         raise NotImplementedError
 
 class Origin(Provenance):
@@ -57,7 +57,16 @@ class Transformation(Provenance):
 
     @property
     def detail(self):
-        return "{0}({1})".format(self.name, ", ".format(x.detail for x in self.args))
+        return "{0}({1})".format(self.name, ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
 
     def __repr__(self):
         return "<{0}>".format(self.name)
+
+class Formatting(Provenance):
+    def __init__(self, format, args):
+        self.format = format
+        self.args = args
+
+    @property
+    def detail(self):
+        return "{0}({1})".format(self.format, ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
