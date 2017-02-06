@@ -13,10 +13,10 @@ from __future__ import absolute_import
 from types import MethodType
 
 from .defs import *
-from ..util.py23 import *
-from ..util.decorators import inheritdoc
-from ..util.dependencies import softimport
-from ..util.provenance import FileOrigin, ObjectOrigin, Transformation, Formatting
+from ..utils.py23 import *
+from ..utils.decorators import inheritdoc
+from ..utils.dependencies import softimport
+from ..utils.provenance import FileOrigin, ObjectOrigin, Transformation, Formatting
 
 numpy = softimport("numpy")
 root_numpy = softimport("root_numpy")

@@ -12,7 +12,7 @@ from __future__ import absolute_import
 
 import glob
 
-from ..util.py23 import *
+from ..utils.py23 import *
 
 #-----------------------------------------------------------------------------
 # Generic Dataset
