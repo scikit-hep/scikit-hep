@@ -30,8 +30,14 @@ sys.path.insert(0, local_path)
 
 setup(
     name='scikit-hep',
-    version='0.0.1',
+    author='The Scikit-HEP Developers',
+    version='0.0.1dev',
     license='new BSD',
+    url='http://github.com/scikit-hep/scikit-hep',
+    description='Community-developed Particle Physics analysis toolkit',
+    #requires=[
+    #    'root_numpy',
+    #],
     test_suite = "tests",
     classifiers=[
         'Intended Audience :: Science/Research',
