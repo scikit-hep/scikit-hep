@@ -4,6 +4,8 @@ import json
 
 from .py23 import *
 
+# These are user-facing classes that structure the provenance information (history of operations performed on the dataset).
+
 class Provenance(object):
     def __init__(self):
         raise TypeError("Provenance is an abstract base class; instantiate one of its subclasses instead.")
@@ -14,10 +16,12 @@ class Provenance(object):
         raise NotImplementedError
 
 class Origin(Provenance):
+    # The first object in a provenance list.
     def __init__(self):
         raise TypeError("Origin is an abstract base class; instantiate one of its subclasses instead.")
 
 class FileOrigin(Origin):
+    # Declares that the dataset came from a file.
     def __init__(self, files):
         if isinstance(files, string_types):
             self.files = (files,)
@@ -40,6 +44,7 @@ class FileOrigin(Origin):
         return "<FileOrigin {0}>".format(self.detail)
 
 class ObjectOrigin(Origin):
+    # Declares that the dataset came from some Python object. Its history prior to that is unknown.
     def __init__(self, detail):
         self._detail = detail
 
@@ -51,6 +56,7 @@ class ObjectOrigin(Origin):
         return "<ObjectOrigin>"
 
 class Transformation(Provenance):
+    # Declares that the dataset was transformed by some mathematical operation.
     def __init__(self, name, args):
         self.name = name
         self.args = args
@@ -63,6 +69,7 @@ class Transformation(Provenance):
         return "<{0}>".format(self.name)
 
 class Formatting(Provenance):
+    # Declares that the dataset was reformatted, keeping its semantic meaning, but changed in representation.
     def __init__(self, format, args):
         self.format = format
         self.args = args
