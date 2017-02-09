@@ -17,9 +17,13 @@ addons:
 
 install:
   - pip install --upgrade pip
+  - pip install coveralls 
 
 script:
-  python setup.py test
+  coverage run --source=skhep setup.py test
+
+after_success:
+  coveralls
 
 notifications:
   slack: scikit-hep:b6cgBXwccPoaCNLn5VKFJFVy

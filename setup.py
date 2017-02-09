@@ -1,19 +1,12 @@
 #!/usr/bin/env python
 # Licensed under a 3-clause BSD style license, see LICENSE.
-
-try:
-    # try to use setuptools if installed
-    from pkg_resources import parse_version, get_distribution
-    from setuptools import setup, Extension
-    if get_distribution('setuptools').parsed_version < parse_version('0.7'):
-        # before merge with distribute
-        raise ImportError
-except ImportError:
-    # fall back on distutils
-    from distutils.core import setup, Extension
-
 import sys
 import os
+
+# try to use setuptools if installed
+from setuptools import setup, find_packages
+from setuputils import read, find_version
+
 
 # Prevent setup from trying to create hard links
 # which are not allowed on AFS between directories.
@@ -23,16 +16,20 @@ try:
 except AttributeError:
     pass
 
-local_path = os.path.dirname(os.path.abspath(__file__))
+LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 # setup.py can be called from outside the scikit-hep directory
-os.chdir(local_path)
-sys.path.insert(0, local_path)
+os.chdir(LOCAL_PATH)
+sys.path.insert(0, LOCAL_PATH)
 
 setup(
     name='scikit-hep',
-    version='0.0.1',
+    version=find_version('skhep/__init__.py'),
+    description='Particle Physics python package',
+    long_description=read('README.rst'),
     license='new BSD',
-    test_suite = "tests",
+    packages=find_packages(exclude=['tests']),
+    test_suite="tests",
+    py_modules=['setuputils'],
     classifiers=[
         'Intended Audience :: Science/Research',
         'Intended Audience :: Developers',
