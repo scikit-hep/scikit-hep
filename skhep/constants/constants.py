@@ -22,12 +22,12 @@ from ..units import m, s
 
 twopi  = 2 * pi
 halfpi = pi / 2
-pi2    = pi * pi
+pi_sq  = pi * pi
 
 #-----------------------------------------------------------------------------
 # Physical constants
 #-----------------------------------------------------------------------------
 
 # Speed of light in vacuum
-c_light   = 299792458 * m/s
-c_squared = c_light * c_light
+c_light    = 299792458 * m/s
+c_light_sq = c_light * c_light

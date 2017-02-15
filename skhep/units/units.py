@@ -195,6 +195,27 @@ deg  = degree
 # Derived units
 # -------------
 
+# Positron charge [Coulomb]
+e_SI = 1.60217733e-19
+
+# Electric charge [Q]
+# -------------------
+coulomb = eplus / e_SI
+
+# Electric current [Q][T^-1]
+# -------------------------
+ampere = coulomb / second
+
+milliampere = milli * ampere
+microampere = micro * ampere
+nanoampere  = nano  * ampere
+
+A = ampere
+
+# Energy [E]
+# ----------
+joule = electronvolt / e_SI   # joule = 6.24150 e+12 * MeV
+
 # Electric potential [E][Q^-1]
 megavolt = megaelectronvolt / eplus
 volt     = micro * megavolt
