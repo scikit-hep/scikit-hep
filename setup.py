@@ -30,6 +30,9 @@ setup(
     packages=find_packages(exclude=['tests']),
     test_suite="tests",
     py_modules=['setuputils'],
+    install_requires=[
+        'PyPDT>=0.6.0'
+    ],
     classifiers=[
         'Intended Audience :: Science/Research',
         'Intended Audience :: Developers',

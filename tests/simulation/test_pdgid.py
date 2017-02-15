@@ -6,8 +6,8 @@
 #-----------------------------------------------------------------------------
 import unittest
 
-from skhep.simulation.pdgid import *
-from skhep.py23             import *
+from skhep.simulation import *
+from skhep.py23       import *
 
 #-----------------------------------------------------------------------------
 # Actual tests
