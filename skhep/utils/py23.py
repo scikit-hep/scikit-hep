@@ -16,5 +16,10 @@ if sys.version_info[0] > 2:
     string_types = (bytes, str)
     xrange = range
     long = int
+    def head(x):
+        return iter(x).__next__()
+
 else:
     string_types = (str, unicode)
+    def head(x):
+        return iter(x).next()
