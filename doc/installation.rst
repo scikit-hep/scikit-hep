@@ -3,9 +3,10 @@
 Installation
 ============
 
-Words.
+Instructions will be provided in due course once a first beta release gets prepared.
+
 
 Getting help
 ------------
 
-Words.
+For now you are asked to get help via the GitHub pages.
