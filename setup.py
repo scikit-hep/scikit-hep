@@ -31,7 +31,7 @@ setup(
     test_suite="tests",
     py_modules=['setuputils'],
     install_requires=[
-        'PyPDT>=0.6.0'
+        'PyPDT>=0.7.0'
     ],
     classifiers=[
         'Intended Audience :: Science/Research',
