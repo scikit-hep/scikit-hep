@@ -1,12 +1,5 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
-   _____      _ _    _ _          _    _ ______ _____
-  / ____|    (_) |  (_) |        | |  | |  ____|  __ \ 
- | (___   ___ _| | ___| |_  ____ | |__| | |__  | |__) | 
-  \___ \ / __| | |/ / | __| ____ |  __  |  __| |  ___/ 
-  ____) | (__| |   <| | |_       | |  | | |____| | 
- |_____/ \___|_|_|\_\_|\__|      |_|  |_|______|_|      {0}
-
 A community-driven and oriented Python software project for High Energy Physics.
 """
 

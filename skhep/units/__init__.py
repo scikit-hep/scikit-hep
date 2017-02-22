@@ -38,19 +38,18 @@ but augments it with handy definitions as well as changing the basic length and 
 
 Typical use cases::
 
->>> # add two quantities with length units and get the result im meters
->>> from skhep import units as u
->>> (1 * u.meter + 5 * u.cm) / u.meter
-1.05
-
->>> from skhep.units import MeV, GeV
->>> massWindow = 100 * MeV    # define a 100 MeV mass window
->>> def energy_resolution():
-...    # returns the energy resolution of 100 MeV
-...    return 100 * MeV
-...
->>> energy_resolution() / GeV # get the energy resolution in GeV
-0.1
+    >>> # add two quantities with length units and get the result im meters
+    >>> from skhep import units as u
+    >>> (1 * u.meter + 5 * u.cm) / u.meter
+    1.05
+    >>> from skhep.units import MeV, GeV
+    >>> massWindow = 100 * MeV    # define a 100 MeV mass window
+    >>> def energy_resolution():
+    ...    # returns the energy resolution of 100 MeV
+    ...    return 100 * MeV
+    ...
+    >>> energy_resolution() / GeV # get the energy resolution in GeV
+    0.1
 
 ----
 
