@@ -23,6 +23,20 @@ The project and releases are `registered on PyPI <http://pypi.python.org/pypi/sc
 The development is occurring at the
 `project's GitHub page <http://github.com/scikit-hep/scikit-hep>`_.
 
+Documentation
+-------------
+
+The documentation is hosted on the `Scikit-HEP website`_, and the source code
+is in the ``doc/`` folder. `Sphinx`_ is required for building the HTML pages,
+which can be done with the command:
+
+::
+
+    $ make -C doc html
+
+.. _Scikit-HEP website: http://scikit-hep.org/
+.. _Sphinx: http://www.sphinx-doc.org/en/stable/
+
 License
 -------
 The scikit-hep project is licensed under a 3-clause BSD style license - see the
