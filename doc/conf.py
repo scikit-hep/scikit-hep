@@ -93,10 +93,11 @@ html_theme_options = {
     'logo': 'logo.svg',
     'fixed_sidebar': True,
     'show_powered_by': False,
-    # 'link': '#8b198b',
+    'link': '#7092C0',
     'font_family': 'Source Sans Pro',
     'head_font_family': 'Source Serif Pro',
-    'code_font_family': 'Source Code Pro'
+    'code_font_family': 'Consolas',
+    'code_font_size': '0.8em'
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

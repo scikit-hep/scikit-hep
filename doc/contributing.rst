@@ -11,12 +11,17 @@ If not, we have :ref:`plenty of ideas <ideas>` we'd love to see!
 Contributing code
 -----------------
 
-Words.
+The Scikit-HEP project is community-driven and community-oriented.
+As such, we welcome contributions and contributors from all horizons,
+provide they comply with the
+`Python Community Code of Conduct <https://www.python.org/psf/codeofconduct/>`_.
+
 
 Coding guidelines
 ~~~~~~~~~~~~~~~~~
 
-Words.
+Guidelines for coding and documentation are under development.
+
 
 Suggesting new functionality
 ----------------------------
@@ -26,11 +31,13 @@ First check that the functionality does not already exist in :ref:`the API <api>
 .. _ideas:
 
 Ideas
-~~~~~
+-----
 
-Words.
+Forum for project ideas. A dedicated page will be prepared shortly.
+
 
 Feedback and bug reporting
 --------------------------
 
-Words.
+For now please provide feedback and/or report bugs via the
+`Scikit-HEP GitHub Issues <https://github.com/scikit-hep/scikit-hep/issues>`_ page.

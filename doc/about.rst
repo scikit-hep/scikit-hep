@@ -11,13 +11,14 @@ These are:
   * Datasets: data in various sources, such as ROOT, Numpy/Pandas, databases, wrapped in a common interface.
   * Aggregations: e.g. histograms that summarize or project a dataset.
   * Modeling: data models and fitting utilities.
-  * Simulation: wrappers for Monte Carlo engines and other generators of simulated data.
+  * Simulation: wrappers for Monte Carlo engines and other generators of simulated data.
   * Visualization: interface to graphics engines, from ROOT and Matplotlib to maybe even d3 or plot.ly.
 
 Core team
 ---------
 
 Project startup team:
+
   * Vanya Belyaev (ITEP, Moscow - LHCb)
   * Noel Dawe (University of Melbourne - ATLAS)
   * David Lange (Princeton University - CMS, DIANA)
