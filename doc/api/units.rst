@@ -1,7 +1,8 @@
 .. _units:
 
-Units
-=====
+=====================
+Units (`skhep.units`)
+=====================
 
 .. automodule:: skhep.units
    :members:

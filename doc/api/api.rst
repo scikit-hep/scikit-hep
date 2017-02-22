@@ -9,4 +9,7 @@ API
 
 .. toctree::
    constants.rst
+   dataset.rst
+   math.rst
+   simulation.rst
    units.rst

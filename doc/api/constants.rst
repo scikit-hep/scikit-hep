@@ -1,7 +1,8 @@
 .. _constants:
 
-Constants
-=========
+=============================
+Constants (`skhep.constants`)
+=============================
 
 .. automodule:: skhep.constants
    :members:
