@@ -4,15 +4,13 @@
 Common unit prefixes
 ********************
 
-  * SI prefixes [1]_.
-  * Binary prefixes [2]_.
-
-----
+  * SI prefixes [SI_prefixes]_.
+  * Binary prefixes [Binary_prefixes]_.
 
 **References**
 
-.. [1] See e.g. https://en.wikipedia.org/wiki/International_System_of_Units#Prefixes.
-.. [2] See e.g. https://en.wikipedia.org/wiki/Unit_prefix#Binary_prefixes.
+.. [SI_prefixes] https://en.wikipedia.org/wiki/International_System_of_Units#Prefixes.
+.. [Binary_prefixes] https://en.wikipedia.org/wiki/Unit_prefix#Binary_prefixes.
 """
 
 #-----------------------------------------------------------------------------

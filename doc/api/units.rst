@@ -9,3 +9,6 @@ Units (`skhep.units`)
 
 .. automodule:: skhep.units.prefixes
    :members:
+
+.. automodule:: skhep.units.units
+   :members:

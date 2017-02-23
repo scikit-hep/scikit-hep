@@ -1,3 +1,9 @@
 h1, h2 {
     border-style: none none solid none;
 }
+pre {
+    border-style: solid;
+    border-width: thin;
+    border-radius: 5px;
+    background-color: #f9f7fc;
+}

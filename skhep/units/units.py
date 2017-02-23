@@ -20,8 +20,6 @@ Plane angle           radian             rad
 Solid angle           steradian          sr
 ===================   ================== ====
 
-----
-
 **References**
 
 .. [1] http://proj-clhep.web.cern.ch/proj-clhep/.

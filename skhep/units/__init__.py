@@ -4,7 +4,7 @@
 Subpackage for physical units and commonly-used unit prefixes
 *************************************************************
 
-In HEP the standard set of basic units was originally defined by the CLHEP [1]_ project:
+In HEP the standard set of basic units was originally defined by the [CLHEP]_ project:
 
 ===================   ================== ====
 Quantity              Name               Unit
@@ -20,7 +20,7 @@ Plane angle           radian             rad
 Solid angle           steradian          sr
 ===================   ================== ====
 
-It is largely based on the International System of units (SI) [2]_
+It is largely based on the international system of units ([SI]_)
 
    ===================   ========   ====
    Quantity              Name       Unit
@@ -55,8 +55,8 @@ Typical use cases::
 
 **References**
 
-.. [1] http://proj-clhep.web.cern.ch/proj-clhep/.
-.. [2] http://www.physics.nist.gov/cuu/Units/index.html.
+.. [CLHEP] http://proj-clhep.web.cern.ch/proj-clhep/.
+.. [SI] http://www.physics.nist.gov/cuu/Units/index.html.
 """
 
 #-----------------------------------------------------------------------------
