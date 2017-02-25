@@ -1,5 +1,5 @@
 ==========
-scikit-hep
+Scikit-HEP
 ==========
 
 The Scikit-HEP project (http://scikit-hep.org/) is a community-driven and community-oriented project
