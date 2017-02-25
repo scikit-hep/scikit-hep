@@ -1,8 +1,6 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
-*************************************************************
-Subpackage for physical units and commonly-used unit prefixes
-*************************************************************
+Package for physical units and commonly-used unit prefixes.
 
 In HEP the standard set of basic units was originally defined by the [CLHEP]_ project:
 
@@ -50,8 +48,6 @@ Typical use cases::
     ...
     >>> energy_resolution() / GeV # get the energy resolution in GeV
     0.1
-
-----
 
 **References**
 

@@ -3,7 +3,7 @@
 Subpackage for PDG ID methods
 =============================
 
-Scikit-HEP simply wraps the functionality provided by the PyPDT package [1]
+Scikit-HEP simply wraps the functionality provided by the [PyPDT]_ package
 to access in Python what is otherwise provided by the HepPID package in C++.
 HepPID translates the standard PDG numbering scheme.
 
@@ -11,6 +11,7 @@ All methods from PyPDT applicable to the PDG particle identification codes,
 a.k.a. PDG IDs, are available.
 
 Functions available:
+
 {0}
 
 Standard use case:
@@ -22,7 +23,7 @@ Standard use case:
 
 **References**
 
-.. [1] https://pypi.python.org/pypi/PyPDT.
+.. [PyPDT] https://pypi.python.org/pypi/PyPDT.
 
 """
 

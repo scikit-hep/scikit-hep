@@ -1,3 +1,5 @@
+.. _about:
+
 About
 =====
 
@@ -8,11 +10,11 @@ The project started in Autumn 2016 and is presently being prepared for an initia
 The software package defines a set of five *pillars*, which are seen to embrace all major topics involved in a physicist's worlk.
 These are:
 
-  * Datasets: data in various sources, such as ROOT, Numpy/Pandas, databases, wrapped in a common interface.
-  * Aggregations: e.g. histograms that summarize or project a dataset.
-  * Modeling: data models and fitting utilities.
-  * Simulation: wrappers for Monte Carlo engines and other generators of simulated data.
-  * Visualization: interface to graphics engines, from ROOT and Matplotlib to maybe even d3 or plot.ly.
+  * **Datasets**: data in various sources, such as ROOT, Numpy/Pandas, databases, wrapped in a common interface.
+  * **Aggregations**: e.g. histograms that summarize or project a dataset.
+  * **Modeling**: data models and fitting utilities.
+  * **Simulation**: wrappers for Monte Carlo engines and other generators of simulated data.
+  * **Visualization**: interface to graphics engines, from ROOT and Matplotlib to maybe even d3 or plot.ly.
 
 Core team
 ---------
@@ -29,11 +31,15 @@ Project startup team:
 Contributors
 ------------
 
-Every project (sub)package is under the responsibility of a coordinator/maintainer. The list will be provided in due time.
+Every project (sub)package is under the responsibility of a coordinator/maintainer.
+The list will be provided in due time.
 
 We look forward to contributions from the community!
+Please refer to the link :ref:`contributing to Scikit-HEP <contributing>`
+for details on how to get involved.
+
 
 Licensing
 ---------
 
-The software package is under a BDS 3-clause license.
+The software package is under a BSD 3-clause license.

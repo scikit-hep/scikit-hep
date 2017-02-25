@@ -11,3 +11,8 @@ This is the main page documentating the *skhep* module, example usage, and the u
     examples/examples.rst
     api/api.rst
     faq.rst
+
+You can also search through the list of modules or the full index:
+
+* :ref:`modindex`
+* :ref:`genindex`
