@@ -24,10 +24,10 @@ Python versions supported:
    :target: https://badge.fury.io/py/scikit-hep
 
 .. image:: https://img.shields.io/badge/python-2.7-blue.svg
-.. :target: https://badge.fury.io/py/scikit-hep
+   :target: https://badge.fury.io/py/scikit-hep
 
 .. image:: https://img.shields.io/badge/python-3.4-blue.svg
-.. :target: https://badge.fury.io/py/scikit-hep
+   :target: https://badge.fury.io/py/scikit-hep
 
 Project status
 --------------
@@ -36,7 +36,7 @@ Project status
    :target: https://travis-ci.org/scikit-hep/scikit-hep
 
 .. image:: https://coveralls.io/repos/github/scikit-hep/scikit-hep/badge.svg?branch=add-coveralls
-    :target: https://coveralls.io/github/scikit-hep/scikit-hep?branch=add-coveralls
+   :target: https://coveralls.io/github/scikit-hep/scikit-hep?branch=add-coveralls
 
 Documentation
 -------------
