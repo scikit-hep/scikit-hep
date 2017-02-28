@@ -18,16 +18,16 @@ The project and releases are `registered on PyPI <http://pypi.python.org/pypi/sc
 The development is occurring at the
 `project's GitHub page <http://github.com/scikit-hep/scikit-hep>`_.
 
-Python package supported:
+Python versions supported:
 
-.. |Python26| image:: https://img.shields.io/badge/python-2.6-blue.svg
-.. _Python26: https://badge.fury.io/py/scikit-learn
+.. image:: https://img.shields.io/badge/python-2.6-blue.svg
+   :target: https://badge.fury.io/py/scikit-hep
 
-.. |Python27| image:: https://img.shields.io/badge/python-2.7-blue.svg
-.. _Python27: https://badge.fury.io/py/scikit-learn
+.. image:: https://img.shields.io/badge/python-2.7-blue.svg
+.. :target: https://badge.fury.io/py/scikit-hep
 
-.. |Python35| image:: https://img.shields.io/badge/python-3.5-blue.svg
-.. _Python35: https://badge.fury.io/py/scikit-learn
+.. image:: https://img.shields.io/badge/python-3.4-blue.svg
+.. :target: https://badge.fury.io/py/scikit-hep
 
 Project status
 --------------
