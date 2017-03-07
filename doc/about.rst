@@ -3,12 +3,14 @@
 About
 =====
 
-The Scikit-HEP project is a community-driven and community-oriented project with the aim of providing Particle Physics at large with a Python package containing core and common tools.
+The Scikit-HEP project is a community-driven and community-oriented project
+with the aim of providing Particle Physics at large with a Python package
+containing core and common tools.
 
 The project started in Autumn 2016 and is presently being prepared for an initial beta release.
 
-The software package defines a set of five *pillars*, which are seen to embrace all major topics involved in a physicist's worlk.
-These are:
+The software package defines a set of five *pillars*, which are seen to embrace
+all major topics involved in a physicist's work. These are:
 
   * **Datasets**: data in various sources, such as ROOT, Numpy/Pandas, databases, wrapped in a common interface.
   * **Aggregations**: e.g. histograms that summarize or project a dataset.
