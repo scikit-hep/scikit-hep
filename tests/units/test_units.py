@@ -73,7 +73,10 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(1e18 * eV, EeV)
 
     def test_magnetic_field(self):
-        self.assertEqual(10 * gauss, 1 * milli * tesla)
+        self.assertAlmostEqual(10 * gauss, 1 * milli * tesla)
+
+    def test_electricity(self):
+        self.assertAlmostEqual(1 * mega * joule / second, 1 * MW)
 
     def test_radiation_units(self):
         self.assertEqual(gray, sievert)  # equal in terms of value
