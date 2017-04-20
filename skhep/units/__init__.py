@@ -1,10 +1,8 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
-*************************************************************
-Subpackage for physical units and commonly-used unit prefixes
-*************************************************************
+Package for physical units and commonly-used unit prefixes.
 
-In HEP the standard set of basic units was originally defined by the CLHEP [1]_ project:
+In HEP the standard set of basic units was originally defined by the [CLHEP]_ project:
 
 ===================   ================== ====
 Quantity              Name               Unit
@@ -20,7 +18,7 @@ Plane angle           radian             rad
 Solid angle           steradian          sr
 ===================   ================== ====
 
-It is largely based on the International System of units (SI) [2]_
+It is largely based on the international system of units ([SI]_)
 
    ===================   ========   ====
    Quantity              Name       Unit
@@ -38,26 +36,23 @@ but augments it with handy definitions as well as changing the basic length and 
 
 Typical use cases::
 
->>> # add two quantities with length units and get the result im meters
->>> from skhep import units as u
->>> (1 * u.meter + 5 * u.cm) / u.meter
-1.05
-
->>> from skhep.units import MeV, GeV
->>> massWindow = 100 * MeV    # define a 100 MeV mass window
->>> def energy_resolution():
-...    # returns the energy resolution of 100 MeV
-...    return 100 * MeV
-...
->>> energy_resolution() / GeV # get the energy resolution in GeV
-0.1
-
-----
+    >>> # add two quantities with length units and get the result im meters
+    >>> from skhep import units as u
+    >>> (1 * u.meter + 5 * u.cm) / u.meter
+    1.05
+    >>> from skhep.units import MeV, GeV
+    >>> massWindow = 100 * MeV    # define a 100 MeV mass window
+    >>> def energy_resolution():
+    ...    # returns the energy resolution of 100 MeV
+    ...    return 100 * MeV
+    ...
+    >>> energy_resolution() / GeV # get the energy resolution in GeV
+    0.1
 
 **References**
 
-.. [1] http://proj-clhep.web.cern.ch/proj-clhep/.
-.. [2] http://www.physics.nist.gov/cuu/Units/index.html.
+.. [CLHEP] http://proj-clhep.web.cern.ch/proj-clhep/.
+.. [SI] http://www.physics.nist.gov/cuu/Units/index.html.
 """
 
 #-----------------------------------------------------------------------------
