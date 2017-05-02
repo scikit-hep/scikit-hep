@@ -218,7 +218,7 @@ class Vector3D(object):
         elif isinstance( other, Vector3D ) :
             return self.dot(other)
         else:
-            print 'Input object not a vector nor a number! Cannot multiply.'
+            print('Input object not a vector nor a number! Cannot multiply.')
             return None
 
     def __rmul__(self, other):
