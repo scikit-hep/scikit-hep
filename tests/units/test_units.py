@@ -7,7 +7,7 @@
 import unittest
 
 from skhep.units import *
-from skhep.py23  import *
+from skhep.utils.py23  import *
 
 #-----------------------------------------------------------------------------
 # Actual tests
@@ -44,6 +44,7 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(3e-34 * barn, 9 * microbarn)
         self.assertAlmostEqual(3e-37 * barn, 9 * nanobarn)
         self.assertAlmostEqual(3e-40 * barn, 9 * picobarn)
+        self.assertAlmostEqual(1 * barn, 100 * fm2)
 
     def test_volume(self):
         self.assertAlmostEqual((3 * mm)**3, 27 * mm3)
@@ -71,5 +72,12 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(1e15 * eV, PeV)
         self.assertAlmostEqual(1e18 * eV, EeV)
 
-    # no integrated luminosity???
+    def test_magnetic_field(self):
+        self.assertAlmostEqual(10 * gauss, 1 * milli * tesla)
 
+    def test_electricity(self):
+        self.assertAlmostEqual(1 * mega * joule / second, 1 * MW)
+
+    def test_radiation_units(self):
+        self.assertEqual(gray, sievert)  # equal in terms of value
+        self.assertEqual( 1 * curie, 37 * giga * becquerel)

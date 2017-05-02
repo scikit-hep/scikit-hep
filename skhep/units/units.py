@@ -20,8 +20,6 @@ Plane angle           radian             rad
 Solid angle           steradian          sr
 ===================   ================== ====
 
-----
-
 **References**
 
 .. [1] http://proj-clhep.web.cern.ch/proj-clhep/.
@@ -85,23 +83,31 @@ fm3 = femtometer * femtometer * femtometer
 
 barn = 1.e-28 * meter2
 
-millibarn  = milli * barn
-microbarn  = micro * barn
-nanobarn   = nano  * barn
-picobarn   = pico  * barn
-femtobarn  = femto * barn
+millibarn = milli * barn
+microbarn = micro * barn
+nanobarn  = nano  * barn
+picobarn  = pico  * barn
+femtobarn = femto * barn
+attobarn  = atto  * barn
 
 mb = millibarn
+nb = nanobarn
 pb = picobarn
 fb = femtobarn
+ab = attobarn
 
+invmb = 1. / millibarn
+invnb = 1. / nanobarn
 invpb = 1. / picobarn
 invfb = 1. / femtobarn
+invab = 1. / attobarn
 
 # --------------------------------------------------------------------
 # Units of time
 # -------------
 nanosecond  = 1.
+
+ns = nanosecond
 
 second      = giga  * nanosecond
 millisecond = milli * second
@@ -109,19 +115,24 @@ microsecond = micro * second
 picosecond  = pico  * second
 femtosecond = femto * second
 
-ns = nanosecond
 s  = second
 ms = millisecond
 ps = picosecond
 
+minute = 60 * second
+hour   = 60 * minute
+day    = 24 * hour
+
 hertz = 1. / second
+
 kilohertz = kilo * hertz
 megahertz = mega * hertz
 
 Hz = hertz
-kHz = kilo * hertz
-MHz = mega * hertz
+
 GHz = giga * hertz
+MHz = mega * hertz
+kHz = kilo * hertz
 
 # --------------------------------------------------------------------
 # Units of energy
@@ -129,19 +140,20 @@ GHz = giga * hertz
 megaelectronvolt = 1.
 
 electronvolt     = micro * megaelectronvolt
-kiloelectronvolt = kilo  * electronvolt
-gigaelectronvolt = giga  * electronvolt
-teraelectronvolt = tera  * electronvolt
-petaelectronvolt = peta  * electronvolt
-exaelectronvolt  = exa   * electronvolt
 
-eV  = electronvolt
-keV = kiloelectronvolt
-MeV = megaelectronvolt
-GeV = gigaelectronvolt
-TeV = teraelectronvolt
-PeV = petaelectronvolt
+exaelectronvolt  = exa  * electronvolt
+petaelectronvolt = peta * electronvolt
+teraelectronvolt = tera * electronvolt
+gigaelectronvolt = giga * electronvolt
+kiloelectronvolt = kilo * electronvolt
+
 EeV = exaelectronvolt
+PeV = petaelectronvolt
+TeV = teraelectronvolt
+GeV = gigaelectronvolt
+MeV = megaelectronvolt
+keV = kiloelectronvolt
+eV  = electronvolt
 
 # --------------------------------------------------------------------
 # Units of electric charge
@@ -165,30 +177,112 @@ mol = mole
 # ---------------------------
 candela = 1.
 
+cd = candela
+
 # --------------------------------------------------------------------
 # Units of angles
 # ---------------
-radian      = 1.    # plane angle
-milliradian = milli * radian
+radian    = 1.    # plane angle
+steradian = 1.    # solid angle
 
-steradian   = 1.    # solid angle
+rad  = radian
+sr   = steradian
+
+milliradian = milli * radian
+mrad = milliradian
 
 degree = (pi/180.) * radian
 
-rad  = radian
-mrad = milliradian
-sr   = steradian
-
-deg  = degree
+deg = degree
 
 # --------------------------------------------------------------------
 # Derived units
 # -------------
 
-# Electric potential [E][Q^-1]
+# Positron charge [Coulomb]
+e_SI = 1.6021766208e-19   # taken from CODATA
+
+# Electric charge [Q]
+# -------------------
+coulomb = eplus / e_SI
+
+# Electric current [Q][T^-1]
+# -------------------------
+ampere = coulomb / second
+
+milliampere = milli * ampere
+microampere = micro * ampere
+nanoampere  = nano  * ampere
+
+A = ampere
+
+# Energy [E]
+# ----------
+joule = electronvolt / e_SI   # joule = 6.24150 e+12 * MeV
+
+J = joule
+
+# Power [M][L^2][T^-3]
+watt = joule / second
+
+W = watt
+
+kW = kilo * watt
+MW = mega * watt
+GW = giga * watt
+
+# Force [E][L^-1]
+newton = joule / meter
+
+N = newton
+
+# Pressure
+pascal = newton / meter2
+
+Pa = pascal
+
+bar = 1.e+5 * pascal
+
+atmosphere = 101325 * pascal
+
+
+# Mass [E][T^2][L^-2]
+kilogram  = joule*second*second / (meter*meter)
+gram      = milli * kilogram
+milligram = milli * gram
+
+kg = kilogram
+g  = gram
+mg = milligram
+
+# Electric potential
 megavolt = megaelectronvolt / eplus
 volt     = micro * megavolt
 kilovolt = kilo * volt
+
+# Electric capacitance
+farad = coulomb / volt
+
+millifarad = milli * farad
+microfarad = micro * farad
+nanofarad  = nano  * farad
+picofarad  = pico  * farad
+
+# Electric resistance
+ohm = volt / ampere
+
+# Magnetic Field
+tesla = volt * second / meter2
+
+gauss = 1.e-4 * tesla
+
+kilogauss = kilo * gauss
+
+# Magnetic Flux
+weber = volt * second                          # weber = 1000*megavolt*ns
+
+# Inductance
+henry = weber / ampere
 
 # --------------------------------------------------------------------
 # Units derived from luminous intensity
@@ -198,4 +292,27 @@ kilovolt = kilo * volt
 lumen = candela * steradian
 
 # Illuminance, i.e. amount of luminous flux per unit area [I][L^-2]
-lux = lumen / meter2 
+lux = lumen / meter2
+
+# --------------------------------------------------------------------
+# Units for radiation
+# -------------------
+
+# Activity [T^-1]
+becquerel = 1. / second
+
+Bq = becquerel
+
+curie = 3.7e+10 * becquerel
+
+Ci = curie
+
+# Absorbed dose [L^2][T^-2]
+gray = joule / kilogram
+
+Gy = gray
+
+# Dose equivalent
+sievert = joule / kilogram
+
+Sv = sievert
