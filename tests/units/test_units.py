@@ -52,7 +52,7 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(1 * barn, 100 * fm2)
 
     def test_luminosity(self):
-        self.assertAlmostEqual( 1 * invfb, 1000 * invpb )
+        self.assertAlmostEqual( invpb/invfb, 1.e-3 )
 
     def test_volume(self):
         self.assertAlmostEqual((3 * mm)**3, 27 * mm3)
