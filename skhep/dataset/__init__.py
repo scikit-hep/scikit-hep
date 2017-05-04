@@ -1,8 +1,6 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
-******************************************
-Subpackage for the description of datasets
-******************************************
+Subpackage for the description of datasets.
 """
 
 #-----------------------------------------------------------------------------

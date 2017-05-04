@@ -4,6 +4,7 @@ Vector classes
 ==============
 
 Two vector classes are available:
+
 * Vector3D     : a 3-dimensional vector
 * LorentzVector: a Lorentz vector
 """

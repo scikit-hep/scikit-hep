@@ -1,13 +1,17 @@
 #!/usr/bin/env python
 # Licensed under a 3-clause BSD style license, see LICENSE.
+"""
+Tests for the skhep.simulation.pdgid module.
+"""
+
 
 #-----------------------------------------------------------------------------
 # Import statements
 #-----------------------------------------------------------------------------
 import unittest
 
-from skhep.simulation import *
-from skhep.utils.py23 import *
+from skhep.simulation.pdgid import *
+from skhep.utils.py23       import *
 
 #-----------------------------------------------------------------------------
 # Actual tests
@@ -45,7 +49,7 @@ class Test(unittest.TestCase):
         # Invalid ID
         self.id_invalid1 = 0        # illegal ID
         self.id_invalid2 = 99999999 # general form is a 7-digit number
-    
+
     def runTest(self):
         # Required for Python 2.6 only
         self.test_charge_functions()
@@ -53,7 +57,7 @@ class Test(unittest.TestCase):
         self.test_is_functions()
         self.test_has_functions()
         self.test_ion_functions()
-    
+
     def test_charge_functions(self):
         self.assertEqual( charge(self.id_gluon    ),  0 )
         self.assertEqual( charge(self.id_photon   ),  0 )
@@ -65,7 +69,7 @@ class Test(unittest.TestCase):
         self.assertEqual( threeCharge(self.id_electron ), -3 )
         self.assertEqual( threeCharge(self.id_proton   ), +3 )
         self.assertEqual( threeCharge(self.id_Kplus    ), +3 )
-    
+
     def test_spin_functions(self):
         self.assertEqual( jSpin(self.id_gluon    ), 3 )
         self.assertEqual( jSpin(self.id_photon   ), 3 )
@@ -85,7 +89,7 @@ class Test(unittest.TestCase):
         #self.assertEqual( lSpin(self.id_proton   ), None )
         self.assertEqual( lSpin(self.id_piminus  ), 0    )
         self.assertEqual( lSpin(self.id_Kplus    ), 0    )
-    
+
     def test_is_functions(self):
         self.assertEqual( isValid(self.id_gluon    ), True  )
         self.assertEqual( isValid(self.id_photon   ), True  )
@@ -94,7 +98,7 @@ class Test(unittest.TestCase):
         self.assertEqual( isValid(self.id_piminus  ), True  )
         self.assertEqual( isValid(self.id_invalid1 ), None  )
         self.assertEqual( isValid(self.id_invalid2 ), False )
-        #        
+        #
         self.assertEqual( isHadron(self.id_proton  ), isBaryon(self.id_proton  ) )
         self.assertEqual( isHadron(self.id_electron), isBaryon(self.id_electron) )
         #
@@ -147,7 +151,7 @@ class Test(unittest.TestCase):
         self.assertEqual( isPentaquark(self.id_piminus  ), False )
         # Other functions to test:
         # isQBall, isRhadron, isSUSY
-    
+
     def test_has_functions(self):
         #self.assertEqual( hasFundamentalAnti(self.id_photon  ), False )
         self.assertEqual( hasFundamentalAnti(self.id_electron), True  )
@@ -188,7 +192,7 @@ class Test(unittest.TestCase):
         self.assertEqual( hasTop(self.id_proton   ), False )
         self.assertEqual( hasTop(self.id_piminus  ), False )
         self.assertEqual( hasTop(self.id_Kplus    ), False )
-    
+
     def test_ion_functions(self):
         self.assertEqual( ionZ(self.id_electron ), None )
         self.assertEqual( ionZ(self.id_proton   ), 1    )

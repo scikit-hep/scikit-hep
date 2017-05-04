@@ -51,13 +51,11 @@ def Kallen_function( x, y, z ):
 def lifetime_to_width( tau ):
     """Convert from a particle lifetime to a decay width.
 
-    Parameters
-    ----------
+    :Parameters:
     tau : float > 0
         Particle lifetime, typically in picoseconds (any HEP time unit is OK).
 
-    Returns
-    -------
+    :Returns:
     Particle decay width, in the HEP standard energy unit MeV.
     """
     if not tau:
@@ -70,13 +68,11 @@ def lifetime_to_width( tau ):
 def width_to_lifetime( Gamma ):
     """Convert from a particle decay width to a lifetime.
 
-    Parameters
-    ----------
+    :Parameters:
     Gamma : float > 0
         Particle decay width, typically in MeV (any HEP energy unit is OK).
 
-    Returns
-    -------
+    :Returns:
     Particle lifetime, in the HEP standard time unit ns.
     """
     if not Gamma:

@@ -13,3 +13,4 @@ API
    math.rst
    simulation.rst
    units.rst
+   utils.rst

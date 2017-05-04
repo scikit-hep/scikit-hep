@@ -1,8 +1,11 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
-******************************
-Module for Dataset definitions
-******************************
+**************************************
+Module for Dataset-related definitions
+**************************************
+
+The module contains the definition of the ``Dataset`` abstract base class
+and a series of mixin classes.
 """
 
 #-----------------------------------------------------------------------------
@@ -19,6 +22,9 @@ from ..utils.py23 import *
 #-----------------------------------------------------------------------------
 
 class Dataset(object):
+    """
+    Abstract base class for all dataset classes.
+    """
     def __init__(self):
         raise TypeError("Dataset is an abstract base class; instantiate one of its subclasses insteadone of its subclasses instead.")
 
@@ -28,19 +34,19 @@ class Dataset(object):
 
         Use this to pass the data to an external library (without provenance).
         """
-        return self._data
+        return self.__data
 
     @property
     def provenance(self):
         """The series of transformations that produced this dataset as a tuple."""
-        return self._provenance
+        return self.__provenance
 
     @property
     def datashape(self):
         """Every Dataset has a datashape, which describes its data types in a unified way."""
         # There is a standard for this:
         #     http://libndtypes.readthedocs.io/en/latest/datashape.html
-        # 
+        #
         # We should use it! That's why I deleted typesystem.py.
         raise NotImplementedError
 
@@ -143,7 +149,7 @@ class ToFiles(FromPersistent):
     def toFiles(self, base, **options):
         """Save this Dataset to a file or collection of files."""
         raise NotImplementedError
-        
+
 class AsNumpy(ConvertibleInPlace):
     def asNumpy(self, **options):
         """View this Dataset as a NumpyDataset, sharing their underlying data.

@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
-Tests for the constants.constants module.
+Tests for the skhep.constants.constants module.
 """
+
 
 #-----------------------------------------------------------------------------
 # Import statements

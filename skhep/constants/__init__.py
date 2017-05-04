@@ -1,6 +1,6 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
-This package `skhep.constants` contains 2 sorts of constants:
+This module `skhep.constants` contains 2 sorts of constants:
 
   * Physical constants.
   * Common and/or handy constants.

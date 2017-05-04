@@ -3,6 +3,15 @@
 **********************
 Module for ROOTDataset
 **********************
+
+The ``ROOTDataset`` class is the implementation of the ``Dataset`` abstract base class
+for the [ROOT]_ package.
+
+Note: usage of course requires that ROOT is installed.
+
+**References**
+
+.. [ROOT] https://root.cern.ch/.
 """
 
 #-----------------------------------------------------------------------------
@@ -37,7 +46,7 @@ class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
 
         if provenance is None:
             provenance = FileOrigin(fileName)
-        self._provenance = provenance
+        self.__provenance = provenance
 
     @inheritdoc(Dataset)
     def datashape(self):
@@ -48,7 +57,7 @@ class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
 
     @inheritdoc(Dataset)
     def persistent(self): return True   # a ROOT feature that is different from Numpy
-    
+
     @staticmethod
     def fromFiles(files, **options):
         return ROOTDataset(files)
@@ -65,7 +74,7 @@ class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
         out = root_numpy.root2array()
 
         from .rootdataset import ROOTDataset
-        return NumpyDataset(out, self.provenance + (Formatting("NumpyDataset"),))
+        return NumpyDataset(out, self.__provenance + (Formatting("NumpyDataset"),))
 
     def __getitem__(self, name):
         raise NotImplementedError    # TODO!
