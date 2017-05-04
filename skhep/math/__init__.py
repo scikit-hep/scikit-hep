@@ -12,3 +12,4 @@ Subpackage for mathematical functions and utilities
 from __future__ import absolute_import
 
 from .kinematics import *
+from .vectors    import *
