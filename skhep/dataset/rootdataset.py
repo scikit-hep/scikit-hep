@@ -42,7 +42,7 @@ class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
         provenance: history of the data before being wrapped as a ROOTDataset
         """
 
-        self._data = None
+        self.__data = None
 
         if provenance is None:
             provenance = FileOrigin(fileName)

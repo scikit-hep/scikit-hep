@@ -120,7 +120,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         if self.isrecarray(self.data):
             data = dict((name, self.data[name]) for name in self.data.dtype.names)
         else:
-            data = self.__data
+            data = self.data
 
         numpy.savez(NumpyDataset._openSingleFile(base), **data)
 
@@ -131,12 +131,12 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         options: none    # but consider file update vs recreate, etc.
         """
 
-        if self.isrecarray(self.__data):
-            data = self.__data
-        elif self.isdictof1d(self.__data):
-            data = numpy.empty(head(self.__data.values()).shape, dtype=[(name, self.__data[name].dtype) for name in self.__data])
-            for name in self.__data:
-                data[name] = self.__data[name]
+        if self.isrecarray(self.data):
+            data = self.data
+        elif self.isdictof1d(self.data):
+            data = numpy.empty(head(self.__data.values()).shape, dtype=[(name, self.data[name].dtype) for name in self.data])
+            for name in self.data:
+                data[name] = self.data[name]
         else:
             assert False, "data must be a Numpy record array or a Python dictionary of 1d Numpy arrays."
 
@@ -146,7 +146,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         return ROOTDataset(fileName, self.__provenance + (Formatting("ROOTDataset", fileName),))
 
     def __getitem__(self, name):
-        return self.__data[name]
+        return self.data[name]
 
 #-----------------------------------------------------------------------------
 # Add Numpy methods to NumpyDataset in bulk.
@@ -154,7 +154,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
 
 def addNumpyMethod(method):
     def fn(self, name, *args, **kwds):
-        return method.__call__(self.__data, *args, **kwds)
+        return method.__call__(self.data, *args, **kwds)
 
     fn.__name__ = method.__name__
     fn.__doc__ = method.__doc__
