@@ -1,7 +1,7 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
-Subpackage for PDG ID methods
-=============================
+Module for PDG ID methods
+=========================
 
 Scikit-HEP simply wraps the functionality provided by the [PyPDT]_ package
 to access in Python what is otherwise provided by the HepPID package in C++.

@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # Licensed under a 3-clause BSD style license, see LICENSE.
+"""
+Tests for the skhep.units.units module.
+"""
+
 
 #-----------------------------------------------------------------------------
 # Import statements

@@ -3,6 +3,15 @@
 ***********************
 Module for NumpyDataset
 ***********************
+
+The ``NumpyDataset`` class is the implementation of the ``Dataset`` abstract base class
+for the [NumPy]_ package.
+
+Note: usage of course requires that NumPy is installed.
+
+**References**
+
+.. [NumPy] http://www.numpy.org/.
 """
 
 #-----------------------------------------------------------------------------
@@ -43,11 +52,11 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         """
 
         assert self.isrecarray(data) or self.isdictof1d(data)
-        self._data = data
+        self.__data = data
 
         if provenance is None:
             provenance = ObjectOrigin(repr(data))
-        self._provenance = provenance
+        self.__provenance = provenance
 
     @inheritdoc(Dataset)
     def datashape(self):
@@ -58,7 +67,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
 
     @inheritdoc(Dataset)
     def persistent(self): return False
-    
+
     @staticmethod
     def fromFiles(files, **options):
         """Load a Dataset from a file or collection of files.
@@ -125,7 +134,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         if self.isrecarray(self.data):
             data = self.data
         elif self.isdictof1d(self.data):
-            data = numpy.empty(head(self.data.values()).shape, dtype=[(name, self.data[name].dtype) for name in self.data])
+            data = numpy.empty(head(self.__data.values()).shape, dtype=[(name, self.data[name].dtype) for name in self.data])
             for name in self.data:
                 data[name] = self.data[name]
         else:
@@ -134,7 +143,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         root_numpy.array2root(data, fileName, mode="recreate")
 
         from .rootdataset import ROOTDataset
-        return ROOTDataset(fileName, self.provenance + (Formatting("ROOTDataset", fileName),))
+        return ROOTDataset(fileName, self.__provenance + (Formatting("ROOTDataset", fileName),))
 
     def __getitem__(self, name):
         return self.data[name]

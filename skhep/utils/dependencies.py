@@ -1,10 +1,14 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
+"""
+Submodule for helpers to deal with dependencies
+===============================================
+"""
 
 # Two ideas:
-# 
+#
 # Strict softimport tries to load at startup (like a normal Python import)
 # but hides the fact that it failed until the user tries to use it.
-# 
+#
 # Lazy softimport doesn't even try to load until the user tries to use it.
 #
 # Both have the same semantics: the user only needs to have installed the
@@ -52,8 +56,9 @@ class LazyModule(object):
         return getattr(self.module, attr)
 
 def softimport(modulename, lazy=True):
-    # The function that one calls to import a module softly.
-    # 
+    """
+    The function that one calls to import a module softly.
+    """
     # Once we vote on "always strict" or "always lazy," we should _take out_
     # the other functionality so that it isn't even an option.
 
