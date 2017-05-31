@@ -41,3 +41,11 @@ Simulation
 .. |Miscellaneous_open| image:: images/Miscellaneous-open-orange.png
 .. |Simulation_ongoing| image:: images/Simulation-ongoing-yellowgreen.png
 .. |Visualization_open| image:: images/Visualization-open-orange.png
+
+
+Analysis Development
+--------------------
+
+* Give users as soon as possible an idea, on how the project will constribute to their analysis, 
+  e.g. by giving a small example analysis using the projects toolchain.
+* Think about including "framework" tools for an analysis, e.g. workflow managers (for example luigi).
