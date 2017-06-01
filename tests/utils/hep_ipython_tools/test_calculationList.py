@@ -1,6 +1,6 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 from unittest import TestCase
-from skhep.utils.hep_ipython_tools.calculation_list import create_every_parameter_combination, create_all_calculations
+from skhep.utils.ipythontools.calculation_list import create_every_parameter_combination, create_all_calculations
 
 
 class TestCalculationList(TestCase):

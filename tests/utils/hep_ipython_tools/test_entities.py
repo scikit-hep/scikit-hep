@@ -1,7 +1,7 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 from unittest import TestCase
 
-from skhep.utils.hep_ipython_tools.entities import StoreContent, StoreContentList, StatisticsColumn, Statistics
+from skhep.utils.ipythontools.entities import StoreContent, StoreContentList, StatisticsColumn, Statistics
 
 
 class TestStoreContent(TestCase):

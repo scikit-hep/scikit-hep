@@ -7,13 +7,13 @@ except ImportError:
 
 import datetime
 
-from skhep.utils.hep_ipython_tools.information import EnvironmentInformation
+from skhep.utils.ipythontools.information import EnvironmentInformation
 
 
 class TestEnvironmentInformation(TestCase):
 
     def setUp(self):
-        self.patch = patch("skhep.utils.hep_ipython_tools.information.datetime")
+        self.patch = patch("skhep.utils.ipythontools.information.datetime")
         datetime_patch = self.patch.start()
 
         datetime_patch.now = MagicMock(return_value=datetime.datetime(1999, 11, 12))

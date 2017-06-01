@@ -1,8 +1,8 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 from unittest import TestCase
-from skhep.utils.hep_ipython_tools.calculation import Calculation
-from skhep.utils.hep_ipython_tools.calculation_process import CalculationProcess
-from skhep.utils.hep_ipython_tools.calculation_queue import CalculationQueue
+from skhep.utils.ipythontools.calculation import Calculation
+from skhep.utils.ipythontools.calculation_process import CalculationProcess
+from skhep.utils.ipythontools.calculation_queue import CalculationQueue
 
 
 class TestCalculation(TestCase):

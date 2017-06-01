@@ -3,8 +3,8 @@ import os
 from time import sleep
 from unittest import TestCase
 
-from skhep.utils.hep_ipython_tools.calculation_process import CalculationProcess
-from skhep.utils.hep_ipython_tools.calculation_queue import CalculationQueue
+from skhep.utils.ipythontools.calculation_process import CalculationProcess
+from skhep.utils.ipythontools.calculation_queue import CalculationQueue
 from tempfile import NamedTemporaryFile
 
 

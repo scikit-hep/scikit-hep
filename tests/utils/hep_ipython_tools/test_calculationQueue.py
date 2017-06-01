@@ -1,8 +1,8 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 from unittest import TestCase
 
-from skhep.utils.hep_ipython_tools.calculation_queue import CalculationQueue, CalculationQueueItem
-from skhep.utils.hep_ipython_tools.tests.fixtures import MockQueue
+from skhep.utils.ipythontools.calculation_queue import CalculationQueue, CalculationQueueItem
+from skhep.utils.ipythontools.tests.fixtures import MockQueue
 
 
 class A:

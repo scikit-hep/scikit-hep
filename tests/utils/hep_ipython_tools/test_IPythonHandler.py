@@ -2,12 +2,12 @@
 import os
 from unittest import TestCase
 
-from skhep.utils.hep_ipython_tools.calculation_process import CalculationProcess
-from skhep.utils.hep_ipython_tools.calculation import Calculation
-from skhep.utils.hep_ipython_tools.calculation_queue import CalculationQueue
-from skhep.utils.hep_ipython_tools.information import EnvironmentInformation
-from skhep.utils.hep_ipython_tools.ipython_handler import IPythonHandler
-from skhep.utils.hep_ipython_tools.tests.fixtures import MockQueue
+from skhep.utils.ipythontools.calculation_process import CalculationProcess
+from skhep.utils.ipythontools.calculation import Calculation
+from skhep.utils.ipythontools.calculation_queue import CalculationQueue
+from skhep.utils.ipythontools.information import EnvironmentInformation
+from skhep.utils.ipythontools.ipython_handler import IPythonHandler
+from skhep.utils.ipythontools.tests.fixtures import MockQueue
 
 
 class DeriviedCalculationProcess(CalculationProcess):
