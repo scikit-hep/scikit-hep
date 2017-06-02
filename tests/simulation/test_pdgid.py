@@ -9,6 +9,7 @@ Tests for the skhep.simulation.pdgid module.
 # Import statements
 #-----------------------------------------------------------------------------
 import unittest
+import pypdt
 
 from skhep.simulation.pdgid import *
 from skhep.utils.py23       import *
@@ -20,32 +21,49 @@ class Test(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         unittest.TestCase.__init__(self, *args, **kwargs)
         # Set of PDG IDs used for tests
-        # FIXME: even better if IDs taken directly by name from the Particle Data Table
+ 
+        table = pypdt.ParticleDataTable()
+        pdt = {}
+
+        # Creates a dictionary mapping particle names to IDs within the range
+        # used for the test
+
+        for i in range(-4444, 1000022):
+            if table[i] != None:
+                pdt[table[i].name] = i
+
         # Bosons
-        self.id_gluon  =  21
-        self.id_photon =  22
-        self.id_Wminus = -24
+        self.id_gluon  = pdt['g']
+        self.id_photon = pdt['gamma']
+        self.id_Wminus = pdt['W^-']
+
         # Leptons
-        self.id_nue      = 12
-        self.id_electron = 11
+        self.id_nue      = pdt['nu_e']
+        self.id_electron = pdt['e^-']
+
         # Light hadrons
-        self.id_proton     = 2212
-        self.id_piminus    = -211
-        self.id_Kplus      =  321
-        self.id_Lambda     = 3122
-        self.id_Omegaminus = 3334
+        self.id_proton     = pdt['p^+']
+        self.id_piminus    = pdt['pi^-']
+        self.id_Kplus      =  pdt['K^+']
+        self.id_Lambda     = pdt['Lambda^0']
+        self.id_Omegaminus = pdt['Omega^-']
+
         # Charm hadrons
-        self.id_Lcplus       = 4122
-        self.id_AntiOmegaccc = -4444
+        self.id_Lcplus       = pdt['Lambda_c^+']
+        self.id_AntiOmegaccc = pdt['Omega*_ccc~^--']
+
         # Beauty hadrons
-        self.id_B0      =  511
-        self.id_Bcminus = -541
-        self.id_Lb      = 5122
+        self.id_B0      =  pdt['B^0']
+        self.id_Bcminus =  pdt['B_c^-']
+        self.id_Lb      =  pdt['Lambda_b^0']
+
         # Di-quarks
-        self.id_dd1 = 1103
-        self.id_sd0 = 3101
+        self.id_dd1 = pdt['dd_1']
+        self.id_sd0 = pdt['sd_0']
+
         # Exotics
-        self.id_gluino = 1000021
+        self.id_gluino = pdt['gluino']
+
         # Invalid ID
         self.id_invalid1 = 0        # illegal ID
         self.id_invalid2 = 99999999 # general form is a 7-digit number
