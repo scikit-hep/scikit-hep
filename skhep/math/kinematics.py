@@ -4,16 +4,16 @@ Mathematical functions relevant to kinematics
 =============================================
 """
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Import statements
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from ..units     import MeV, ns
+from ..units import MeV, ns
 from ..constants import hbar
 
 
-def Kallen_function( x, y, z ):
+def Kallen_function(x, y, z):
     """
     The Kallen function, aka triangle or lambda function,
     named after physicist Anders Olof Gunnar Kallen [Kallen]_.
@@ -45,10 +45,10 @@ def Kallen_function( x, y, z ):
 
     .. [Kallen] https://en.wikipedia.org/wiki/K%C3%A4ll%C3%A9n_function
     """
-    return ( (x-y-z)**2 - 4*y*z )   # faster to evaluate condensed form used
+    return (x - y - z) ** 2 - 4 * y * z  # faster to evaluate condensed form used
 
 
-def lifetime_to_width( tau ):
+def lifetime_to_width(tau):
     """Convert from a particle lifetime to a decay width.
 
     :Parameters:
@@ -61,23 +61,24 @@ def lifetime_to_width( tau ):
     if not tau:
         return None
     if tau < 0.:
-        raise ValueError( 'Input provided, %s, < 0!'.format(tau) )
+        raise ValueError('Input provided, %s, < 0!'.format(tau))
     # Just need to first make sure that the lifetime is in the standard unit ns
-    return ( hbar / float(tau/ns) )
+    return hbar / float(tau / ns)
 
-def width_to_lifetime( Gamma ):
+
+def width_to_lifetime(gamma):
     """Convert from a particle decay width to a lifetime.
 
     :Parameters:
-    Gamma : float > 0
+    gamma : float > 0
         Particle decay width, typically in MeV (any HEP energy unit is OK).
 
     :Returns:
     Particle lifetime, in the HEP standard time unit ns.
     """
-    if not Gamma:
+    if not gamma:
         return None
-    if Gamma < 0.:
-        raise ValueError( 'Input provided, %s, < 0!'.format(Gamma) )
+    if gamma < 0.:
+        raise ValueError('Input provided, %s, < 0!'.format(gamma))
     # Just need to first make sure that the width is in the standard unit MeV
-    return ( hbar / float(Gamma/MeV) )
+    return hbar / float(gamma / MeV)
