@@ -62,7 +62,7 @@ class Vector3D(object):
     @classmethod
     def fromvector(cls, other):
         """Copy constructor."""
-        return cls(other.x(), other.y(),other.z())
+        return cls(other.x, other.y, other.z)
 
     @classmethod
     def fromsphericalcoords(cls, r, theta, phi):
@@ -104,22 +104,42 @@ class Vector3D(object):
                 raise ValueError( 'Component #{0} is not a number!'.format(i) )
         return cls(values[0], values[1], values[2])
 
+    @property
     def x(self):
         """Return the x, aka first coordinate at position 0."""
         return self.__values[0]
 
+    @x.setter
+    def x(self, value):
+        """Sets x, aka first coordinate at position 0."""
+        self.__values[0] = value
+
+    @property
     def y(self):
-        """Return the x, aka second coordinate at position 1."""
+        """Return the y, aka first coordinate at position 1."""
         return self.__values[1]
 
+    @y.setter
+    def y(self, value):
+        """Sets y, aka first coordinate at position 1."""
+        self.__values[1] = value
+
+    @property
     def z(self):
-        """Return the x, aka third coordinate at position 2."""
+        """Return the z, aka first coordinate at position 2."""
         return self.__values[2]
 
+    @z.setter
+    def z(self, value):
+        """Sets z, aka first coordinate at position 2."""
+        self.__values[2] = value
+
+    @property
     def rho(self):
         """Return the cylindrical coordinate rho."""
-        return sqrt(self.x()**2 + self.y()**2)
+        return sqrt(self.x**2 + self.y**2)
 
+    @property
     def theta(self, deg=False):
         """Return the spherical coordinate theta.
 
@@ -128,31 +148,20 @@ class Vector3D(object):
         """
         raise NotImplementedError
 
+    @property
     def phi(self, deg=False):
         """Return the spherical or cylindrical coordinate phi.
 
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        if self.x() == 0 and self.y() == 0: return 0.
-        phi = atan2( self.y(), self.x() )
+        if self.x == 0 and self.y == 0: return 0.
+        phi = atan2( self.y, self.x )
         return phi if not deg else degrees(phi)
 
     def set(self, x, y, z):
         """Update the vector components all at once."""
         self.__values = [x, y, z]
-
-    def setx(self, x):
-        """Update/set the x component."""
-        self.__values[0] = x
-
-    def sety(self, y):
-        """Update/set the y component."""
-        self.__values[1] = y
-
-    def setz(self, z):
-        """Update/set the z component."""
-        self.__values[2] = z
 
     def __setitem__(self, i, value):
         """Update/set the ith vector component (commencing at 0, of course)."""
@@ -176,17 +185,19 @@ class Vector3D(object):
         """Length of the vector, i.e. the number of elements = 3."""
         return len( self.__values )
 
+    @property
     def mag(self):
         """Magnitude, a.k.a. norm, of the vector."""
-        return sqrt(self.mag2())
+        return sqrt(self.mag2)
 
+    @property
     def mag2(self):
         """Square of the magnitude, a.k.a. norm, of the vector."""
         return sum( v**2 for v in self.__values )
 
     def unit(self):
         "Return the normalized vector, i.e. the unit vector along the direction of itself."
-        mag = self.mag()
+        mag = self.mag
         if mag > 0.:
             return Vector3D.fromiterable( [v/mag for v in self.__values] )
         else:
@@ -252,7 +263,7 @@ class Vector3D(object):
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        prod_mag2 = self.mag2()*other.mag2()
+        prod_mag2 = self.mag2*other.mag2
         if prod_mag2 <= 0.:
             return 0.
         else:
@@ -276,7 +287,7 @@ class Vector3D(object):
     def isopposite(self, other):
         """Two vectors are opposite if they have the same magnitude but opposite direction."""
         added = self + other
-        return ( added.x() == 0 and added.y() == 0 and added.z() == 0 )
+        return ( added.x == 0 and added.y == 0 and added.z == 0 )
 
     def isperpendicular(self,other):
         """Check if another vector is perpendicular."""
