@@ -59,9 +59,9 @@ Typical use cases::
 .. [SI] http://www.physics.nist.gov/cuu/Units/index.html.
 """
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Import statements
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
 from math import pi
@@ -71,27 +71,27 @@ from .prefixes import *
 # --------------------------------------------------------------------
 # Units of length
 # ---------------
-millimeter  = 1.
+millimeter = 1.
 millimeter2 = millimeter * millimeter
 millimeter3 = millimeter * millimeter * millimeter
 
-mm  = millimeter
+mm = millimeter
 mm2 = millimeter2
 mm3 = millimeter3
 
-meter  = kilo * millimeter
+meter = kilo * millimeter
 meter2 = meter * meter
 meter3 = meter * meter * meter
 
-m  = meter
+m = meter
 m2 = meter2
 m3 = meter3
 
-centimeter  = centi * meter
+centimeter = centi * meter
 centimeter2 = centimeter * centimeter
 centimeter3 = centimeter * centimeter * centimeter
 
-cm  = centimeter
+cm = centimeter
 cm2 = centimeter2
 cm3 = centimeter3
 
@@ -99,19 +99,19 @@ kilometer = kilo * meter
 kilometer2 = kilometer * kilometer
 kilometer3 = kilometer * kilometer * kilometer
 
-km  = kilometer
+km = kilometer
 km2 = kilometer2
 km3 = kilometer3
 
 micrometer = micro * meter
-micron     = micrometer
-nanometer  = nano  * meter
-angstrom   = 1e-10 * meter
+micron = micrometer
+nanometer = nano * meter
+angstrom = 1e-10 * meter
 
 femtometer = femto * meter
-fermi      = femtometer
+fermi = femtometer
 
-fm  = femtometer
+fm = femtometer
 fm2 = femtometer * femtometer
 fm3 = femtometer * femtometer * femtometer
 
@@ -119,10 +119,10 @@ barn = 1.e-28 * meter2
 
 millibarn = milli * barn
 microbarn = micro * barn
-nanobarn  = nano  * barn
-picobarn  = pico  * barn
+nanobarn = nano * barn
+picobarn = pico * barn
 femtobarn = femto * barn
-attobarn  = atto  * barn
+attobarn = atto * barn
 
 mb = millibarn
 nb = nanobarn
@@ -138,24 +138,24 @@ invab = 1. / attobarn
 
 # --------------------------------------------------------------------
 # Units of time
-# -------------
-nanosecond  = 1.
+# --------------------------------------------------------------------
+nanosecond = 1.
 
 ns = nanosecond
 
-second      = giga  * nanosecond
+second = giga * nanosecond
 millisecond = milli * second
 microsecond = micro * second
-picosecond  = pico  * second
+picosecond = pico * second
 femtosecond = femto * second
 
-s  = second
+s = second
 ms = millisecond
 ps = picosecond
 
 minute = 60 * second
-hour   = 60 * minute
-day    = 24 * hour
+hour = 60 * minute
+day = 24 * hour
 
 hertz = 1. / second
 
@@ -170,12 +170,12 @@ kHz = kilo * hertz
 
 # --------------------------------------------------------------------
 # Units of energy
-# ---------------
+# --------------------------------------------------------------------
 megaelectronvolt = 1.
 
-electronvolt     = micro * megaelectronvolt
+electronvolt = micro * megaelectronvolt
 
-exaelectronvolt  = exa  * electronvolt
+exaelectronvolt = exa * electronvolt
 petaelectronvolt = peta * electronvolt
 teraelectronvolt = tera * electronvolt
 gigaelectronvolt = giga * electronvolt
@@ -187,57 +187,57 @@ TeV = teraelectronvolt
 GeV = gigaelectronvolt
 MeV = megaelectronvolt
 keV = kiloelectronvolt
-eV  = electronvolt
+eV = electronvolt
 
 # --------------------------------------------------------------------
 # Units of electric charge
-# ------------------------
-eplus = 1.    # positron charge
+# --------------------------------------------------------------------
+eplus = 1.  # positron charge
 
 # --------------------------------------------------------------------
 # Units of temperature
-# --------------------
+# --------------------------------------------------------------------
 kelvin = 1.
 
 # --------------------------------------------------------------------
 # Units of amount of substance
-# ----------------------------
+# --------------------------------------------------------------------
 mole = 1.
 
 mol = mole
 
 # --------------------------------------------------------------------
 # Units of luminous intensity
-# ---------------------------
+# --------------------------------------------------------------------
 candela = 1.
 
 cd = candela
 
 # --------------------------------------------------------------------
 # Units of angles
-# ---------------
-radian    = 1.    # plane angle
-steradian = 1.    # solid angle
+# --------------------------------------------------------------------
+radian = 1.  # plane angle
+steradian = 1.  # solid angle
 
-rad  = radian
-sr   = steradian
+rad = radian
+sr = steradian
 
 milliradian = milli * radian
 mrad = milliradian
 
-degree = (pi/180.) * radian
+degree = (pi / 180.) * radian
 
 deg = degree
 
 # --------------------------------------------------------------------
 # Derived units
-# -------------
+# --------------------------------------------------------------------
 
 # Positron charge [Coulomb]
-e_SI = 1.6021766208e-19   # taken from CODATA
+e_SI = 1.6021766208e-19  # taken from CODATA
 
 # Electric charge [Q]
-# -------------------
+# --------------------------------------------------------------------
 coulomb = eplus / e_SI
 
 # Electric current [Q][T^-1]
@@ -246,13 +246,13 @@ ampere = coulomb / second
 
 milliampere = milli * ampere
 microampere = micro * ampere
-nanoampere  = nano  * ampere
+nanoampere = nano * ampere
 
 A = ampere
 
 # Energy [E]
 # ----------
-joule = electronvolt / e_SI   # joule = 6.24150 e+12 * MeV
+joule = electronvolt / e_SI  # joule = 6.24150 e+12 * MeV
 
 J = joule
 
@@ -279,19 +279,18 @@ bar = 1.e+5 * pascal
 
 atmosphere = 101325 * pascal
 
-
 # Mass [E][T^2][L^-2]
-kilogram  = joule*second*second / (meter*meter)
-gram      = milli * kilogram
+kilogram = joule * second * second / (meter * meter)
+gram = milli * kilogram
 milligram = milli * gram
 
 kg = kilogram
-g  = gram
+g = gram
 mg = milligram
 
 # Electric potential
 megavolt = megaelectronvolt / eplus
-volt     = micro * megavolt
+volt = micro * megavolt
 kilovolt = kilo * volt
 
 # Electric capacitance
@@ -299,8 +298,8 @@ farad = coulomb / volt
 
 millifarad = milli * farad
 microfarad = micro * farad
-nanofarad  = nano  * farad
-picofarad  = pico  * farad
+nanofarad = nano * farad
+picofarad = pico * farad
 
 # Electric resistance
 ohm = volt / ampere
@@ -313,14 +312,14 @@ gauss = 1.e-4 * tesla
 kilogauss = kilo * gauss
 
 # Magnetic Flux
-weber = volt * second                          # weber = 1000*megavolt*ns
+weber = volt * second  # weber = 1000*megavolt*ns
 
 # Inductance
 henry = weber / ampere
 
 # --------------------------------------------------------------------
 # Units derived from luminous intensity
-# -------------------------------------
+# --------------------------------------------------------------------
 
 # Luminous flux [I]
 lumen = candela * steradian
@@ -330,7 +329,7 @@ lux = lumen / meter2
 
 # --------------------------------------------------------------------
 # Units for radiation
-# -------------------
+# --------------------------------------------------------------------
 
 # Activity [T^-1]
 becquerel = 1. / second

@@ -27,22 +27,22 @@ Standard use case:
 
 """
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Import statements
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
 from pypdt.pid import *
 
 # Expose all functions imported from pypdt.pid
-__all__ = [ 'isValid',
-            'charge', 'threeCharge',
-            'jSpin', 'lSpin', 'sSpin',
-            'hasFundamentalAnti',
-            'hasDown', 'hasUp', 'hasStrange', 'hasCharm', 'hasBottom', 'hasTop',
-            'isLepton', 'isHadron', 'isBaryon', 'isMeson',
-            'isNucleus', 'isDiQuark', 'isDyon', 'isPentaquark', 'isQBall', 'isRhadron', 'isSUSY',
-            'ionA', 'ionNlambda', 'ionZ'
-            ]
+__all__ = ['isValid',
+           'charge', 'threeCharge',
+           'jSpin', 'lSpin', 'sSpin',
+           'hasFundamentalAnti',
+           'hasDown', 'hasUp', 'hasStrange', 'hasCharm', 'hasBottom', 'hasTop',
+           'isLepton', 'isHadron', 'isBaryon', 'isMeson',
+           'isNucleus', 'isDiQuark', 'isDyon', 'isPentaquark', 'isQBall', 'isRhadron', 'isSUSY',
+           'ionA', 'ionNlambda', 'ionZ'
+           ]
 
-__doc__ = __doc__.format( __all__ )
+__doc__ = __doc__.format(__all__)

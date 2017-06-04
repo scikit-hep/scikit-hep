@@ -9,17 +9,17 @@ Two vector classes are available:
 * LorentzVector: a Lorentz vector
 """
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Import statements
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 from __future__ import absolute_import, print_function
 
 from math import sqrt, atan2, cos, sin, acos, degrees
 
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Vector class in 3D
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 class Vector3D(object):
     """
     Vector class in 3 dimensions.
@@ -33,6 +33,7 @@ class Vector3D(object):
         fromcylindricalcoords(rho, phi, z)
         fromiterable(values)
     """
+
     def __init__(self, x=0., y=0., z=0.):
         """Default constructor.
 
@@ -45,7 +46,7 @@ class Vector3D(object):
         >>> v2
         <Vector3D (x=1,y=2,z=3)>
         """
-        self.__values = [x,y,z]
+        self.__values = [x, y, z]
 
     @classmethod
     def origin(cls):
@@ -55,14 +56,14 @@ class Vector3D(object):
         return cls(0., 0., 0.)
 
     @classmethod
-    def frompoint(cls,x, y, z):
+    def frompoint(cls, x, y, z):
         """Constructor from an explicit space point."""
         return cls(x, y, z)
 
     @classmethod
     def fromvector(cls, other):
         """Copy constructor."""
-        return cls(other.x(), other.y(),other.z())
+        return cls(other.x(), other.y(), other.z())
 
     @classmethod
     def fromsphericalcoords(cls, r, theta, phi):
@@ -96,12 +97,13 @@ class Vector3D(object):
         Suitable means here that all entries are numbers
         and the length equals 3.
         """
-        if not len(values)==3:
-            print( 'Input iterable length = {0}! Please check your inputs.'.format(len(values)) )
+        if not len(values) == 3:
+            print('Input iterable length = {0}! Please check your inputs.'.format(
+                len(values)))
             return None
         for i, v in enumerate(values):
-            if not isinstance( v, (int,float) ):
-                print( 'Component #{0} is not a number!'.format(i) )
+            if not isinstance(v, (int, float)):
+                print('Component #{0} is not a number!'.format(i))
                 return None
         return cls(values[0], values[1], values[2])
 
@@ -119,7 +121,7 @@ class Vector3D(object):
 
     def rho(self):
         """Return the cylindrical coordinate rho."""
-        return sqrt(self.x()**2 + self.y()**2)
+        return sqrt(self.x() ** 2 + self.y() ** 2)
 
     def theta(self, deg=False):
         """Return the spherical coordinate theta.
@@ -135,8 +137,9 @@ class Vector3D(object):
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        if self.x() == 0 and self.y() == 0: return 0.
-        phi = atan2( self.y(), self.x() )
+        if self.x() == 0 and self.y() == 0:
+            return 0.
+        phi = atan2(self.y(), self.x())
         return phi if not deg else degrees(phi)
 
     def set(self, x, y, z):
@@ -160,14 +163,15 @@ class Vector3D(object):
         try:
             self.__values[i] = value
         except IndexError:
-            raise IndexError( 'Vector3D is of length {0} only!'.format( len(self) ) )
+            raise IndexError(
+                'Vector3D is of length {0} only!'.format(len(self)))
 
     def __getitem__(self, i):
         """Get the ith vector component (commencing at 0, of course)."""
         try:
             return self.__values[i]
         except IndexError:
-            print( 'Vector3D is of length {0} only!'.format(len(self)) )
+            print('Vector3D is of length {0} only!'.format(len(self)))
             return None
 
     def tolist(self):
@@ -176,7 +180,7 @@ class Vector3D(object):
 
     def __len__(self):
         """Length of the vector, i.e. the number of elements = 3."""
-        return len( self.__values )
+        return len(self.__values)
 
     def mag(self):
         """Magnitude, a.k.a. norm, of the vector."""
@@ -184,13 +188,13 @@ class Vector3D(object):
 
     def mag2(self):
         """Square of the magnitude, a.k.a. norm, of the vector."""
-        return sum( v**2 for v in self.__values )
+        return sum(v ** 2 for v in self.__values)
 
     def unit(self):
-        "Return the normalized vector, i.e. the unit vector along the direction of itself."
+        """Return the normalized vector, i.e. the unit vector along the direction of itself."""
         mag = self.mag()
         if mag > 0.:
-            return Vector3D.fromiterable( [v/mag for v in self.__values] )
+            return Vector3D.fromiterable([v / mag for v in self.__values])
         else:
             return self
 
@@ -200,11 +204,11 @@ class Vector3D(object):
 
     def __add__(self, other):
         """Addition with another vector, i.e. self+other."""
-        return Vector3D.fromiterable( [v1+v2 for v1,v2 in zip(self.__values, other.__values)] )
+        return Vector3D.fromiterable([v1 + v2 for v1, v2 in zip(self.__values, other.__values)])
 
     def __sub__(self, other):
         """Subtraction with another vector, i.e. self-other."""
-        return Vector3D.fromiterable( [v1-v2 for v1,v2 in zip(self.__values, other.__values)] )
+        return Vector3D.fromiterable([v1 - v2 for v1, v2 in zip(self.__values, other.__values)])
 
     def __mul__(self, other):
         """Multiplication of the vector by either another vector or a number.
@@ -214,9 +218,9 @@ class Vector3D(object):
         >>> v2 = v1 * 2
         >>> number = v1 * v3
         """
-        if isinstance( other, (int,float) ):
-            return Vector3D.fromiterable( [v*other for v in self.__values] )
-        elif isinstance( other, Vector3D ) :
+        if isinstance(other, (int, float)):
+            return Vector3D.fromiterable([v * other for v in self.__values])
+        elif isinstance(other, Vector3D):
             return self.dot(other)
         else:
             print('Input object not a vector nor a number! Cannot multiply.')
@@ -228,12 +232,12 @@ class Vector3D(object):
 
     def __div__(self, number):
         """Division of the vector by a number."""
-        if not isinstance( number, (int,float) ):
+        if not isinstance(number, (int, float)):
             print('Argument is not a number!')
             return None
         if number == 0.:
             raise ZeroDivisionError
-        return Vector3D.fromiterable( [ v/number for v in self.__values ] )
+        return Vector3D.fromiterable([v / number for v in self.__values])
 
     def __iter__(self):
         """Iterator implementation for the vector components."""
@@ -241,14 +245,14 @@ class Vector3D(object):
 
     def dot(self, other):
         """Dot product with another vector."""
-        return sum( v1*v2 for v1,v2 in zip(self.__values, other.__values) )
+        return sum(v1 * v2 for v1, v2 in zip(self.__values, other.__values))
 
     def cross(self, v1, v2):
         """Cross product with another vector."""
-        return Vector3D( v1[1] * v2[2] - v1[2] * v2[1],
-                         v1[2] * v2[0] - v1[0] * v2[2],
-                         v1[0] * v2[1] - v1[1] * v2[0]
-                         )
+        return Vector3D(v1[1] * v2[2] - v1[2] * v2[1],
+                        v1[2] * v2[0] - v1[0] * v2[2],
+                        v1[0] * v2[1] - v1[1] * v2[0]
+                        )
 
     def angle(self, other, deg=False):
         """Angle with respect to another vector.
@@ -256,35 +260,37 @@ class Vector3D(object):
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        prod_mag2 = self.mag2()*other.mag2()
+        prod_mag2 = self.mag2() * other.mag2()
         if prod_mag2 <= 0.:
             return 0.
         else:
-            arg = self.dot(other)/sqrt(prod_mag2)
-            if arg >  1.: arg =  1.
-            if arg < -1.: arg = -1.
-            return acos(arg) if not deg else degrees( acos(arg) )
+            arg = self.dot(other) / sqrt(prod_mag2)
+            if arg > 1.:
+                arg = 1.
+            if arg < -1.:
+                arg = -1.
+            return acos(arg) if not deg else degrees(acos(arg))
 
-    def isparallel(self,other):
+    def isparallel(self, other):
         """Check if another vector is parallel.
         Two vectors are parallel if they have the same direction but not necessarily the same magnitude.
         """
-        return ( cos(self.angle(other)) == 1. )
+        return cos(self.angle(other)) == 1.
 
-    def isantiparallel(self,other):
+    def isantiparallel(self, other):
         """Check if another vector is antiparallel.
         Two vectors are antiparallel if they have opposite direction but not necessarily the same magnitude.
         """
-        return ( cos(self.angle(other)) == -1. )
+        return cos(self.angle(other)) == -1.
 
     def isopposite(self, other):
         """Two vectors are opposite if they have the same magnitude but opposite direction."""
         added = self + other
-        return ( added.x() == 0 and added.y() == 0 and added.z() == 0 )
+        return added.x() == 0 and added.y() == 0 and added.z() == 0
 
-    def isperpendicular(self,other):
+    def isperpendicular(self, other):
         """Check if another vector is perpendicular."""
-        return ( self.dot(other) == 0. )
+        return self.dot(other) == 0.
 
     def __repr__(self):
         """Class representation."""
@@ -292,4 +298,4 @@ class Vector3D(object):
 
     def __str__(self):
         """Simple class representation."""
-        return str( tuple(self.__values) )
+        return str(tuple(self.__values))
