@@ -12,7 +12,7 @@ Two vector classes are available:
 #-----------------------------------------------------------------------------
 # Import statements
 #-----------------------------------------------------------------------------
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import
 
 from math import sqrt, atan2, cos, sin, acos, degrees
 
@@ -98,12 +98,10 @@ class Vector3D(object):
         """
         values = list(values)
         if not len(values)==3:
-            print( 'Input iterable length = {0}! Please check your inputs.'.format(len(values)) )
-            return None
+            raise ValueError( 'Input iterable length = {0}! Please check your inputs.'.format(len(values)) )
         for i, v in enumerate(values):
             if not isinstance( v, (int,float) ):
-                print( 'Component #{0} is not a number!'.format(i) )
-                return None
+                raise ValueError( 'Component #{0} is not a number!'.format(i) )
         return cls(values[0], values[1], values[2])
 
     def x(self):
@@ -168,8 +166,7 @@ class Vector3D(object):
         try:
             return self.__values[i]
         except IndexError:
-            print( 'Vector3D is of length {0} only!'.format(len(self)) )
-            return None
+            raise IndexError( 'Vector3D is of length {0} only!'.format(len(self)) )
 
     def tolist(self):
         """Return the vector as a list."""
@@ -220,8 +217,7 @@ class Vector3D(object):
         elif isinstance( other, Vector3D ) :
             return self.dot(other)
         else:
-            print('Input object not a vector nor a number! Cannot multiply.')
-            return None
+            raise TypeError('Input object not a vector nor a number! Cannot multiply.')
 
     def __rmul__(self, other):
         """Right multiplication of the vector by either another vector or a number."""
@@ -230,8 +226,7 @@ class Vector3D(object):
     def __div__(self, number):
         """Division of the vector by a number."""
         if not isinstance( number, (int,float) ):
-            print('Argument is not a number!')
-            return None
+            raise ValueError('Argument is not a number!')
         if number == 0.:
             raise ZeroDivisionError
         return Vector3D.fromiterable( [ v/number for v in self.__values ] )
