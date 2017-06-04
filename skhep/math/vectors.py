@@ -96,6 +96,7 @@ class Vector3D(object):
         Suitable means here that all entries are numbers
         and the length equals 3.
         """
+        values = list(values)
         if not len(values)==3:
             print( 'Input iterable length = {0}! Please check your inputs.'.format(len(values)) )
             return None
