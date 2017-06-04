@@ -27,7 +27,6 @@ def Kallen_function(x, y, z):
                       &=& (x-y-z)^2 - 4 y z \\\\
                       &=& [ x - (\\sqrt{y}+\\sqrt{z})^2 ] [ x - (\\sqrt{y}-\\sqrt{z})^2 ] \\,\\,\\,\\mathrm{if} \\,\\,\\,y, z > 0
       \\end{eqnarray}
-
     :Example:
 
     Calculate in the rest frame of a particle of mass M decaying to 2 particles labeled 1 and 2,
@@ -58,10 +57,10 @@ def lifetime_to_width(tau):
     :Returns:
     Particle decay width, in the HEP standard energy unit MeV.
     """
-    if not tau:
-        return None
-    if tau < 0.:
-        raise ValueError('Input provided, %s, < 0!'.format(tau))
+
+    if tau <= 0:
+        raise ValueError( 'Input provided, %s <= 0!'.format(tau) )
+
     # Just need to first make sure that the lifetime is in the standard unit ns
     return hbar / float(tau / ns)
 
@@ -76,9 +75,9 @@ def width_to_lifetime(Gamma):
     :Returns:
     Particle lifetime, in the HEP standard time unit ns.
     """
-    if not Gamma:
-        return None
-    if Gamma < 0.:
-        raise ValueError('Input provided, %s, < 0!'.format(Gamma))
+
+    if Gamma <= 0.:
+        raise ValueError( 'Input provided, %s <= 0!'.format(Gamma) )
+
     # Just need to first make sure that the width is in the standard unit MeV
     return hbar / float(Gamma / MeV)
