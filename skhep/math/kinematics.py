@@ -66,19 +66,19 @@ def lifetime_to_width(tau):
     return hbar / float(tau / ns)
 
 
-def width_to_lifetime(gamma):
+def width_to_lifetime(Gamma):
     """Convert from a particle decay width to a lifetime.
 
     :Parameters:
-    gamma : float > 0
+    Gamma : float > 0
         Particle decay width, typically in MeV (any HEP energy unit is OK).
 
     :Returns:
     Particle lifetime, in the HEP standard time unit ns.
     """
-    if not gamma:
+    if not Gamma:
         return None
-    if gamma < 0.:
-        raise ValueError('Input provided, %s, < 0!'.format(gamma))
+    if Gamma < 0.:
+        raise ValueError('Input provided, %s, < 0!'.format(Gamma))
     # Just need to first make sure that the width is in the standard unit MeV
-    return hbar / float(gamma / MeV)
+    return hbar / float(Gamma / MeV)
