@@ -16,23 +16,25 @@ i.e. the history of operations performed on the dataset.
 * ``Formatting``.
 """
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Import statements
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 import json
 
 from .py23 import *
 
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Provenance-like classes
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 class Provenance(object):
     """
     Abstract base class for all classes containing provenance information.
     """
+
     def __init__(self):
-        raise TypeError("'Provenance' is an abstract base class. Instantiate one of its subclasses instead.")
+        raise TypeError(
+            "'Provenance' is an abstract base class. Instantiate one of its subclasses instead.")
 
     @property
     def detail(self):
@@ -46,8 +48,10 @@ class Origin(Provenance):
     """
     Abstract base class for all classes describing the first object in a provenance list.
     """
+
     def __init__(self):
-        raise TypeError("'Origin' is an abstract base class. Instantiate one of its subclasses instead.")
+        raise TypeError(
+            "'Origin' is an abstract base class. Instantiate one of its subclasses instead.")
 
 
 class ObjectOrigin(Origin):
@@ -73,6 +77,7 @@ class ObjectOrigin(Origin):
     >>> provenance2.detail
     'array_of_ints'
     """
+
     def __init__(self, detail):
         if not isinstance(detail, string_types):
             assert False, 'Argument is not of string type!'
@@ -89,11 +94,12 @@ class ObjectOrigin(Origin):
 class FileOrigin(Origin):
     """
     Declares that the dataset came from a file.
-    
+
     :Parameters:
     files: str or iterable of str or file objects
         File name(s) or object(s).
     """
+
     def __init__(self, files):
         if isinstance(files, string_types):
             self.files = (files,)
@@ -105,7 +111,8 @@ class FileOrigin(Origin):
                 elif isinstance(x, string_types):
                     self.files.append(x)
                 else:
-                    assert False, 'Argument must be a string filename, an iterable of file objects, or an iterable of string filenames!'
+                    assert False, ('Argument must be a string filename, an iterable of file objects, '
+                                   'or an iterable of string filenames!')
             self.files = tuple(self.files)
 
     @property
@@ -126,13 +133,15 @@ class Transformation(Provenance):
     args: iterable, optional
         Optional set of arguments given extra detail on the transformation.
     """
+
     def __init__(self, name, args):
         self.name = name
         self.args = args
 
     @property
     def detail(self):
-        return "{0}({1})".format(self.name, ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
+        return "{0}({1})".format(self.name,
+                                 ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
 
     def __repr__(self):
         return "<{0}>".format(self.name)
@@ -142,10 +151,12 @@ class Formatting(Provenance):
     """
     Declares that the dataset was reformatted, keeping its semantic meaning, but changed in representation.
     """
+
     def __init__(self, format, args):
         self.format = format
         self.args = args
 
     @property
     def detail(self):
-        return "{0}({1})".format(self.format, ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
+        return "{0}({1})".format(self.format,
+                                 ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))

@@ -6,10 +6,10 @@ and commonly-used unit prefixes.
 The HEP System of Units is the set of basic units originally defined by the CLHEP project.
 """
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Import statements
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
 from .prefixes import *
-from .units    import *
+from .units import *
