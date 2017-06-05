@@ -30,6 +30,26 @@ Project startup team:
   * Jim Pivarski (Princeton University - CMS, DIANA)
   * Eduardo Rodrigues (University of Cincinnati - DIANA, LHCb)
 
+Experiment contact persons
+--------------------------
+
+Contact persons are being identified for "each" experiment.
+It is expected that contact persons get involved with the project in 3 ways:
+
+  * Act as a bridge between the Scikit-HEP team and the experiment.
+  * Provide feedback on the expectations the experiment (analysts) have.
+  * Provide feedback on Scikit-HEP directions, code functionality and alike.
+
+The current list of contact persons is the following:
+
+    ===================   =================================
+    Experiment            Name(s)
+    ===================   =================================
+    Belle II              Karim Trabelsi, Nils Braun
+    DUNE                  Dorota Stefan, Robert Sulej
+    LHCb
+    ===================   =================================
+
 Contributors
 ------------
 
@@ -40,6 +60,10 @@ We look forward to contributions from the community!
 Please refer to the link :ref:`contributing to Scikit-HEP <contributing>`
 for details on how to get involved.
 
+Other credits
+.............
+
+* Thank you to Alex Pearce for designing the website.
 
 Licensing
 ---------
