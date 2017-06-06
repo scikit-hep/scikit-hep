@@ -4,19 +4,19 @@
 Tests for the skhep.units.units module.
 """
 
-
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Import statements
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 import unittest
 
-from skhep.units      import *
-from skhep.constants  import two_pi
+from skhep.units import *
+from skhep.constants import two_pi
 from skhep.utils.py23 import *
 
-#-----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
 # Actual tests
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 class Test(unittest.TestCase):
     def runTest(self):
         # required for Python 2.6 only
@@ -43,9 +43,9 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(3 * mm, fermi * 3e12)
 
     def test_area(self):
-        self.assertAlmostEqual((3 * mm)**2, 9 * mm2)
-        self.assertAlmostEqual((3 * cm)**2, 9 * cm2)
-        self.assertAlmostEqual((3 * km)**2, 9 * km2)
+        self.assertAlmostEqual((3 * mm) ** 2, 9 * mm2)
+        self.assertAlmostEqual((3 * cm) ** 2, 9 * cm2)
+        self.assertAlmostEqual((3 * km) ** 2, 9 * km2)
         self.assertAlmostEqual(2e-28 * meter2, 2 * barn)
 
     def test_crosssection(self):
@@ -56,12 +56,12 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(1 * barn, 100 * fm2)
 
     def test_luminosity(self):
-        self.assertAlmostEqual( invpb/invfb, 1.e-3 )
+        self.assertAlmostEqual(invpb / invfb, 1.e-3)
 
     def test_volume(self):
-        self.assertAlmostEqual((3 * mm)**3, 27 * mm3)
-        self.assertAlmostEqual((3 * cm)**3, 27 * cm3)
-        self.assertAlmostEqual((3 * m)**3, 27 * m3)
+        self.assertAlmostEqual((3 * mm) ** 3, 27 * mm3)
+        self.assertAlmostEqual((3 * cm) ** 3, 27 * cm3)
+        self.assertAlmostEqual((3 * m) ** 3, 27 * m3)
 
     def test_time(self):
         self.assertAlmostEqual(3 * ns, 3e-9 * s)
@@ -69,10 +69,10 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(3 * ns, 3e-3 * microsecond)
         self.assertAlmostEqual(3 * ns, 3000 * picosecond)
         self.assertAlmostEqual(3 * ns, 3000000 * femtosecond)
-        self.assertEqual( day, 24 * 60 * minute )
+        self.assertEqual(day, 24 * 60 * minute)
 
     def test_frequency(self):
-        self.assertAlmostEqual(second**-1, Hz)
+        self.assertAlmostEqual(second ** -1, Hz)
         self.assertAlmostEqual(1000 * hertz, kHz)
         self.assertAlmostEqual(1000000 * hertz, MHz)
         self.assertAlmostEqual(1000000000 * hertz, GHz)
@@ -86,7 +86,7 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(1e18 * eV, EeV)
 
     def test_angle(self):
-        self.assertEqual( 360. * degree, two_pi * radian )
+        self.assertEqual(360. * degree, two_pi * radian)
 
     def test_magnetic_field(self):
         self.assertAlmostEqual(10 * gauss, 1 * milli * tesla)
@@ -96,4 +96,4 @@ class Test(unittest.TestCase):
 
     def test_radiation_units(self):
         self.assertEqual(gray, sievert)  # equal in terms of value
-        self.assertEqual( 1 * curie, 37 * giga * becquerel)
+        self.assertEqual(1 * curie, 37 * giga * becquerel)

@@ -8,6 +8,6 @@ Subpackage for the description of datasets.
 #-----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from .defs         import *
+from .defs import *
 from .numpydataset import NumpyDataset
-from .rootdataset  import ROOTDataset
+from .rootdataset import ROOTDataset

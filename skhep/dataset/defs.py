@@ -8,25 +8,27 @@ The module contains the definition of the ``Dataset`` abstract base class
 and a series of mixin classes.
 """
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Import statements
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
 import glob
 
 from ..utils.py23 import *
 
-#-----------------------------------------------------------------------------
-# Generic Dataset
-#-----------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------
+# Generic Dataset
+# -----------------------------------------------------------------------------
 class Dataset(object):
     """
     Abstract base class for all dataset classes.
     """
+
     def __init__(self):
-        raise TypeError("Dataset is an abstract base class; instantiate one of its subclasses insteadone of its subclasses instead.")
+        raise TypeError(
+            "Dataset is an abstract base class; instantiate one of its subclasses insteadone of its subclasses instead.")
 
     @property
     def data(self):
@@ -86,18 +88,29 @@ class Dataset(object):
         """
         return not self.persistent
 
-#-----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
 # Mixins declaring functionality
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 # By adding methods with mixins, we enforce more uniformity than duck typing.
 # Only supported methods appear when the user tab-completes.
 # A generic dataset can be tested for functionality with isinstance.
+class FromPersistent(object):
+    pass
 
-class FromPersistent(object): pass
-class ToPersistent(object): pass
-class ConvertibleInPlace(object): pass
-class ConvertibleCopy(object): pass
+
+class ToPersistent(object):
+    pass
+
+
+class ConvertibleInPlace(object):
+    pass
+
+
+class ConvertibleCopy(object):
+    pass
+
 
 class FromFiles(FromPersistent):
     @staticmethod
@@ -114,15 +127,26 @@ class FromFiles(FromPersistent):
     def fromFiles(files, **options):
         """Load a Dataset from a file or collection of files.
 
-        files: a string file name (glob pattern), iterable of string file names, or an iterable of files open for reading (binary).
+        files: a string file name (glob pattern), iterable of string file names, or an iterable of files open for
+               reading (binary).
         """
         # NOTE: can't @inheritdoc because this is a @staticmethod
         raise NotImplementedError
 
+
 class ToFiles(FromPersistent):
     @staticmethod
-    def _openRolloverFiles(base, rolloverPattern=lambda base, n: base[:base.rindex(".")] + "_" + repr(n) + base[base.rindex("."):] if "." in base else base + "_" + repr(n)):
+    def _openRolloverFiles(base, rollover_pattern=None):
         # generic method to generate an infinite series of files with _1, _2, etc. in their names
+        if rollover_pattern is None:
+            # TODO: Rewrite this using os.path
+            def rollover_pattern(base_pattern, number):
+                if "." in base_pattern:
+                    return (base_pattern[:base_pattern.rindex(".")] + "_" +
+                            str(number) + base_pattern[base_pattern.rindex("."):])
+                else:
+                    return base_pattern + "_" + str(number)
+
         if isinstance(base, file):
             f = base
             base = f.name
@@ -133,10 +157,10 @@ class ToFiles(FromPersistent):
         n = 0
         while True:
             if f is None:
-                name = rolloverPattern(base, n)
+                name = rollover_pattern(base, n)
                 f = open(name, "wb")
             assert "w" in f.mode
-            yield f   # use the first file if given, otherwise start rollover with _0
+            yield f  # use the first file if given, otherwise start rollover with _0
             f = None  # second file in rollover is always _1 and continuing from there
 
     @staticmethod
@@ -150,6 +174,7 @@ class ToFiles(FromPersistent):
         """Save this Dataset to a file or collection of files."""
         raise NotImplementedError
 
+
 class AsNumpy(ConvertibleInPlace):
     def asNumpy(self, **options):
         """View this Dataset as a NumpyDataset, sharing their underlying data.
@@ -157,6 +182,7 @@ class AsNumpy(ConvertibleInPlace):
         A change in the NumpyDataset modifies the original.
         """
         raise NotImplementedError
+
 
 class NewNumpy(ConvertibleCopy):
     def newNumpy(self, **options):
@@ -166,6 +192,7 @@ class NewNumpy(ConvertibleCopy):
         """
         raise NotImplementedError
 
+
 class AsROOT(ConvertibleInPlace):
     def asROOT(self, **options):
         """View this Dataset as a ROOTDataset, sharing their underlying data.
@@ -173,6 +200,7 @@ class AsROOT(ConvertibleInPlace):
         A change in the ROOTDataset modifies the original.
         """
         raise NotImplementedError
+
 
 class NewROOT(ConvertibleCopy):
     def newROOT(self, **options):

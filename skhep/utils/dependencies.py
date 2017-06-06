@@ -25,6 +25,7 @@ Submodule for helpers to deal with dependencies
 # and not with strict softimport. For this reason, I'm changing the default
 # to lazy=True and would advocate that we _only_ do lazy softimports.
 
+
 class DelayedImportError(object):
     # When a module is strictly softimported but is not available, this
     # object is a placeholder for the module. The user will get the
@@ -35,6 +36,7 @@ class DelayedImportError(object):
 
     def __getattr__(self, attr):
         raise self.err
+
 
 class LazyModule(object):
     # When a module is lazily softimported, it will always be represented
@@ -54,6 +56,7 @@ class LazyModule(object):
         if self.module is None:
             self.module = __import__(self.name)
         return getattr(self.module, attr)
+
 
 def softimport(modulename, lazy=True):
     """

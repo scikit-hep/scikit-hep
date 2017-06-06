@@ -35,8 +35,8 @@ Project status
 .. image:: https://travis-ci.org/scikit-hep/scikit-hep.svg
    :target: https://travis-ci.org/scikit-hep/scikit-hep
 
-.. image:: https://coveralls.io/repos/github/scikit-hep/scikit-hep/badge.svg?branch=add-coveralls
-   :target: https://coveralls.io/github/scikit-hep/scikit-hep?branch=add-coveralls
+.. image:: https://coveralls.io/repos/github/scikit-hep/scikit-hep/badge.svg?branch=master
+   :target: https://coveralls.io/github/scikit-hep/scikit-hep?branch=master
 
 Documentation
 -------------
