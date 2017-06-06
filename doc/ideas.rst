@@ -46,6 +46,6 @@ Simulation
 Analysis Development
 --------------------
 
-* Give users as soon as possible an idea, on how the project will constribute to their analysis, 
-  e.g. by giving a small example analysis using the projects toolchain.
+* Give users as early as possible an idea on how the project may contribute to and/or help with their analysis, 
+  e.g. by giving a small example analysis using the project toolchain.
 * Think about including "framework" tools for an analysis, e.g. workflow managers (for example luigi).
