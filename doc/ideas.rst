@@ -45,6 +45,13 @@ ROOT-Pandas
 * See if users of this project may want to use scikit-hep as their starting point instead of installing `root_pandas`, to increase the awareness of this project. |AffiliatedPackages_open|
 
 
+Analysis Development
+--------------------
+
+* Give users as early as possible an idea on how the project may contribute to and/or help with their analysis, 
+  e.g. by giving a small example analysis using the project toolchain.
+* Think about including "framework" tools for an analysis, e.g. workflow managers (for example luigi).
+
 
 .. |AffiliatedPackages_open| image:: images/AffiliatedPackages-open-orange.png
 .. |Miscellaneous_open| image:: images/Miscellaneous-open-orange.png
@@ -52,3 +59,4 @@ ROOT-Pandas
 .. |Simulation_ongoing| image:: images/Simulation-ongoing-yellowgreen.png
 .. |Visualization_open| image:: images/Visualization-open-orange.png
 .. |Visualization_ongoing| image:: images/Visualization-ongoing-yellowgreen.png
+
