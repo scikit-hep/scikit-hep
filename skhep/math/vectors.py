@@ -117,22 +117,22 @@ class Vector3D(object):
 
     @property
     def y(self):
-        """Return the y, aka first coordinate at position 1."""
+        """Return the y, aka second coordinate at position 1."""
         return self.__values[1]
 
     @y.setter
     def y(self, value):
-        """Sets y, aka first coordinate at position 1."""
+        """Sets y, aka second coordinate at position 1."""
         self.__values[1] = value
 
     @property
     def z(self):
-        """Return the z, aka first coordinate at position 2."""
+        """Return the z, aka third coordinate at position 2."""
         return self.__values[2]
 
     @z.setter
     def z(self, value):
-        """Sets z, aka first coordinate at position 2."""
+        """Sets z, aka third coordinate at position 2."""
         self.__values[2] = value
 
     @property
