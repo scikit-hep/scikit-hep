@@ -322,7 +322,7 @@ class LorentzVector(object):
     Constructors:
         __init__(x=0., y=0., z=0., t=0.)
         from4vector(avector)
-        from3vector(vector3D, t)
+        from3vector(vector3d, t)
     """
     def __init__(self, x=0., y=0., z=0., t=0.):
         """Default constructor.
@@ -340,9 +340,9 @@ class LorentzVector(object):
         return cls(other.x, other.y, other.z, other.t)
 
     @classmethod
-    def from3vector(cls, vector3D, t):
+    def from3vector(cls, vector3d, t):
         """Constructor from a 3D-vector and the time/energy component."""
-        return cls(vector3D.x, vector3D.y, vector3D.z, t)
+        return cls(vector3d.x, vector3d.y, vector3d.z, t)
 
     @property
     def x(self):
@@ -449,7 +449,6 @@ class LorentzVector(object):
     def m2(self):
         """Return the square of the invariant mass."""
         return self.mag2
-
     @property
     def mass(self):
         """Return the invariant mass."""
@@ -488,7 +487,7 @@ class LorentzVector(object):
     def mag(self):
         """Magnitude, a.k.a. norm, of the Lorentz vector."""
         mag2 = self.mag2
-        return ( sqrt(mag2) if mag2 >= 0. else -sqrt(-mag2) )
+        return sqrt(mag2) if mag2 >= 0. else -sqrt(-mag2)
 
     @property
     def mag2(self):
