@@ -303,7 +303,7 @@ class Vector3D(object):
 
     def __repr__(self):
         """Class representation."""
-        return "<Vector3D (x={0},y={1},z={2})>".format(self.__values[0], self.__values[1], self.__values[2])
+        return "<Vector3D (x={0},y={1},z={2})>".format(*self.__values)
 
     def __str__(self):
         """Simple class representation."""
@@ -532,11 +532,8 @@ class LorentzVector(object):
 
     def __repr__(self):
         """Class representation."""
-        return "<LorentzVector (x={0},y={1},z={2},t={3})>".format(self.__values[0],
-                                                                  self.__values[1],
-                                                                  self.__values[2],
-                                                                  self.__values[3])
-
+        return "<LorentzVector (x={0},y={1},z={2},t={3})>".format(*self.__values)
+    
     def __str__(self):
         """Simple class representation."""
-        return str( tuple(self.__values) )
+        return str(tuple(self.__values))
