@@ -9,3 +9,6 @@ Mathematical utilities (`skhep.math`)
 
 .. automodule:: skhep.math.kinematics
    :members:
+
+.. automodule:: skhep.math.vectors
+   :members:

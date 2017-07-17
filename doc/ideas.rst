@@ -29,6 +29,35 @@ The direct links to the project proposals are the following:
   | Student: Chetan Malhotra. |Visualization_ongoing|
 
 
+Data aggregation
+----------------
+* Data aggregation largely means histogramming. An interesting idea would be to exploit the
+`Histogrammar <http://histogrammar.org/>`_ package implementation in Python as a powerful way of dealing with data aggregation in Scikit-HEP. |Aggregations_open|
+
+
+Datasets
+--------
+* Datasets are central in HEP and Scikit-HEP too. This important package needs further development and lack parts of the implementation.
+Get in touch with `Jim` and `Eduardo` ifthe topic is of interest to you. |Datasets_open|
+
+
+Math modules
+------------
+* The 3D and Lorentz vector classes need to be improved to exploit NumPy arrays.
+There is also functionality to be implemented.
+Contact `Eduardo` if such a development is of interest to you. |Math_ongoing|
+
+* Now that 3D and Lorentz vector classes are available, though in development, it would be handy to build on them.
+Needed are a 3D point class and then a set of mathematical functions implementing handy geometry-related calculations commonly used in HEP.
+Contact `Vanya` and `Eduardo` if such a development is of interest to you. |Math_open|
+
+
+Modeling
+--------
+Means "data models and fitting utilities" at large. |Modeling_open|
+Ideas?
+
+
 Simulation
 ----------
 
@@ -48,15 +77,19 @@ ROOT-Pandas
 Analysis Development
 --------------------
 
-* Give users as early as possible an idea on how the project may contribute to and/or help with their analysis, 
+* Give users as early as possible an idea on how the project may contribute to and/or help with their analysis,
   e.g. by giving a small example analysis using the project toolchain.
 * Think about including "framework" tools for an analysis, e.g. workflow managers (for example luigi).
 
 
 .. |AffiliatedPackages_open| image:: images/AffiliatedPackages-open-orange.png
+.. |Aggregations_open| image:: images/Aggregations-open-orange.png
+.. |Datasets_open| image:: images/Datasets-open-orange.png
+.. |Math_open| image:: images/Math-open-orange.png
+.. |Math_ongoing| image:: images/Math-ongoing-yellowgreen.png
 .. |Miscellaneous_open| image:: images/Miscellaneous-open-orange.png
 .. |Miscellaneous_ongoing| image:: images/Miscellaneous-ongoing-yellowgreen.png
+.. |Modeling_open| image:: images/Modeling-open-orange.png
 .. |Simulation_ongoing| image:: images/Simulation-ongoing-yellowgreen.png
 .. |Visualization_open| image:: images/Visualization-open-orange.png
 .. |Visualization_ongoing| image:: images/Visualization-ongoing-yellowgreen.png
-
