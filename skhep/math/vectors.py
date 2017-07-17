@@ -5,8 +5,10 @@ Vector classes
 
 Two vector classes are available:
 
-* Vector3D     : a 3-dimensional vector
-* LorentzVector: a Lorentz vector
+* ``Vector3D``     : a 3-dimensional vector.
+* ``LorentzVector``: a Lorentz vector, i.e. a 4-dimensional Minkowski space-time vector
+                     or a 4-momentum vector.
+                     The metric is (-1,-1,-1,+1).
 """
 
 # -----------------------------------------------------------------------------
@@ -301,8 +303,237 @@ class Vector3D(object):
 
     def __repr__(self):
         """Class representation."""
-        return "<Vector3D (x={0},y={1},z={2})>".format(self.__values[0], self.__values[1], self.__values[2])
+        return "<Vector3D (x={0},y={1},z={2})>".format(*self.__values)
 
+    def __str__(self):
+        """Simple class representation."""
+        return str(tuple(self.__values))
+
+
+#-----------------------------------------------------------------------------
+# Lorentz vector class
+#-----------------------------------------------------------------------------
+class LorentzVector(object):
+    """
+    Class representing a Lorentz vector,
+    either a 4-dimensional Minkowski space-time vector or a 4-momentum vector.
+    The 4-vector components can be seen as (x,y,z,t) or (px,py,pz,E).
+
+    Constructors:
+        __init__(x=0., y=0., z=0., t=0.)
+        from4vector(avector)
+        from3vector(vector3d, t)
+    """
+    def __init__(self, x=0., y=0., z=0., t=0.):
+        """Default constructor.
+
+        :Example:
+
+        >>> v1 = LorentzVector()
+        >>> v1
+        """
+        self.__values = [x,y,z,t]
+
+    @classmethod
+    def from4vector(cls, other):
+        """Copy constructor."""
+        return cls(other.x, other.y, other.z, other.t)
+
+    @classmethod
+    def from3vector(cls, vector3d, t):
+        """Constructor from a 3D-vector and the time/energy component."""
+        return cls(vector3d.x, vector3d.y, vector3d.z, t)
+
+    @property
+    def x(self):
+        """Return the 3D-vector coordinate x, aka first coordinate at position 0."""
+        return self.__values[0]
+
+    @x.setter
+    def x(self, value):
+        """Sets x, aka first coordinate at position 0."""
+        self.__values[0] = value
+
+    @property
+    def y(self):
+        """Return the 3D-vector coordinate x, aka second coordinate at position 1."""
+        return self.__values[1]
+
+    @y.setter
+    def y(self, value):
+        """Sets y, aka second coordinate at position 1."""
+        self.__values[1] = value
+
+    @property
+    def z(self):
+        """Return the 3D-vector coordinate z, aka third coordinate at position 2."""
+        return self.__values[2]
+
+    @z.setter
+    def z(self, value):
+        """Sets z, aka third coordinate at position 2."""
+        self.__values[2] = value
+
+    @property
+    def t(self):
+        """Return the time/energy component, aka coordinate at position 3."""
+        return self.__values[3]
+
+    @t.setter
+    def t(self, value):
+        """Sets t, aka coordinate at position 3."""
+        self.__values[3] = value
+
+    def theta(self, deg=False):
+        """Return the spherical coordinate theta of the 3D-vector.
+
+        Options:
+           deg : return the angle in degrees (default is radians)
+        """
+        raise NotImplementedError
+
+    def phi(self, deg=False):
+        """Return the spherical or cylindrical coordinate phi of the 3D-vector.
+
+        Options:
+           deg : return the angle in degrees (default is radians)
+        """
+        raise NotImplementedError
+
+    @property
+    def px(self):
+        """Return the 3D-vector coordinate px, aka first momentum coordinate at position 0."""
+        return self.x
+
+    @px.setter
+    def px(self, value):
+        """Sets px, aka first momentum coordinate at position 0."""
+        self.__values[0] = value
+
+    @property
+    def py(self):
+        """Return the 3D-vector coordinate px, aka second momentum coordinate at position 1."""
+        return self.y
+
+    @py.setter
+    def py(self, value):
+        """Sets py, aka second momentum coordinate at position 1."""
+        self.__values[1] = value
+
+    @property
+    def pz(self):
+        """Return the 3D-vector coordinate pz, aka third momentum coordinate at position 2."""
+        return self.z
+
+    @pz.setter
+    def pz(self, value):
+        """Sets pz, aka third momentum coordinate at position 2."""
+        self.__values[2] = value
+
+    @property
+    def e(self):
+        """Return the energy/time component, aka momentum coordinate at position 3."""
+        return self.t
+
+    @e.setter
+    def e(self, value):
+        """Sets e, aka momentum coordinate at position 3."""
+        self.__values[3] = value
+
+    @property
+    def m(self):
+        """Return the invariant mass."""
+        return self.mag
+
+    @property
+    def m2(self):
+        """Return the square of the invariant mass."""
+        return self.mag2
+    @property
+    def mass(self):
+        """Return the invariant mass."""
+        return self.m
+
+    @property
+    def mass2(self):
+        """Return the square of the invariant mass."""
+        return self.m2
+
+    def transversemass(self):
+        """Return the transverse mass."""
+        raise NotImplementedError
+
+    def beta(self):
+        """Return :math:`\\beta = v/c`."""
+        raise NotImplementedError
+
+    def gamma(self):
+        """Return :math:`\\gamma = 1/\\sqrt{1-\\beta^2}`."""
+        raise NotImplementedError
+
+    def eta(self):
+        """Return the pseudorapidity."""
+        raise NotImplementedError
+
+    def pseudorapidity(self):
+        """"Return the pseudorapidity. Alternative to eta() method."""
+        return self.eta()
+
+    def rapidity(self):
+        """Return the rapidity."""
+        raise NotImplementedError
+
+    @property
+    def mag(self):
+        """Magnitude, a.k.a. norm, of the Lorentz vector."""
+        mag2 = self.mag2
+        return sqrt(mag2) if mag2 >= 0. else -sqrt(-mag2)
+
+    @property
+    def mag2(self):
+        """Square of the magnitude, a.k.a. norm, of the Lorentz vector."""
+        raise NotImplementedError
+
+    def set(self, x, y, z, t):
+        """Update/set all components at once."""
+        self.__values = [x, y, z, t]
+
+    def setpx(self, px):
+        """Update/set the px component."""
+        self.__values[0] = x
+
+    def setpy(self, py):
+        """Update/set the py component."""
+        self.__values[1] = y
+
+    def setpz(self, pz):
+        """Update/set the pz component."""
+        self.__values[2] = z
+
+    def sete(self, e):
+        """Update/set the energy/time component."""
+        self.__values[3] = e
+
+    def dot(self, other):
+        """Dot product with another Lorentz vector."""
+        raise NotImplementedError
+
+    def isspacelike(self):
+        """Check if Lorentz vector is space-like."""
+        return self.mag2 < 0.
+
+    def istimelike(self):
+        """Check if Lorentz vector is time-like."""
+        return self.mag2 > 0.
+
+    def islightlike(self):
+        """Check if Lorentz vector is light-like."""
+        return self.mag2 == 0.
+
+    def __repr__(self):
+        """Class representation."""
+        return "<LorentzVector (x={0},y={1},z={2},t={3})>".format(*self.__values)
+    
     def __str__(self):
         """Simple class representation."""
         return str(tuple(self.__values))
