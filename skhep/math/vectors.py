@@ -3,537 +3,394 @@
 Vector classes
 ==============
 
-Two vector classes are available:
+Three vector classes are available:
 
+* ``Vector2D``     : a 2-dimensional vector.
 * ``Vector3D``     : a 3-dimensional vector.
 * ``LorentzVector``: a Lorentz vector, i.e. a 4-dimensional Minkowski space-time vector
                      or a 4-momentum vector.
                      The metric is (-1,-1,-1,+1).
+
+These are based on the base class ``Vector``, this can be subclassed to make new vectors with new metrics.
 """
 
 # -----------------------------------------------------------------------------
 # Import statements
 # -----------------------------------------------------------------------------
-from __future__ import absolute_import
+from __future__ import division, print_function, absolute_import
 
-from math import sqrt, atan2, cos, sin, acos, degrees
-
+import numpy as np
+import doctest
+from .numbautils import overload
 
 # -----------------------------------------------------------------------------
-# Vector class in 3D
+# Vector class (base)
 # -----------------------------------------------------------------------------
-class Vector3D(object):
-    """
-    Vector class in 3 dimensions.
 
-    Constructors:
-        __init__(x=0., y=0., z=0.)
-        origin()
-        frompoint(x, y, z)
-        fromvector(avector)
-        fromsphericalcoords(r, theta, phi)
-        fromcylindricalcoords(rho, phi, z)
-        fromiterable(values)
-    """
+def _add_names(cls):
+    for n,x in enumerate(cls.NAMES):
+        # Add .x, .y, etc. property setters/getters
+        def make_get_set(n):
+            def getter(self):
+                return self[n].view(np.ndarray)
+            def setter(self, item):
+                self[n] = item
+            return getter, setter
+        setattr(cls, x, property(*make_get_set(n)))
 
-    def __init__(self, x=0., y=0., z=0.):
-        """Default constructor.
+        # Add X, Y, etc basis vectors
+        ze = [0]*len(cls.NAMES)
+        ze[n] = 1
+        setattr(cls, x.upper(), cls(*ze))
 
-        :Example:
 
-        >>> v1 = Vector3D()
-        >>> v1
-        <Vector3D (x=0.0,y=0.0,z=0.0)>
-        >>> v2 = Vector3D(1,2,3)
-        >>> v2
-        <Vector3D (x=1,y=2,z=3)>
-        """
-        self.__values = [x, y, z]
+class Vector(np.ndarray):
+    # All valid subclasses must have NAMES in class
+    __slots__ = ()
+
+    def __new__(cls, *args, dtype=np.double):
+        if len(args)==0:
+            args = np.zeros(len(cls.NAMES))
+        args = [np.asarray(a).astype(dtype) for a in args]
+        args = np.broadcast_arrays(*args)
+        if hasattr(np, 'stack'): # Support 1.08, but 1.10 is better
+            return np.stack(args).view(cls)
+        else:
+            args = [np.expand_dims(a,0) for a in args]
+            return np.concatenate(args,0).view(cls)
+
+    # Special constructors
 
     @classmethod
     def origin(cls):
-        """Shortcut constuctor for the origin (x=0.,y=0.,z=0.).
-        Equivalent to the default constructor Vector3D().
+        """Shortcut constuctor for the origin (x=0.,y=0., ...).
+        Equivalent to the default constructor.
         """
-        return cls(0., 0., 0.)
+        return cls()
 
     @classmethod
-    def frompoint(cls, x, y, z):
-        """Constructor from an explicit space point."""
-        return cls(x, y, z)
+    def frompandas(cls, pd_dataframe):
+        items = (pd_dataframe[n] for n in cls.NAMES)
+        return cls(*items)
 
     @classmethod
     def fromvector(cls, other):
         """Copy constructor."""
-        return cls(other.x, other.y, other.z)
+        return cls(*other)
 
-    @classmethod
-    def fromsphericalcoords(cls, r, theta, phi):
-        """Constructor from a space point specified in spherical coordinates.
 
-        r     : radius, the radial distance from the origin (r > 0)
-        theta : inclination in radians (theta in [0, pi] rad)
-        phi   : azimuthal angle in radians (phi in [0, 2pi) rad)
-        """
-        x = r * sin(theta) * cos(phi)
-        y = r * sin(theta) * sin(phi)
-        z = r * cos(theta)
-        return cls(x, y, z)
-
-    @classmethod
-    def fromcylindricalcoords(cls, rho, phi, z):
-        """Constructor from a space point specified in cylindrical coordinates.
-
-        rho : radial distance from the z-axis (rho > 0)
-        phi : azimuthal angle in radians (phi in [-pi, pi) rad)
-        z   : height
-        """
-        x = rho * cos(phi)
-        y = rho * sin(phi)
-        z = z
-        return cls(x, y, z)
-
-    @classmethod
-    def fromiterable(cls, values):
-        """Constructor from a suitable iterable object.
-        Suitable means here that all entries are numbers
-        and the length equals 3.
-        """
-        values = list(values)
-        if not len(values)==3:
-            raise ValueError( 'Input iterable length = {0}! Please check your inputs.'.format(len(values)) )
-        for i, v in enumerate(values):
-            if not isinstance( v, (int,float) ):
-                raise ValueError( 'Component #{0} is not a number!'.format(i) )
-        return cls(values[0], values[1], values[2])
-
-    @property
-    def x(self):
-        """Return the x, aka first coordinate at position 0."""
-        return self.__values[0]
-
-    @x.setter
-    def x(self, value):
-        """Sets x, aka first coordinate at position 0."""
-        self.__values[0] = value
-
-    @property
-    def y(self):
-        """Return the y, aka second coordinate at position 1."""
-        return self.__values[1]
-
-    @y.setter
-    def y(self, value):
-        """Sets y, aka second coordinate at position 1."""
-        self.__values[1] = value
-
-    @property
-    def z(self):
-        """Return the z, aka third coordinate at position 2."""
-        return self.__values[2]
-
-    @z.setter
-    def z(self, value):
-        """Sets z, aka third coordinate at position 2."""
-        self.__values[2] = value
-
-    @property
-    def rho(self):
-        """Return the cylindrical coordinate rho."""
-        return sqrt(self.x**2 + self.y**2)
-
-    @property
-    def theta(self, deg=False):
-        """Return the spherical coordinate theta.
-
-        Options:
-           deg : return the angle in degrees (default is radians)
-        """
-        raise NotImplementedError
-
-    @property
-    def phi(self, deg=False):
-        """Return the spherical or cylindrical coordinate phi.
-
-        Options:
-           deg : return the angle in degrees (default is radians)
-        """
-        if self.x == 0 and self.y == 0:
-            return 0.
-        phi = atan2(self.y, self.x)
-        return phi if not deg else degrees(phi)
-
-    def set(self, x, y, z):
-        """Update the vector components all at once."""
-        self.__values = [x, y, z]
-
-    def __setitem__(self, i, value):
-        """Update/set the ith vector component (commencing at 0, of course)."""
-        try:
-            self.__values[i] = value
-        except IndexError:
-            raise IndexError(
-                'Vector3D is of length {0} only!'.format(len(self)))
-
-    def __getitem__(self, i):
-        """Get the ith vector component (commencing at 0, of course)."""
-        try:
-            return self.__values[i]
-        except IndexError:
-            raise IndexError( 'Vector3D is of length {0} only!'.format(len(self)))
-
-    def tolist(self):
-        """Return the vector as a list."""
-        return list(self.__values)
-
-    def __len__(self):
-        """Length of the vector, i.e. the number of elements = 3."""
-        return len(self.__values)
-
-    @property
-    def mag(self):
-        """Magnitude, a.k.a. norm, of the vector."""
-        return sqrt(self.mag2)
-
-    @property
-    def mag2(self):
-        """Square of the magnitude, a.k.a. norm, of the vector."""
-        return sum(v ** 2 for v in self.__values)
-
-    def unit(self):
-        """Return the normalized vector, i.e. the unit vector along the direction of itself."""
-        mag = self.mag
-        if mag > 0.:
-            return Vector3D.fromiterable([v / mag for v in self.__values])
-        else:
-            return self
-
-    def perpendicular(self):
-        """Return the vector perpendicular to itself."""
-        raise NotImplementedError
-
-    def __add__(self, other):
-        """Addition with another vector, i.e. self+other."""
-        return Vector3D.fromiterable([v1 + v2 for v1, v2 in zip(self.__values, other.__values)])
-
-    def __sub__(self, other):
-        """Subtraction with another vector, i.e. self-other."""
-        return Vector3D.fromiterable([v1 - v2 for v1, v2 in zip(self.__values, other.__values)])
-
-    def __mul__(self, other):
-        """Multiplication of the vector by either another vector or a number.
-        Multiplication of two vectors is equivalent to the dot product, see dot(...).
-
-        Example:
-        >>> v2 = v1 * 2
-        >>> number = v1 * v3
-        """
-        if isinstance(other, (int, float)):
-            return Vector3D.fromiterable([v * other for v in self.__values])
-        elif isinstance(other, Vector3D):
-            return self.dot(other)
-        else:
-            raise TypeError('Input object not a vector nor a number! Cannot multiply.')
-
-    def __rmul__(self, other):
-        """Right multiplication of the vector by either another vector or a number."""
-        return self.__mul__(other)
-
-    def __div__(self, number):
-        """Division of the vector by a number."""
-        if not isinstance(number, (int,float)):
-            raise ValueError('Argument is not a number!')
-        if number == 0.:
-            raise ZeroDivisionError
-        return Vector3D.fromiterable([v / number for v in self.__values])
-
-    def __iter__(self):
-        """Iterator implementation for the vector components."""
-        return self.__values.__iter__()
+    # Not including fromiterable because it is available directly as Vector(*iterable)
 
     def dot(self, other):
-        """Dot product with another vector."""
-        return sum(v1 * v2 for v1, v2 in zip(self.__values, other.__values))
+        '''
+        This currently returns a 1D array always.
 
-    def cross(self, v1, v2):
-        """Cross product with another vector."""
-        return Vector3D(v1[1] * v2[2] - v1[2] * v2[1],
-                        v1[2] * v2[0] - v1[0] * v2[2],
-                        v1[0] * v2[1] - v1[1] * v2[0]
-                        )
+        >>> v1 = Vector3D(1, 2, 3)
+        >>> v2 = Vector3D(2, 3, 5)
+        >>> v1p = Vector3D([1,2,3], [2,3,5], [3,3,1])
+        >>> v2p = Vector3D([1,2,3], [3,5,2], [5,3,2])
+        >>> v1.dot(v2)
+        array([ 23.])
+        >>> v1p.dot(v2p)
+        array([ 22.,  28.,  21.])
+        '''
 
-    def angle(self, other, deg=False):
-        """Angle with respect to another vector.
-
-        Options:
-           deg : return the angle in degrees (default is radians)
-        """
-        prod_mag2 = self.mag2*other.mag2
-
-        if prod_mag2 <= 0.:
-            return 0.
+        if hasattr(self.__class__, 'METRIC'):
+            metric = self.METRIC.copy()
+            for axis in range(len(self.shape) - 1):
+                metric = np.expand_dims(metric, -1)
+            return np.sum((self*metric) * other, 0).view(np.ndarray)
         else:
-            arg = self.dot(other) / sqrt(prod_mag2)
-            if arg > 1.:
-                arg = 1.
-            if arg < -1.:
-                arg = -1.
-            return acos(arg) if not deg else degrees(acos(arg))
-
-    def isparallel(self, other):
-        """Check if another vector is parallel.
-        Two vectors are parallel if they have the same direction but not necessarily the same magnitude.
-        """
-        return cos(self.angle(other)) == 1.
-
-    def isantiparallel(self, other):
-        """Check if another vector is antiparallel.
-        Two vectors are antiparallel if they have opposite direction but not necessarily the same magnitude.
-        """
-        return cos(self.angle(other)) == -1.
-
-    def isopposite(self, other):
-        """Two vectors are opposite if they have the same magnitude but opposite direction."""
-        added = self + other
-        return added.x == 0 and added.y == 0 and added.z == 0
-
-    def isperpendicular(self, other):
-        """Check if another vector is perpendicular."""
-        return self.dot(other) == 0.
-
-    def __repr__(self):
-        """Class representation."""
-        return "<Vector3D (x={0},y={1},z={2})>".format(*self.__values)
-
-    def __str__(self):
-        """Simple class representation."""
-        return str(tuple(self.__values))
+            return np.sum(self * other, 0).view(np.ndarray)
 
 
-#-----------------------------------------------------------------------------
-# Lorentz vector class
-#-----------------------------------------------------------------------------
-class LorentzVector(object):
-    """
-    Class representing a Lorentz vector,
-    either a 4-dimensional Minkowski space-time vector or a 4-momentum vector.
-    The 4-vector components can be seen as (x,y,z,t) or (px,py,pz,E).
+    def mag(self):
+        '''
+        This currently returns a 1D array always.
 
-    Constructors:
-        __init__(x=0., y=0., z=0., t=0.)
-        from4vector(avector)
-        from3vector(vector3d, t)
-    """
-    def __init__(self, x=0., y=0., z=0., t=0.):
-        """Default constructor.
+        >>> v1 = Vector3D(1, 2, 3)
+        >>> v1p = Vector3D([1,2,3], [2,3,5], [3,3,1])
+        >>> np.all(v1.mag() == np.sqrt(14))
+        True
+        >>> v1p.mag()
+        array([ 3.74165739,  4.69041576,  5.91607978])
+        '''
 
-        :Example:
+        return np.sqrt(self.mag2()).view(np.ndarray)
 
-        >>> v1 = LorentzVector()
-        >>> v1
-        """
-        self.__values = [x,y,z,t]
+    def mag2(self):
+        '''
+        >>> v1 = Vector3D(1, 2, 3)
+        >>> v1p = Vector3D([1,2,3], [2,3,5], [3,3,1])
+        >>> np.all(v1.mag2() == 14)
+        True
+        >>> v1p.mag2()
+        array([ 14.,  22.,  35.])
 
-    @classmethod
-    def from4vector(cls, other):
-        """Copy constructor."""
-        return cls(other.x, other.y, other.z, other.t)
+        >>> v = LorentzVector(1,2,3,.5)
+        >>> v.mag2()
+        array([-13.75])
+        '''
+        return self.dot(self)
 
-    @classmethod
-    def from3vector(cls, vector3d, t):
-        """Constructor from a 3D-vector and the time/energy component."""
-        return cls(vector3d.x, vector3d.y, vector3d.z, t)
+    def unit(self, inplace=False):
+        if inplace:
+            self /= self.mag()
+        else:
+            return self / self.mag()
+
 
     @property
-    def x(self):
-        """Return the 3D-vector coordinate x, aka first coordinate at position 0."""
-        return self.__values[0]
+    def T(self):
+        return super(Vector, self).T.view(np.ndarray)
+    @T.setter
+    def T(self, val):
+        super(Vector, self).T = val
 
-    @x.setter
-    def x(self, value):
-        """Sets x, aka first coordinate at position 0."""
-        self.__values[0] = value
+    def to_pd(self):
+        '''Support for easy conversion to pandas'''
+        import pandas as pd
+        return pd.DataFrame({name:getattr(self, name) for name in self.NAMES})
 
-    @property
-    def y(self):
-        """Return the 3D-vector coordinate x, aka second coordinate at position 1."""
-        return self.__values[1]
+    def angle(self, other, normal=None):
+        'Angle between vectors, might not be normalized.'
+        a = self.unit()
+        b = other.unit()
+        # Protection vs. round off error
+        ang = np.arccos(np.clip(a.dot(b),-1,1))
+        # Only defined for Vector3
+        if normal is not None:
+            ang *= np.sign(normal.dot(a.cross(b)))
+        return ang
 
-    @y.setter
-    def y(self, value):
-        """Sets y, aka second coordinate at position 1."""
-        self.__values[1] = value
+    def __array_finalize__(self, obj):
+        if self.shape[0] != len(self.NAMES):
+            raise RuntimeError("Vectors must have the correct number of elements in the first diminsion, expected {0}, got {1}".format(len(self.NAMES), self.shape))
 
-    @property
-    def z(self):
-        """Return the 3D-vector coordinate z, aka third coordinate at position 2."""
-        return self.__values[2]
+    def __array_wrap__(self, out_arr, context=None):
+        "Correctly handle ufuncts"
+        if len(out_arr.shape) == 0 or out_arr.shape[0] != len(self.NAMES):
+            out_arr = out_arr.view(np.ndarray)
+        return np.ndarray.__array_wrap__(self, out_arr, context)
 
-    @z.setter
-    def z(self, value):
-        """Sets z, aka third coordinate at position 2."""
-        self.__values[2] = value
+    def __getitem__(self, item):
+        'I have chosen for x and [0] to be the same, to simplify calcs (a lot)'
+        if (isinstance(item, tuple)
+            and len(item)>0
+            and ((isinstance(item[0], slice)
+                 and item[0] == slice(None,None,None)
+                 ) or (
+            len(item) < len(self.shape)
+            and item[0] is Ellipsis))):
+            # If [:,...] then keep vector
+            return super(Vector,self).__getitem__(item)
+        elif isinstance(item, slice) and item == slice(None,None,None):
+            return super(Vector,self).__getitem__(item)
+        else:
+            return self.view(np.ndarray).__getitem__(item)
 
-    @property
-    def t(self):
-        """Return the time/energy component, aka coordinate at position 3."""
-        return self.__values[3]
-
-    @t.setter
-    def t(self, value):
-        """Sets t, aka coordinate at position 3."""
-        self.__values[3] = value
-
-    def theta(self, deg=False):
-        """Return the spherical coordinate theta of the 3D-vector.
-
-        Options:
-           deg : return the angle in degrees (default is radians)
-        """
-        raise NotImplementedError
-
-    def phi(self, deg=False):
-        """Return the spherical or cylindrical coordinate phi of the 3D-vector.
-
-        Options:
-           deg : return the angle in degrees (default is radians)
-        """
-        raise NotImplementedError
+    def __setitem__(self, item, value):
+        self.view(np.ndarray).__setitem__(item, value)
 
     @property
-    def px(self):
-        """Return the 3D-vector coordinate px, aka first momentum coordinate at position 0."""
-        return self.x
+    def dims(self):
+        return len(self.__class__.NAMES)
 
-    @px.setter
-    def px(self, value):
-        """Sets px, aka first momentum coordinate at position 0."""
-        self.__values[0] = value
+    def _repr_html_(self):
+        shape = self.shape[1:]
+        shape_txt = " x ".join(map(str,shape))
+        vals = np.reshape(self, (self.dims,-1))
+        len_v = max(sum(shape),1)
+
+        header = r"<h3> {0} ({1}) </h3>".format(self.__class__.__name__, shape_txt)
+        header += "<table>"
+        header += "<tr>"
+        for name in self.__class__.NAMES:
+            header += r"<td><b>{}</b></td>".format(name)
+        header += r"</tr>"
+        content = ""
+        for i in range(min(len_v,5)):
+            content += "<tr>"
+            for name in self.__class__.NAMES:
+                content += r"<td>{:.4}</td>".format(getattr(vals,name)[i])
+            content += r"</tr>"
+
+        if len_v > 5:
+            for name in self.__class__.NAMES:
+                content += r"<td> &#8226; &#8226; &#8226; </td>"
+        footer = r"</table>"
+        return header + content + footer
+
+
+class Vector2D(Vector):
+    __slots__ = ()
+    NAMES = ('x', 'y')
+
+
+    # Using Py3 keyword only syntax for dtype
+    def __new__(cls, x, y, dtype=np.double):
+        return Vector.__new__(cls, x, y, dtype=dtype)
+
+    def phi(self):
+        return np.arctan2(self.y, self.x).view(np.ndarray)
+
+    def rho(self):
+        return self[:2].mag().view(np.ndarray)
+
+    def angle(self, other):
+        'Angle between two vectors'
+        return super(Vector2D, self).angle(other)
+
+class Vector3D(Vector2D):
+    __slots__ = ()
+    NAMES = ('x', 'y', 'z')
+
+    def __new__(cls, x, y, z, dtype=np.double):
+        return Vector.__new__(cls, x, y, z, dtype=dtype)
+
+    def cross(self, other):
+        return Vector3D(self.y*other.z - self.z*other.y,
+                        self.z*other.x - self.x*other.z,
+                        self.x*other.y - self.y*other.x)
+
+    def theta(self):
+        prep = np.sqrt(self.x*self.x + self.y*self.y)
+        return np.arctan2(prep,self.z).view(np.ndarray)
+
+
+    def in_basis(self, xhat, yhat, zhat):
+        '''Must be unit vectors, should be orthogonal'''
+        return Vector3D(self.dot(xhat),
+                        self.dot(yhat),
+                        self.dot(zhat))
+
+    angle = Vector.angle
+
+    def rotate(self, phi=0, theta=0, psi=0):
+        # Rotate Z (phi)
+        c1 = np.cos(phi)
+        s1 = np.sin(phi)
+        c2 = np.cos(theta)
+        s2 = np.sin(theta)
+        c3 = np.cos(psi)
+        s3 = np.sin(psi)
+        # Rotate Y (theta)
+        fzx2 =-s2*c1
+        fzy2 = s2*s1
+        fzz2 = c2
+        # Rotate Z (psi)
+        fxx3 = c3*c2*c1 - s3*s1
+        fxy3 =-c3*c2*s1 - s3*c1
+        fxz3 = c3*s2
+        fyx3 = s3*c2*c1 + c3*s1
+        fyy3 =-s3*c2*s1 + c3*c1
+        fyz3 = s3*s2
+        # Transform v
+        out = self.copy()
+        out.x = fxx3*self.x + fxy3*self.y + fxz3*self.z
+        out.y = fyx3*self.x + fyy3*self.y + fyz3*self.z
+        out.z = fzx2*self.x + fzy2*self.y + fzz2*self.z
+        return out
+
+class LorentzVector(Vector3D):
+    NAMES = ('x', 'y', 'z', 't')
+    METRIC = np.array([-1,-1,-1,1])
+    __slots__ = ()
+
+    def __new__(cls, x, y, z, t, dtype=np.double):
+        return Vector.__new__(cls, x, y, z, t, dtype=dtype)
 
     @property
-    def py(self):
-        """Return the 3D-vector coordinate px, aka second momentum coordinate at position 1."""
-        return self.y
+    def vect(self):
+        return self[:3].view(Vector3D)
+    @vect.setter
+    def vect(self, obj):
+        self[:3] = obj
 
-    @py.setter
-    def py(self, value):
-        """Sets py, aka second momentum coordinate at position 1."""
-        self.__values[1] = value
+    def P(self):
+        '''
+        >>> v = LorentzVector(1,2,3,.5)
+        >>> v.P()
+        array([ 3.74165739])
+        '''
+        return np.sqrt(self.vect.mag2())
 
-    @property
-    def pz(self):
-        """Return the 3D-vector coordinate pz, aka third momentum coordinate at position 2."""
-        return self.z
-
-    @pz.setter
-    def pz(self, value):
-        """Sets pz, aka third momentum coordinate at position 2."""
-        self.__values[2] = value
-
-    @property
-    def e(self):
-        """Return the energy/time component, aka momentum coordinate at position 3."""
-        return self.t
-
-    @e.setter
-    def e(self, value):
-        """Sets e, aka momentum coordinate at position 3."""
-        self.__values[3] = value
-
-    @property
-    def m(self):
-        """Return the invariant mass."""
-        return self.mag
-
-    @property
-    def m2(self):
-        """Return the square of the invariant mass."""
-        return self.mag2
-    @property
-    def mass(self):
-        """Return the invariant mass."""
-        return self.m
-
-    @property
-    def mass2(self):
-        """Return the square of the invariant mass."""
-        return self.m2
-
-    def transversemass(self):
-        """Return the transverse mass."""
-        raise NotImplementedError
-
-    def beta(self):
-        """Return :math:`\\beta = v/c`."""
-        raise NotImplementedError
+    def E(self):
+        '''
+        >>> v = LorentzVector(1,2,3,.5)
+        >>> v.E()
+        array([ 5.26782688])
+        '''
+        return np.sqrt(self.vect.mag2() - self.mag2())
 
     def gamma(self):
-        """Return :math:`\\gamma = 1/\\sqrt{1-\\beta^2}`."""
-        raise NotImplementedError
+        '''
+        >>> v = LorentzVector(1,2,3,.5)
+        >>> v.gamma()
+        array([ 2.01818182])
+        '''
 
-    def eta(self):
-        """Return the pseudorapidity."""
-        raise NotImplementedError
+        return 1/(1 - self.beta()**2)
 
-    def pseudorapidity(self):
-        """"Return the pseudorapidity. Alternative to eta() method."""
-        return self.eta()
+    def beta(self):
+        '''
+        >>> v = LorentzVector(1,2,3,.5)
+        >>> v.beta()
+        array([ 0.71028481])
+        '''
+        return self.P() / self.E()
 
-    def rapidity(self):
-        """Return the rapidity."""
-        raise NotImplementedError
+    def boost_vector(self):
+        '''
+        >>> v = LorentzVector(-0.212, 0.0327, 0.0327, -0.099)
+        >>> v.BoostVector()
+        Vector3D([[ 2.14141414],
+               [-0.33030303],
+               [-0.33030303]])
+        >>> v = LorentzVector(1,2,3,4)
+        >>> v.BoostVector()
+        Vector3D([[ 0.25],
+               [ 0.5 ],
+               [ 0.75]])
+        '''
 
-    @property
-    def mag(self):
-        """Magnitude, a.k.a. norm, of the Lorentz vector."""
-        mag2 = self.mag2
-        return sqrt(mag2) if mag2 >= 0. else -sqrt(-mag2)
+        return (self[:3] / self[3]).view(Vector3D)
 
-    @property
-    def mag2(self):
-        """Square of the magnitude, a.k.a. norm, of the Lorentz vector."""
-        raise NotImplementedError
+    def boost(self, vector3, inplace=False):
+        '''
+        >>> v = LorentzVector(1,2,3,.5)
+        >>> bv = Vector3D(.1,.2,.3)
+        >>> v.Boost(bv)
+        LorentzVector([[ 1.13224412],
+               [ 2.26448824],
+               [ 3.39673236],
+               [ 2.04882269]])
+        '''
 
-    def set(self, x, y, z, t):
-        """Update/set all components at once."""
-        self.__values = [x, y, z, t]
+        b2 = vector3.mag2()
+        gamma = 1.0 / np.sqrt(1-b2)
+        gamma2 = (gamma - 1) / b2
+        bp = self.vect.dot(vector3)
+        if inplace:
+            self.vect += gamma2*bp*vector3 + gamma*vector3*self.t
+            self.t += bp
+            self.t *= gamma
+        else:
+            v = self.vect + gamma2*bp*vector3 + gamma*vector3*self.t
+            return self.__class__(*v, gamma*(self.t+bp))
 
-    def setpx(self, px):
-        """Update/set the px component."""
-        self.__values[0] = x
+_add_names(Vector2D)
+_add_names(Vector3D)
+_add_names(LorentzVector)
 
-    def setpy(self, py):
-        """Update/set the py component."""
-        self.__values[1] = y
 
-    def setpz(self, pz):
-        """Update/set the pz component."""
-        self.__values[2] = z
 
-    def sete(self, e):
-        """Update/set the energy/time component."""
-        self.__values[3] = e
-
-    def dot(self, other):
-        """Dot product with another Lorentz vector."""
-        raise NotImplementedError
-
-    def isspacelike(self):
-        """Check if Lorentz vector is space-like."""
-        return self.mag2 < 0.
-
-    def istimelike(self):
-        """Check if Lorentz vector is time-like."""
-        return self.mag2 > 0.
-
-    def islightlike(self):
-        """Check if Lorentz vector is light-like."""
-        return self.mag2 == 0.
-
-    def __repr__(self):
-        """Class representation."""
-        return "<LorentzVector (x={0},y={1},z={2},t={3})>".format(*self.__values)
-    
-    def __str__(self):
-        """Simple class representation."""
-        return str(tuple(self.__values))
+@overload(Vector2D)
+def Vector2D_t(*args, **kargs):
+    return np.array
+@overload(Vector3D)
+def Vector3D_t(*args, **kargs):
+    return np.array
+@overload(LorentzVector)
+def LorentzVector_t(*args, **kargs):
+    return np.array
