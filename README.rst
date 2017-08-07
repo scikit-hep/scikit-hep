@@ -29,6 +29,12 @@ Python versions supported:
 .. image:: https://img.shields.io/badge/python-3.4-blue.svg
    :target: https://badge.fury.io/py/scikit-hep
 
+.. image:: https://img.shields.io/badge/python-3.5-blue.svg
+   :target: https://badge.fury.io/py/scikit-hep
+
+.. image:: https://img.shields.io/badge/python-3.6-blue.svg
+   :target: https://badge.fury.io/py/scikit-hep
+
 Project status
 --------------
 
