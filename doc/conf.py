@@ -90,6 +90,7 @@ html_theme_options = {
     'github_user': 'scikit-hep',
     'github_repo': 'scikit-hep',
     'github_type': 'star',
+    'github_banner': true,
     'logo': 'logo.svg',
     'fixed_sidebar': True,
     'show_powered_by': False,
