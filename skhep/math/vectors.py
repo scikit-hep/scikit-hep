@@ -255,43 +255,53 @@ class Vector3D(object):
         """Dot product with another vector."""
         return sum(v1 * v2 for v1, v2 in zip(self.__values, other.__values))
 
-    def cross(self, v1, v2):
+    def cross(self, v2):
         """Cross product with another vector."""
+        v1 = self 
         return Vector3D(v1[1] * v2[2] - v1[2] * v2[1],
                         v1[2] * v2[0] - v1[0] * v2[2],
                         v1[0] * v2[1] - v1[1] * v2[0]
                         )
-
+    
+    def cosdelta ( self , other ) :
+        """Get cos(angle) with respect to another vector
+        """
+        m1 = self.mag2
+        if 0 >= m1 : return 1 
+        m2 = other.mag2
+        if 0 >= m2 : return 1
+        
+        r = self.dot( other ) / sqrt ( m1 * m2 ) 
+        return max ( -1. , min ( 1. , r ) )
+    
+        
     def angle(self, other, deg=False):
         """Angle with respect to another vector.
 
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        prod_mag2 = self.mag2*other.mag2
-
-        if prod_mag2 <= 0.:
-            return 0.
-        else:
-            arg = self.dot(other) / sqrt(prod_mag2)
-            if arg > 1.:
-                arg = 1.
-            if arg < -1.:
-                arg = -1.
-            return acos(arg) if not deg else degrees(acos(arg))
+        cd = self.cosdelta ( other ) 
+        return acos(cd) if not deg else degrees(acos(cd))
 
     def isparallel(self, other):
         """Check if another vector is parallel.
         Two vectors are parallel if they have the same direction but not necessarily the same magnitude.
         """
-        return cos(self.angle(other)) == 1.
+        return  1 == self.cosdelta(other) 
 
     def isantiparallel(self, other):
         """Check if another vector is antiparallel.
         Two vectors are antiparallel if they have opposite direction but not necessarily the same magnitude.
         """
-        return cos(self.angle(other)) == -1.
+        return -1 == self.cosdelta(other)
 
+    def iscollinear ( other ) :
+        """Check if another vector is collinear
+        Two vectors are collinear if they have parallel or antiparallel
+        """
+        return 1 == abs ( self.cosdelta(other) ) 
+        
     def isopposite(self, other):
         """Two vectors are opposite if they have the same magnitude but opposite direction."""
         added = self + other
