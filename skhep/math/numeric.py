@@ -1,35 +1,35 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # =============================================================================
 # Licensed under a 3-clause BSD style license, see LICENSE.
 # =============================================================================
-""" Set of utilities for coparison of  floating point numbers inpired by
+""" Set of utilities for comparison of  floating point numbers inspired by
 - https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
 and the previous version:
 - http://www.cygnus-software.com/papers/comparingfloats/Obsolete%20comparing%20floating%20point%20numbers.htm
 """
 # =============================================================================
 __all__ = (
-    'distance_ulps' , ## distance in ULPs 
-    'isclose_ulps'  , ## close in  terms of ULPs ?
-    'isequal_ulps'  , ## isequal using  ULPs and SCALE
+    'distance'      , ## distance in ULPs 
+    'isclose'       , ## close in  terms of ULPs ?
+    'isequal'       , ## isequal using  ULPs and SCALE
     'next_double'   , ## get next double 
     )
 # =============================================================================
-def distance_ulps ( a ,  b ) :
+def distance ( a ,  b ) :
     """Distance in ULPS between two (floating point) numbers
     - it is assumed here that  size(long)==size(double) for underlying C-library
     :Example:
     >>> a = ...
     >>> b = ...
-    >>> print distance_ulps ( a , b )
+    >>> print distance ( a , b )
     """
     
     if   a == b : return 0
-    elif a >  b : return -distance_ulps (  b ,  a )
-    elif b <= 0 : return  distance_ulps ( -b , -a ) 
+    elif a >  b : return -distance (  b ,  a )
+    elif b <= 0 : return  distance ( -b , -a ) 
     elif a <  0 :
-        return distance_ulps  ( 0 , -a ) + distance_ulps ( 0 , b )
+        return distance ( 0 , -a ) + distance ( 0 , b )
 
     ## here a and b has same sign
     import ctypes
@@ -58,7 +58,7 @@ def next_double ( a , ulps = 1 ) :
     if a < 0     : return -next_double ( -a , -ulps )
 
     if 0 > ulps  :
-        d =  distance_ulps ( a , 0.0 ) + ulps
+        d =  distance ( a , 0.0 ) + ulps
         if d < 0 : return -next_double ( 0.0 , -d )
         
     import ctypes
@@ -72,14 +72,14 @@ def next_double ( a , ulps = 1 ) :
     
 
 # =============================================================================
-def isclose_ulps ( a  , b , ulps = 1000 ) :
+def isclose ( a  , b , ulps = 1000 ) :
     """Are two floating point numbers close enough (in units is ULPs)?
     :Example:
     >>> a = ...
     >>> b = ...
-    >>> print isclose_ulps ( a , b , 1000 )
+    >>> print isclose ( a , b , 1000 )
     """
-    return ( a == b ) or ulps >= abs ( distance_ulps ( a ,  b ) ) 
+    return ( a == b ) or ulps >= abs ( distance ( a ,  b ) ) 
 
 # =============================================================================
 def isequal ( a , b , scale = 1.0 , absdiff = 0.0 , ulps = 1000 ) :
@@ -97,7 +97,7 @@ def isequal ( a , b , scale = 1.0 , absdiff = 0.0 , ulps = 1000 ) :
     >>> isequal(1,1+sys.float_info.epsilon, scale = 100 , ulps = 0 )
     True
     """
-    return ( a ==  b )  or ( 0 < absdiff and abs ( a - b ) < absdiff ) or isclose_ulps ( a , b , ulps ) or ( scale and isclose_ulps ( ( a - b ) + scale , scale , ulps ) ) 
+    return ( a ==  b )  or ( 0 < absdiff and abs ( a - b ) < absdiff ) or isclose ( a , b , ulps ) or ( scale and isclose ( ( a - b ) + scale , scale , ulps ) ) 
     
 # =============================================================================
 ## The END
