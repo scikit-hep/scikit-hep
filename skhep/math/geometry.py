@@ -1,4 +1,4 @@
-#!/usr/bni/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # =============================================================================
 # Licensed under a 3-clause BSD style license, see LICENSE.
@@ -15,15 +15,14 @@ Three geometry classes are available:
 """
 # =============================================================================
 __all__  = (
-    'Vector3D' ,
-    'Point3D'  ,
-    'Line3D'   ,
-    'Plane3D'  ,
+    'Vector3D' , ## 3D-vector 
+    'Point3D'  , ## 3D-point 
+    'Line3D'   , ## line in 3D 
+    'Plane3D'  , ## plane in 3D 
     )
 # =============================================================================
 # Import statements
 # =============================================================================
-import math
 from   skhep.math.vectors import Vector3D
 
 
@@ -61,6 +60,7 @@ class Point3D(object) :
         theta : inclination in radians (theta in [0, pi] rad)
         phi   : azimuthal angle in radians (phi in [0, 2pi) rad)
         """
+        from math import sin, cos 
         x = r * sin(theta) * cos(phi)
         y = r * sin(theta) * sin(phi)
         z = r * cos(theta)
@@ -74,6 +74,7 @@ class Point3D(object) :
         phi : azimuthal angle in radians (phi in [-pi, pi) rad)
         z   : height
         """
+        from math import sin, cos 
         x = rho * cos(phi)
         y = rho * sin(phi)
         z = z
@@ -162,7 +163,7 @@ class Point3D(object) :
     def __len__(self):
         """Length/dimension of the poit, i.e. the number of elements = 3."""
         return 3 
-    
+
     @property
     def mag(self):
         """Magnitude, a.k.a. norm, of the point."""
@@ -173,6 +174,24 @@ class Point3D(object) :
         """Square of the magnitude, a.k.a. norm, of the point."""
         return self._vct.mag2
 
+    def __eq__  ( self , another ) :
+        """Equality of two points
+        :Example:
+        >>> p1 = ...
+        >>> p2 = ...
+        >>> print  p1 == p2
+        """
+        return self._vct ==  another._vct
+    
+    def __ne__  ( self , another ) :
+        """Non-equality of two points
+        :Example:
+        >>> p1 = ...
+        >>> p2 = ...
+        >>> print  p1 != p2
+        """
+        return self._vct !=  another._vct
+    
     ## operations
     def __iadd__ ( self , vector ) :
         """Add vector to point
@@ -284,7 +303,7 @@ class Line3D(object) :
         self.vector = Vector3D.fromvector ( vector )  
 
     @classmethod
-    def frompoints ( cls , point1 , point2 ) :
+    def from_points ( cls , point1 , point2 ) :
         """Create the line from two points
         
         point1 : the first point on the line
@@ -294,7 +313,7 @@ class Line3D(object) :
         return cls ( point1 , point2 - point1 ) 
     
     @classmethod
-    def fromline   ( cls , line  ) :
+    def from_line   ( cls , line  ) :
         """Create the line from anoother line 
         """
         return cls ( line.point , line.vector ) 
@@ -366,7 +385,7 @@ class Plane3D(object) :
         self.normal = Vector3D.fromvector ( normal )  
 
     @classmethod
-    def frompoints ( cls , point1 , point2 , point3 ) :
+    def from_points ( cls , point1 , point2 , point3 ) :
         """Create the plane from three  points
         
         point1 : the first  point on the plane 
@@ -379,7 +398,7 @@ class Plane3D(object) :
         return cls ( point1 , v21.cross ( v31 ) ) 
 
     @classmethod
-    def fromlineandpoint ( cls , line , point ) :
+    def from_line_and_point ( cls , line , point ) :
         """Create the plane from the line and point 
         
         line   : the line in plane 

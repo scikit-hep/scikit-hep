@@ -19,6 +19,9 @@ from __future__ import absolute_import
 from math import sqrt, atan2, cos, sin, acos, degrees
 
 
+def _equal_ ( a , b  ) :
+    return a == b 
+    
 # -----------------------------------------------------------------------------
 # Vector class in 3D
 # -----------------------------------------------------------------------------
@@ -247,6 +250,27 @@ class Vector3D(object):
             raise ZeroDivisionError
         return Vector3D.fromiterable([v / number for v in self.__values])
 
+    
+    def __eq__  (self, other) :
+        """Equality to another vector
+        :Example:
+        >>> v1 = ...
+        >>> v2 = ...
+        >>> print v1 == v2 
+        """
+        if not isinstance ( other , Vector3D) : return NotImplemented 
+        return self[0] == other[0] and self[1] == other[1] and self[2] == other[2] 
+
+    def __ne__  (self, other) :
+        """Non-equality to another vector
+        :Example:
+        >>> v1 = ...
+        >>> v2 = ...
+        >>> print v1 != v2 
+        """
+        if not isinstance ( other , Vector3D) : return NotImplemented 
+        return self[0] != other[0] or self[1] != other[1] or self[2] != other[2] 
+    
     def __iter__(self):
         """Iterator implementation for the vector components."""
         return self.__values.__iter__()
@@ -255,12 +279,11 @@ class Vector3D(object):
         """Dot product with another vector."""
         return sum(v1 * v2 for v1, v2 in zip(self.__values, other.__values))
 
-    def cross(self, v2):
+    def cross(self, other ):
         """Cross product with another vector."""
-        v1 = self 
-        return Vector3D(v1[1] * v2[2] - v1[2] * v2[1],
-                        v1[2] * v2[0] - v1[0] * v2[2],
-                        v1[0] * v2[1] - v1[1] * v2[0]
+        return Vector3D( self[1] * other[2] - self[2] * other[1],
+                         self[2] * other[0] - self[0] * other[2],
+                         self[0] * other[1] - self[1] * other[0]
                         )
     
     def cosdelta ( self , other ) :
