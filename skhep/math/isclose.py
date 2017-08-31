@@ -26,10 +26,6 @@ License: Apache License 2.0 http://opensource.org/licenses/apache2.0.php
 """
 __all__ = (
     'isclose'       , ## close using relative and absolute distances 
-    'distance_ulps' , ## distance in ULPs 
-    'isclose_ulps'  , ## close in  terms of ULPs ?
-    'isequal_ulps'  , ## isequal using  ULPs and SCALE
-    'next_double'   , ## get next double 
     )
 
 import cmath
@@ -112,86 +108,6 @@ def isclose(a,
         raise ValueError('method must be one of:'
                          ' "asymmetric", "strong", "weak", "average"')
 
-# =============================================================================
-def distance_ulps ( a ,  b ) :
-    """Distance in ULPS between two (floating point) numbers
-    - it is assumed here that  size(long)==size(double) for underlying C-library
-    :Example:
-    >>> a = ...
-    >>> b = ...
-    >>> print distance_ulps ( a , b )
-    """
-    
-    if   a == b : return 0
-    elif a >  b : return -distance_ulps (  b ,  a )
-    elif b <= 0 : return  distance_ulps ( -b , -a ) 
-    elif a <  0 :
-        return distance_ulps  ( 0 , -a ) + distance_ulps ( 0 , b )
-
-    ## here a and b has same sign
-    import ctypes
-
-    a , b =  abs ( a ) , abs ( b )
-    
-    aa = ctypes.c_double ( float ( a ) ) 
-    bb = ctypes.c_double ( float ( b ) ) 
-
-    al = ctypes.c_long.from_buffer ( aa ).value
-    bl = ctypes.c_long.from_buffer ( bb ).value 
-
-    return bl - al 
-
-# =============================================================================
-def next_double ( a , ulps = 1 ) :
-    """ Get the ``next-double'' by certaint ULPs distance
-    :Example:
-    >>> a = next_double ( 1 , 1 )
-    >>> print a , a - sys.float_info.epsilon
-    """
-    
-    a = float ( a ) 
-    if 0 == ulps : return  a  
-    if a < 0     : return -next_double ( -a , -ulps )
-
-    if 0 > ulps  :
-        d =  distance_ulps ( a , 0.0 ) + ulps
-        if d < 0 : return -next_double ( 0.0 , -d )
-        
-    import ctypes
-    
-    aa  = ctypes.c_double ( a         ) 
-    al  = ctypes.c_long.from_buffer   ( aa ).value
-    al  = ctypes.c_long   ( al + ulps ) 
-    aa  = ctypes.c_double.from_buffer ( al ).value
-    
-    return aa  
-    
-
-# =============================================================================
-def isclose_ulps ( a  , b , ulps = 1000 ) :
-    """Are two floating point numbers close enough (in units is ULPs)?
-    :Example:
-    >>> a = ...
-    >>> b = ...
-    >>> print isclose_ulps ( a , b , 1000 )
-    """
-    return ( a == b ) or ulps >= abs ( distance_ulps ( a ,  b ) ) 
-
-# =============================================================================
-def isequal ( a , b , scale = 1.0 , ulps = 1000 ) :
-    """Are  two numbers ``a'' and ``b''  close enough ?
-    Numbers are considere to be  equal is :
-    - they are close enough in ULPS
-    OR for scale != 0 
-    - the difference is small enough compared to the specified scale,
-    namely if ( scale + a - b == scale)
-    
-    :Example:
-    >>> a =  sys.float_info.epsilon
-    >>> b = -sys.float_info.epsilon
-    
-    """
-    return ( a ==  b )  or isclose_ulps ( a , b , ulps ) or ( scale and isclose_ulps ( ( a - b ) + scale , scale , ulps ) ) 
     
 # =============================================================================
 ## The END
