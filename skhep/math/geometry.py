@@ -147,8 +147,13 @@ class Point3D(object) :
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        raise self._vct.phi 
-
+        raise self._vct.phi
+    
+    def copy  ( self ) :
+        """Make a copy of this point
+        """
+        return Point3D( self[0], self[1],  self[2] )
+    
     def __setitem__(self, i, value) :
        """Update/set the ith points component (commencing at 0, of course)."""
        self._vct[i] = value
@@ -233,7 +238,7 @@ class Point3D(object) :
         """
         ## point + vector = point
         if isinstance ( vector , Vector3D ) :
-            newpoint  = Point3D.fromvector ( self._vct )
+            newpoint  = self.copy()
             newpoint += vector
             return newpoint
         
@@ -250,7 +255,7 @@ class Point3D(object) :
         
         ## point - vector --> point 
         if isinstance ( other , Vector3D ) :
-            newpoint  = Point3D.fromvector ( self._vct )
+            newpoint  = self.copy()
             newpoint -= other
             return newpoint
 
@@ -258,7 +263,7 @@ class Point3D(object) :
 
     def __radd__ ( self , other )  :
         """Right addition of vector and point"""
-        return other + self
+        return self + other 
 
     def __repr__(self):
         """Class representation."""
@@ -331,8 +336,8 @@ class Line3D(object) :
         if 0 == vector.mag2  :
             raise ValueError ("Line3D: ``vector'' must be zero!" )
             
-        self.point     = Point3D .fromvector ( point  ) 
-        self.direction = Vector3D.fromvector ( vector )  
+        self.point     = point  .copy() 
+        self.direction = vector .copy() 
 
     @classmethod
     def from_points ( cls , point1 , point2 ) :
@@ -360,6 +365,11 @@ class Line3D(object) :
     def __str__(self):
         """Simple class representation."""
         return "Line3D({0},{1})".format( self.point , self.direction ) 
+
+    def copy  ( self ) :
+        """Make a copy of this line 
+        """
+        return Line3D( self.point.copy() , self.direction.copy() )
 
     ## is the point on line ? 
     def __contains__ ( self , point ) :
@@ -514,9 +524,9 @@ class Plane3D(object) :
         
         if 0 == normal.mag2  :
             raise ValueError ("Plane3D: ``normal'' must be zero!" )
-            
-        self.point  = Point3D .fromvector ( point  ) 
-        self.normal = Vector3D.fromvector ( normal )  
+
+        self.point     = point  .copy() 
+        self.normal    = normal .copy() 
 
     @classmethod
     def from_points ( cls , point1 , point2 , point3 ) :
@@ -562,6 +572,11 @@ class Plane3D(object) :
     def __str__(self):
         """Simple class representation."""
         return "Plane3D({0},{1})".format( self.point , self.normal ) 
+
+    def copy  ( self ) :
+        """Make a copy of this plane
+        """
+        return Plane3D( self.point.copy() , self.normal.copy() )
 
 
     def __eq__ ( self , other ) :
