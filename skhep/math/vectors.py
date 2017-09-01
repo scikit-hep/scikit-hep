@@ -336,6 +336,17 @@ class Vector3D(object):
         >>> print v1 != v2 
         """
         return not ( self == other )
+
+    def __nonzero__ ( self ) :
+        """Nonzero  vector?
+        :Example:
+        >>> vct = ...
+        >>> if vct : ...
+        """
+        return 0 != self.mag2
+
+    
+    __bool__ = __nonzero__
     
     def __iter__(self):
         """Iterator implementation for the vector components."""
@@ -378,22 +389,22 @@ class Vector3D(object):
         Two vectors are parallel if they have the same direction but not necessarily the same magnitude.
         """
         from skhep.math.numeric import isequal
-        return isequal ( self.cosdelta(other)  , 1 , scale = 1 ) 
+        return isequal ( self.cosdelta(other)  , 1 ) 
 
     def isantiparallel(self, other):
         """Check if another vector is antiparallel.
         Two vectors are antiparallel if they have opposite direction but not necessarily the same magnitude.
         """
         from skhep.math.numeric import isequal
-        return isequal ( self.cosdelta(other) , -1 , scale = 1 ) 
+        return isequal ( self.cosdelta(other) , -1 ) 
 
     def iscollinear ( self , other ) :
         """Check if another vector is collinear
         Two vectors are collinear if they have parallel or antiparallel
         """
         from skhep.math.numeric import isequal
-        return isequal ( abs( self.cosdelta ( other ) ) , 1 , scale = 1 ) 
-        
+        return isequal ( abs ( self.cosdelta ( other ) ) , 1 ) 
+    
     def isopposite ( self , other):
         """Two vectors are opposite if they have the same magnitude but opposite direction."""
         added = self + other
