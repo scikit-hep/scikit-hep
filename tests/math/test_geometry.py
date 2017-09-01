@@ -87,8 +87,16 @@ class Test(unittest.TestCase):
         self.assertEqual ( line.distance(p0) , 0 , 'Line-Point distance must be 0') 
         self.assertEqual ( line.distance(p1) , 1 , 'Line-Point distance must be 1') 
         
-        plane = Plane3D ( Point3D(1,1,0) ,  Vector3D(0,0,1) )
+        plane = Plane3D  ( Point3D(1,1,0) ,  Vector3D(0,0,1) )
         
+        self.assertEqual ( plane.distance(plane) , 0 , 'Plane-Plane distance must be 0' )
+        self.assertEqual ( plane.distance(p0)    , 0 , 'Plane-Point distance must be 0' )
+
+        line1 = Line3D ( Point3D(1,2,3) , Vector3D (4,5,6) )
+        line2 = Line3D ( Point3D(0,0,1) , Vector3D (1,1,0) )
+        
+        self.assertEqual ( plane.distance(line1)  , 0 , 'Plane-Line distance must be 0' )
+        self.assertEqual ( plane.distance(line2)  , 1 , 'Plane-Line distance must be 0' )
         
         
 Test().runTest()
