@@ -18,13 +18,12 @@ __all__ = (
 # =============================================================================
 def distance ( a ,  b ) :
     """Distance in ULPS between two (floating point) numbers
-    - it is assumed here that  size(long)==size(double) for underlying C-library
+    - it is assumed here that  size(long)==size(double) for underlying C-library!
     :Example:
     >>> a = ...
     >>> b = ...
     >>> print distance ( a , b )
-    """
-    
+    """    
     if   a == b : return 0
     elif a >  b : return -distance (  b ,  a )
     elif b <= 0 : return  distance ( -b , -a ) 
@@ -32,6 +31,7 @@ def distance ( a ,  b ) :
         return distance ( 0 , -a ) + distance ( 0 , b )
 
     ## here a and b has same sign
+
     import ctypes
 
     a , b =  abs ( a ) , abs ( b )
@@ -47,6 +47,7 @@ def distance ( a ,  b ) :
 # =============================================================================
 def next_double ( a , ulps = 1 ) :
     """ Get the ``next-double'' by certain ULPs distance
+    - it is assumed here that  size(long)==size(double) for underlying C-library!
     
     :Example:
     >>> a = next_double ( 1 , 1 )
@@ -54,12 +55,13 @@ def next_double ( a , ulps = 1 ) :
     """
     
     a = float ( a ) 
-    if 0 == ulps : return  a  
-    if a < 0     : return -next_double ( -a , -ulps )
-
-    if 0 > ulps  :
+    if   0 == ulps : return  a  
+    elif a < 0     : return -next_double ( -a , -ulps )
+    elif 0 > ulps  :
         d =  distance ( a , 0.0 ) + ulps
         if d < 0 : return -next_double ( 0.0 , -d )
+        
+    ## aply a trick  with casting
         
     import ctypes
     
@@ -79,15 +81,15 @@ def isclose ( a  , b , ulps = 1000 ) :
     >>> b = ...
     >>> print isclose ( a , b , 1000 )
     """
-    return ( a == b ) or ulps >= abs ( distance ( a ,  b ) ) 
+    return ( a == b ) or ulps >= abs ( distance ( a , b ) ) 
 
 # =============================================================================
 def isequal ( a , b , scale = 1.0 , absdiff = 0.0 , ulps = 1000 ) :
     """Are  two numbers ``a'' and ``b''  close enough ?
-    Numbers are considere to be  equal is :
-    - they are close enough in ULPS
-    - OR, for absdiff >0 , the absolute difference is smaller than absdiff
-    - OR, for scale != 0 , the difference is small enough compared to the specified scale,
+    Numbers are considered to be  equal is :
+    - (for absdiff >0) the absolute difference is smaller than absdiff
+    - *OR* they are close enough in ULPs
+    - *OR* (for scale != 0) the difference is small enough compared to the scale
     
     :Example:
     >>> isequal(1,1+sys.float_info.epsilon)      
@@ -97,7 +99,7 @@ def isequal ( a , b , scale = 1.0 , absdiff = 0.0 , ulps = 1000 ) :
     >>> isequal(1,1+sys.float_info.epsilon, scale = 100 , ulps = 0 )
     True
     """
-    return ( a ==  b )  or ( 0 < absdiff and abs ( a - b ) < absdiff ) or isclose ( a , b , ulps ) or ( scale and isclose ( ( a - b ) + scale , scale , ulps ) ) 
+    return ( a == b ) or ( 0 < absdiff and abs ( a - b ) < absdiff ) or isclose ( a , b , ulps ) or ( scale and isclose ( ( a - b ) + scale , scale , ulps ) ) 
     
 # =============================================================================
 ## The END

@@ -444,13 +444,13 @@ if '__main__' == __name__ :
     line = Line3D ( p , v )
     print 'P in ilne:', p in line  
 
-    line = Line3D.frompoints ( p , Point3D(3,2,1) )
+    line = Line3D.from_points ( p , Point3D(3,2,1) )
     print 'P in ilne:', p in line  
     
     plane = Plane3D( p , v )
     print 'Line  in plane?', line in plane
     
-    plane = Plane3D.frompoints ( p , Point3D(3,2,1) , Point3D(0,0,3) )
+    plane = Plane3D.from_points ( p , Point3D(3,2,1) , Point3D(0,0,3) )
     print 'Point in plane?', p    in plane
     
     
