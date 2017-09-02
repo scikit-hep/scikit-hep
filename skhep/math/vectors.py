@@ -18,10 +18,6 @@ from __future__ import absolute_import
 
 from math import sqrt, atan2, cos, sin, acos, degrees
 
-
-def _equal_ ( a , b  ) :
-    return a == b 
-    
 # -----------------------------------------------------------------------------
 # Vector class in 3D
 # -----------------------------------------------------------------------------
@@ -161,8 +157,6 @@ class Vector3D(object):
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        if self.x == 0 and self.y == 0:
-            return 0.
         phi = atan2(self.y, self.x)
         return phi if not deg else degrees(phi)
 
@@ -203,6 +197,22 @@ class Vector3D(object):
         """Square of the magnitude, a.k.a. norm, of the vector."""
         return sum(v ** 2 for v in self.__values)
 
+    def __abs__ ( self ) :
+        """Get the absolute value for the vector
+        >>> v = ...
+        >>> a = abs(v)
+        """
+        return self.mag 
+        
+
+    def copy(self) :
+        """Get a copy of the vector
+        :Example:
+        >>> v = ...
+        >>> v1 = v.copy()
+        """
+        return Vector3D( self[0] , self[1] , self[2] ) 
+        
     def unit(self):
         """Return the normalized vector, i.e. the unit vector along the direction of itself."""
         mag = self.mag
@@ -211,18 +221,69 @@ class Vector3D(object):
         else:
             return self
 
-    def perpendicular(self):
-        """Return the vector perpendicular to itself."""
-        raise NotImplementedError
+    def __iadd__(self, other):
+        """(self)Addition with another vector, i.e. self+other.
+        :Example:
+        >>> v1  = ...
+        >>> v2  = ...
+        >>> v1 += v2  
+        """
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented 
+        self.__values[0] += other.__values[0]
+        self.__values[1] += other.__values[1]
+        self.__values[2] += other.__values[2]
+        return self 
+
+    def __isub__(self, other):
+        """(self)Subtraction with another vector, i.e. self+other.
+        :Example:
+        >>> v1  = ...
+        >>> v2  = ...
+        >>> v1 -= v2  
+        """
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented 
+        self.__values[0] -= other.__values[0]
+        self.__values[1] -= other.__values[1]
+        self.__values[2] -= other.__values[2]
+        return self 
 
     def __add__(self, other):
         """Addition with another vector, i.e. self+other."""
-        return Vector3D.fromiterable([v1 + v2 for v1, v2 in zip(self.__values, other.__values)])
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented
+        v = self.copy()
+        v+= other
+        return v 
 
     def __sub__(self, other):
         """Subtraction with another vector, i.e. self-other."""
-        return Vector3D.fromiterable([v1 - v2 for v1, v2 in zip(self.__values, other.__values)])
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented
+        v = self.copy()
+        v+= other
+        return v 
 
+    def __imul__(self, other):
+        """Scaling of the vector  y a number
+        
+        :Example:
+        >>> v = ...
+        >>> v *= 2 
+        """
+        if isinstance ( other , ( int , float ) ) :
+            return Vector3D.fromiterable ( [v * other for v in self.__values ] )
+        else:
+            return NotImplemented 
+
+    def __idiv__(self, other):
+        """Scaling of the vector  y a number
+        
+        :Example:
+        >>> v  = ...
+        >>> v /= 2 
+        """
+        if not isinstance ( other , ( int , float ) ) or 0 == other : return NotImplemented 
+        self *= ( 1.0/other )
+        return self
+    
     def __mul__(self, other):
         """Multiplication of the vector by either another vector or a number.
         Multiplication of two vectors is equivalent to the dot product, see dot(...).
@@ -231,12 +292,11 @@ class Vector3D(object):
         >>> v2 = v1 * 2
         >>> number = v1 * v3
         """
-        if isinstance(other, (int, float)):
-            return Vector3D.fromiterable([v * other for v in self.__values])
-        elif isinstance(other, Vector3D):
+        if isinstance ( other , Vector3D ):
             return self.dot(other)
-        else:
-            raise TypeError('Input object not a vector nor a number! Cannot multiply.')
+        v = self.copy()
+        v *= other
+        return v
 
     def __rmul__(self, other):
         """Right multiplication of the vector by either another vector or a number."""
@@ -244,22 +304,29 @@ class Vector3D(object):
 
     def __div__(self, number):
         """Division of the vector by a number."""
-        if not isinstance(number, (int,float)):
-            raise ValueError('Argument is not a number!')
-        if number == 0.:
-            raise ZeroDivisionError
-        return Vector3D.fromiterable([v / number for v in self.__values])
+        if not isinstance ( number, ( int , float ) ) or 0 ==  number : 
+            return NotImplemented
+        v = self.copy()
+        v /=  number
+        return v
 
-    
-    def __eq__  (self, other) :
-        """Equality to another vector
+    def __eq__  ( self , other ) :
+        """Equality to another vector, or, equality to zero
         :Example:
         >>> v1 = ...
         >>> v2 = ...
-        >>> print v1 == v2 
+        >>> print v1 == v2
+        >>> print v1 == 0  
         """
-        if not isinstance ( other , Vector3D) : return NotImplemented 
-        return self[0] == other[0] and self[1] == other[1] and self[2] == other[2] 
+        from skhep.math.numeric import isequal
+
+        ## comparsion with scalar zero, very useful  in practice
+        if isinstance ( other , ( float , int , long ) ) and isequal ( other , 0 ) : 
+            return isequal ( self[0] , 0 ) and isequal ( self[1] , 0 ) and isequal ( self[2] , 0 ) 
+        elif not isinstance ( other , Vector3D) :
+            return NotImplemented
+        ##
+        return isequal ( self[0] , other[0] ) and isequal ( self[1] , other[1] ) and isequal ( self[2] , other[2] )  
 
     def __ne__  (self, other) :
         """Non-equality to another vector
@@ -268,8 +335,7 @@ class Vector3D(object):
         >>> v2 = ...
         >>> print v1 != v2 
         """
-        if not isinstance ( other , Vector3D) : return NotImplemented 
-        return self[0] != other[0] or self[1] != other[1] or self[2] != other[2] 
+        return not ( self == other )
     
     def __iter__(self):
         """Iterator implementation for the vector components."""
@@ -290,12 +356,12 @@ class Vector3D(object):
         """Get cos(angle) with respect to another vector
         """
         m1 = self.mag2
-        if 0 >= m1 : return 1 
+        if 0 >= m1 : return 1.0
         m2 = other.mag2
-        if 0 >= m2 : return 1
+        if 0 >= m2 : return 1.0
         
         r = self.dot( other ) / sqrt ( m1 * m2 ) 
-        return max ( -1. , min ( 1. , r ) )
+        return max ( -1.0 , min ( 1.0 , r ) )
     
         
     def angle(self, other, deg=False):
@@ -311,28 +377,32 @@ class Vector3D(object):
         """Check if another vector is parallel.
         Two vectors are parallel if they have the same direction but not necessarily the same magnitude.
         """
-        return  1 == self.cosdelta(other) 
+        from skhep.math.numeric import isequal
+        return isequal ( self.cosdelta(other)  , 1 , scale = 1 ) 
 
     def isantiparallel(self, other):
         """Check if another vector is antiparallel.
         Two vectors are antiparallel if they have opposite direction but not necessarily the same magnitude.
         """
-        return -1 == self.cosdelta(other)
+        from skhep.math.numeric import isequal
+        return isequal ( self.cosdelta(other) , -1 , scale = 1 ) 
 
-    def iscollinear ( other ) :
+    def iscollinear ( self , other ) :
         """Check if another vector is collinear
         Two vectors are collinear if they have parallel or antiparallel
         """
-        return 1 == abs ( self.cosdelta(other) ) 
+        from skhep.math.numeric import isequal
+        return isequal ( abs( self.cosdelta ( other ) ) , 1 , scale = 1 ) 
         
-    def isopposite(self, other):
+    def isopposite ( self , other):
         """Two vectors are opposite if they have the same magnitude but opposite direction."""
         added = self + other
-        return added.x == 0 and added.y == 0 and added.z == 0
+        return 0 == added 
 
     def isperpendicular(self, other):
         """Check if another vector is perpendicular."""
-        return self.dot(other) == 0.
+        from skhep.math.numeric import isequal
+        return isequal ( self.dot ( other ) , 0 , scale = max( self.mag2 , other.mag2 ) ) 
 
     def __repr__(self):
         """Class representation."""
@@ -341,7 +411,6 @@ class Vector3D(object):
     def __str__(self):
         """Simple class representation."""
         return str(tuple(self.__values))
-
 
 #-----------------------------------------------------------------------------
 # Lorentz vector class
