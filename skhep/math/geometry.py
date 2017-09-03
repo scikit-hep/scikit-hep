@@ -18,7 +18,8 @@ __all__  = (
     'Vector3D' , ## 3D-vector 
     'Point3D'  , ## 3D-point 
     'Line3D'   , ## line in 3D 
-    'Plane3D'  , ## plane in 3D 
+    'Plane3D'  , ## plane in 3D
+    'distance' , ## 3D-distance between geometry objects 
     )
 # =============================================================================
 # Import statements
@@ -146,8 +147,13 @@ class Point3D(object) :
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        raise self._vct.phi 
-
+        raise self._vct.phi
+    
+    def copy  ( self ) :
+        """Make a copy of this point
+        """
+        return Point3D( self[0], self[1],  self[2] )
+    
     def __setitem__(self, i, value) :
        """Update/set the ith points component (commencing at 0, of course)."""
        self._vct[i] = value
@@ -232,7 +238,7 @@ class Point3D(object) :
         """
         ## point + vector = point
         if isinstance ( vector , Vector3D ) :
-            newpoint  = Point3D.fromvector ( self._vct )
+            newpoint  = self.copy()
             newpoint += vector
             return newpoint
         
@@ -249,7 +255,7 @@ class Point3D(object) :
         
         ## point - vector --> point 
         if isinstance ( other , Vector3D ) :
-            newpoint  = Point3D.fromvector ( self._vct )
+            newpoint  = self.copy()
             newpoint -= other
             return newpoint
 
@@ -257,7 +263,7 @@ class Point3D(object) :
 
     def __radd__ ( self , other )  :
         """Right addition of vector and point"""
-        return other + self
+        return self + other 
 
     def __repr__(self):
         """Class representation."""
@@ -266,8 +272,29 @@ class Point3D(object) :
     def __str__(self):
         """Simple class representation."""
         return "Point3D(x={0},y={1},z={2})".format(self.x,self.y,self.z)
-
-    #
+    
+    def __eq__ ( self , other ) :
+        """Equality  criteria for two points
+        :Example:
+        >>> point1 = ...
+        >>> point2 = ...
+        >>> point1 == point2 
+        """
+        if   isinstance ( other , Point3D ) :
+            return self._vct == other.__vct 
+        elif isinstance ( other , ( float , int , long) ) :
+            return self._vct == other
+        return NotImplemented
+    
+    def __ne__ ( self , other ) :
+        """Non-equality  crietria for two points
+        :Example:
+        >>> point1 = ...
+        >>> point2 = ...
+        >>> point1 != point2 
+        """
+        return not  ( self == other )
+    
     def on_line  ( self , line ) :
         """In the point on the line?
         """
@@ -279,13 +306,23 @@ class Point3D(object) :
         """
         v = plane.point - self
         return 0 == v.mag2 or plane.normal.isperpendicular ( v ) 
-        
 
+    def distance ( self , other ) :
+        """Get ``distance'' between point  and other object
+        """
+        if   isinstance ( other , Point3D ) :
+            return abs ( self - other )
+        elif isinstance ( other ,  ( Line3D , Plane3D ) ) :
+            return other.distance ( self )
+        raise NotImplementedError("Distance from Point3D to %s is not defined" % other )
+
+        
 # =============================================================================
 # 3D-Line
 # =============================================================================
 class Line3D(object) :
     """Line in 3D space
+    Line is defined by a point on line and by the direction    
     """
     def __init__ ( self                            ,
                    point  = Point3D  ( 0  ,0 , 0 ) ,
@@ -299,8 +336,8 @@ class Line3D(object) :
         if 0 == vector.mag2  :
             raise ValueError ("Line3D: ``vector'' must be zero!" )
             
-        self.point  = Point3D .fromvector ( point  ) 
-        self.vector = Vector3D.fromvector ( vector )  
+        self.point     = point  .copy() 
+        self.direction = vector .copy() 
 
     @classmethod
     def from_points ( cls , point1 , point2 ) :
@@ -316,18 +353,23 @@ class Line3D(object) :
     def from_line   ( cls , line  ) :
         """Create the line from anoother line 
         """
-        return cls ( line.point , line.vector ) 
+        return cls ( line.point , line.direction ) 
     
     def __repr__(self):
         """Simple class representation."""
 
     def __repr__(self):
         """Simple class representation."""
-        return "<Line3D({0},{1})>".format( self.point , self.vector ) 
+        return "<Line3D({0},{1})>".format( self.point , self.direction ) 
 
     def __str__(self):
         """Simple class representation."""
-        return "Line3D({0},{1})".format( self.point , self.vector ) 
+        return "Line3D({0},{1})".format( self.point , self.direction ) 
+
+    def copy  ( self ) :
+        """Make a copy of this line 
+        """
+        return Line3D( self.point.copy() , self.direction.copy() )
 
     ## is the point on line ? 
     def __contains__ ( self , point ) :
@@ -343,17 +385,35 @@ class Line3D(object) :
     def iscollinear ( self , other ) :
         """Is the line collinear to another line or vector?
         """
-        if   isinstance ( other , Line3D   ) : other = other.vector 
+        if   isinstance ( other , Line3D   ) : other = other.direction
         elif isinstance ( other , Vector3D ) : pass
         else : raise TypeError("Line3D.iscollinear: invalid ``other'' argument" )
         ##
-        return self.vector.iscollinear ( other  )
+        return self.direction.iscollinear ( other  )
+
+    def __eq__ ( self , other ) :
+        """Equality  criteria for two lines
+        :Example:
+        >>> line1 = ...
+        >>> line2 = ...
+        >>> print line1 == line2 
+        """
+        return other.point in self  and self.collinear ( other )
+
+    def __ne__ ( self , other ) :
+        """Nonequality  criteria for two lines
+        :Example:
+        >>> line1 = ...
+        >>> line2 = ...
+        >>> print line1 != line2 
+        """
+        return not ( self  == other )
 
     def on_plane ( self , plane ) :
         """In the line on the plane?
         """
-        return self.point.on_plane ( plane ) and self.vector.isperpendicular ( plane.normal )
-
+        return self.point.on_plane ( plane ) and self.direction.isperpendicular ( plane.normal )
+    
     def point_on_line (  self , mu ) :
         """ Get the point on line, that  corresponds to parameter ``mu''
         :Exmample:
@@ -361,13 +421,97 @@ class Line3D(object) :
         >>> p0 = line.point_on_line ( 0 ) ## should be equal to line.point 
         >>> p1 = line.point_on_line ( 1 ) ## shodul be equal to line.point+line.vector 
         """
-        return self.point + mu * self.vector  
+        return self.point + mu * self.direction  
+
+    def closest_point_param ( self , point) :
+        """Get the ``mu'' parameter of the point on line that is closest to the given point in space
+        :Example:
+        >>> line  = ...
+        >>> point = ...
+        >>> mu    = line.closest_point_param ( point ) 
+        """
+        return ( self.direction * ( self.point - point ) ) / self.direction.mag2
+
+    def closest_points_param ( self , line ) :
+        """Get the ``mu'' parameters of two points on lines that is closest to each other 
+        :Example:
+        >>> line1 = ...
+        >>> line2 = ...
+        >>> mu1 , mu2  = line1.closest_points_param ( line2 ) 
+        """
+        a00  =  self.direction.mag2
+        a01  =  self.direction * line.direction
+        a01  = -a01
+        a11  = -line.direction.mag2 
         
+        deti = a00 * a11 -  a01 * a10
+        from skhep.math.numeric import isequal
+
+        ## two lines are actually parallel 
+        if isequal ( deti , 0 , scale = abs ( a00 * a11) ) :
+            return 0., line.closest_point_param ( self.point )
+
+        detinv = 1.0/deti
+
+        v  = line.point - self.point
+        
+        b0 = v * self.direction
+        b1 = v * line.direction
+        
+        mu1 = (   a11 * b0 - a01 * b1 ) * detinv
+        mu2 = (  -a01 * b0 + a00 * b1 ) * detinv
+        
+        return mu1 , mu2
+
+    def closest_point  ( self , point ) :
+        """Get the point on line that is closest to the given point in space
+        :Example:
+        >>> line  = ...
+        >>> point = ...
+        >>> closest  = line.closest_point ( point ) 
+        """
+        return self.point_on_line ( self.closest_point_param ( point ) ) 
+
+    def closest_points ( self , line ) :
+        """Get two points on lines that is closest to each other 
+        :Example:
+        >>> line1 = ...
+        >>> line2 = ...
+        >>> p1 , p2  = line1.closest_points ( line2 ) 
+        """
+        mu1,mu2 = self.closest_points_params ( line )
+        return self.point_on_line ( mu1 ), line.point_on_line ( mu2 )
+
+    def distance ( self , other ) :
+        """Get ``distance'' between line and other object
+        :Example:
+        >>> line  = ...
+        >>> point = ...
+        >>> line2 = ...
+        >>> plane = ...
+        >>> print line.distance ( line2 )
+        >>> print line.distance ( point )
+        >>> print line.distance ( plane )        
+        """
+        if   isinstance ( other , Point3D ) :
+            if other in self : return 0
+            return abs ( other -  self.closest_point ( other ) ) 
+        elif isinstance ( other ,  Line3D ) :
+            if other ==  self : return 0
+            p1,p2 = self.closest_points ( other )
+            return abs ( p1 - p2 )
+        elif isinstance ( other , Plane3D ) :
+            return other.distance ( self )
+
+        raise NotImplementedError("Distance from Line3D to %s is not defined" % other )
+
+               
 # =============================================================================
 # 3D-Plane
 # =============================================================================
 class Plane3D(object) :
-    """Planein 3D space
+    """Plane in 3D space
+    Plane is defined by a point on plane and by the normal vector
     """
     def __init__ ( self                            ,
                    point  = Point3D  ( 0  ,0 , 0 ) ,
@@ -380,9 +524,9 @@ class Plane3D(object) :
         
         if 0 == normal.mag2  :
             raise ValueError ("Plane3D: ``normal'' must be zero!" )
-            
-        self.point  = Point3D .fromvector ( point  ) 
-        self.normal = Vector3D.fromvector ( normal )  
+
+        self.point     = point  .copy() 
+        self.normal    = normal .copy() 
 
     @classmethod
     def from_points ( cls , point1 , point2 , point3 ) :
@@ -429,30 +573,93 @@ class Plane3D(object) :
         """Simple class representation."""
         return "Plane3D({0},{1})".format( self.point , self.normal ) 
 
+    def copy  ( self ) :
+        """Make a copy of this plane
+        """
+        return Plane3D( self.point.copy() , self.normal.copy() )
 
+
+    def __eq__ ( self , other ) :
+        """Equality  criteria for two planes 
+        :Example:
+        >>> plane1 = ...
+        >>> plane2 = ...
+        >>> print plane1 == plane2 
+        """
+        return other.point in self  and self.normal.iscollinear ( other.normal )
+
+    def __ne__ ( self , other ) :
+        """Nonequality  criteria for two planes 
+        :Example:
+        >>> plane1 = ...
+        >>> plane2 = ...
+        >>> print plane1 == plane2 
+        """
+        return not ( self  == other )
+
+    def distance ( self , other ) :
+        """Get ``distance'' between plane and other object
+        :Example:
+        >>> line  = ...
+        >>> point = ...
+        >>> line2 = ...
+        >>> plane = ...
+        >>> print line.distance ( line2 )
+        >>> print line.distance ( point )
+        >>> print line.distance ( plane )        
+        """
+        if   isinstance ( other , Point3D ) :
+            if other in self : return 0
+            v = other - self.point
+            return   abs( v * self.normal ) / self.normal.mag 
+        elif isinstance ( other ,  Line3D ) :
+            if self.normal.isperpendicular ( other.direction ) :
+                return self.distance ( other.point )
+            return 0
+        elif isinstance ( other , Plane3D ) :
+            if self.normal.iscollinear ( other.normal ) :
+                return self.distance ( other.point )
+            return 0
+        
+        raise NotImplementedError("Distance from Line3D to %s is not defined" % other )
+
+
+# ===========================================================================
+def distance ( obj1 , obj2 ) :
+    """Calculate 3D-distance between two geometry objects (points, lines, planes)
+    :Examples:
+    >>> line1  = ...
+    >>> line2  = ...
+    >>> point1 = ...
+    >>> point2 = ...
+    >>> plane1 = ...
+    >>> plane2 = ...
+    >>> for o1 in ( line1, line2 , point1 , point2 , plane1 , plane2 ) :
+    ...    for o2 in ( line1, line2 , point1 , point2 , plane1 , plane2 ) :
+    ...        print distance ( o1 , o2 ) 
+    """
+    return obj1.distance ( obj2 ) 
+    
 # ===========================================================================
 if '__main__' == __name__ :
 
     v = Vector3D( 1,2,3)
     p = Point3D( 1,2,3)
-    print p,v
     p += 0.5*v
-    print p
     p -= 0.5*v
-    print p, p + v*4, p - ( p + v ) 
+    p, p + v*4, p - ( p + v ) 
     
     line = Line3D ( p , v )
-    print 'P in ilne:', p in line  
+    p in line  
 
     line = Line3D.from_points ( p , Point3D(3,2,1) )
-    print 'P in ilne:', p in line  
+    p in line  
     
     plane = Plane3D( p , v )
-    print 'Line  in plane?', line in plane
+    line in plane
     
     plane = Plane3D.from_points ( p , Point3D(3,2,1) , Point3D(0,0,3) )
-    print 'Point in plane?', p    in plane
-    
+    p in plane
     
     
 # =============================================================================
