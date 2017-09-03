@@ -645,24 +645,21 @@ if '__main__' == __name__ :
 
     v = Vector3D( 1,2,3)
     p = Point3D( 1,2,3)
-    print p,v
     p += 0.5*v
-    print p
     p -= 0.5*v
-    print p, p + v*4, p - ( p + v ) 
+    p, p + v*4, p - ( p + v ) 
     
     line = Line3D ( p , v )
-    print 'P in ilne:', p in line  
+    p in line  
 
     line = Line3D.from_points ( p , Point3D(3,2,1) )
-    print 'P in ilne:', p in line  
+    p in line  
     
     plane = Plane3D( p , v )
-    print 'Line  in plane?', line in plane
+    line in plane
     
     plane = Plane3D.from_points ( p , Point3D(3,2,1) , Point3D(0,0,3) )
-    print 'Point in plane?', p    in plane
-    
+    p in plane
     
     
 # =============================================================================
