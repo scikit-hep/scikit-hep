@@ -226,7 +226,7 @@ class Vector3D(object):
         >>> a = abs(v)
         """
         return self.mag 
-        
+    
     def copy(self) :
         """Get a copy of the vector
         :Example:
@@ -234,7 +234,7 @@ class Vector3D(object):
         >>> v1 = v.copy()
         """
         return Vector3D( self[0] , self[1] , self[2] ) 
-        
+    
     def unit(self):
         """Return the normalized vector, i.e. the unit vector along the direction of itself."""
         mag = self.mag
@@ -822,15 +822,14 @@ class LorentzVector(Vector3D):
     def perp(self):
         """Transverse component of the 3D-vector."""
         return sqrt(self.perp2)
-
-     def copy(self) :
+    
+    def copy(self) :
         """Get a copy of the LorentzVector
         :Example:
         >>> v = ...
         >>> v1 = v.copy()
         """
         return LorentzVector( self[0] , self[1] , self[2] , self[3] ) 
-        
         
     def __iadd__(self, other):
         """(self)Addition with another vector, i.e. self+other.
