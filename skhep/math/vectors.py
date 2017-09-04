@@ -491,7 +491,7 @@ class Vector3D(object):
 #-----------------------------------------------------------------------------
 # Lorentz vector class
 #-----------------------------------------------------------------------------
-class LorentzVector(Vector3D):
+class LorentzVector(object):
     """
     Class representing a Lorentz vector,
     either a 4-dimensional Minkowski space-time vector or a 4-momentum vector.
