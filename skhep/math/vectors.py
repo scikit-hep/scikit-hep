@@ -271,7 +271,7 @@ class Vector3D(object):
         """Subtraction with another vector, i.e. self-other."""
         if not isinstance ( other ,  Vector3D ) : return NotImplemented
         v = self.copy()
-        v+= other
+        v-= other
         return v 
 
     def __imul__(self, other):
