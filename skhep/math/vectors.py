@@ -823,7 +823,7 @@ class LorentzVector(Vector3D):
         """Transverse component of the 3D-vector."""
         return sqrt(self.perp2)
 
-     def copy(self) :
+    def copy(self) :
         """Get a copy of the LorentzVector
         :Example:
         >>> v = ...
