@@ -937,7 +937,8 @@ class LorentzVector(Vector3D):
         elif not isinstance ( other , LorentzVector) :
             return NotImplemented
         ##
-        return isequal ( self[0] , other[0] ) and isequal ( self[1] , other[1] ) and isequal ( self[2] , other[2] ) and isequal ( self[3] , other[3] )
+        return isequal ( self[0] , other[0] ) and isequal ( self[1] , other[1] ) and isequal ( self[2] , other[2] ) \
+         and isequal ( self[3] , other[3] )
 
     def __ne__  (self, other) :
         """Non-equality to another LorentzVector
