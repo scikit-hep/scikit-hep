@@ -16,15 +16,7 @@ Two vector classes are available:
 # -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from math import sqrt, atan2, cos, sin, acos, degrees, fabs, log, pi, sinh
-import collections
-
-# -----------------------------------------------------------------------------
-# Useful functions
-# -----------------------------------------------------------------------------
-
-def isclose(a, b, rel_tol=1e-9, abs_tol=1e-10):
-    return abs(a-b) <= max( rel_tol * max(abs(a), abs(b)), abs_tol )
+from math import sqrt, atan2, cos, sin, acos, degrees
 
 # -----------------------------------------------------------------------------
 # Vector class in 3D
@@ -153,7 +145,7 @@ class Vector3D(object):
     def r(self):
         """Return the spherical coordinate r."""
         return self.mag
-     
+        
     @property   
     def costheta(self):
         """Return the cosinus of the spherical coordinate theta."""
@@ -171,7 +163,16 @@ class Vector3D(object):
         """
         theta = acos(self.costheta)
         return theta if not deg else degrees(theta)
-    
+
+    @property
+    def theta(self, deg=False):
+        """Return the spherical coordinate theta.
+
+        Options:
+           deg : return the angle in degrees (default is radians)
+        """
+        raise NotImplementedError
+
     @property
     def phi(self, deg=False):
         """Return the spherical or cylindrical coordinate phi.
@@ -179,11 +180,9 @@ class Vector3D(object):
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        if self.x == 0. and self.y == 0.:
-            return 0.
         phi = atan2(self.y, self.x)
         return phi if not deg else degrees(phi)
-            
+
     def set(self, x, y, z):
         """Update the vector components all at once."""
         self.__values = [x, y, z]
@@ -220,17 +219,22 @@ class Vector3D(object):
     def mag2(self):
         """Square of the magnitude, a.k.a. norm, of the vector."""
         return sum(v ** 2 for v in self.__values)
-        
-    @property
-    def perp2(self):
-        """Square of the transverse component, in the (x,y) plane, of the vector."""
-        return self.x**2 + self.y**2
-        
-    @property
-    def perp(self):
-        """Transverse component, in the (x,y) plane, of the vector."""
-        return sqrt(self.perp2)
 
+    def __abs__ ( self ) :
+        """Get the absolute value for the vector
+        >>> v = ...
+        >>> a = abs(v)
+        """
+        return self.mag 
+        
+    def copy(self) :
+        """Get a copy of the vector
+        :Example:
+        >>> v = ...
+        >>> v1 = v.copy()
+        """
+        return Vector3D( self[0] , self[1] , self[2] ) 
+        
     def unit(self):
         """Return the normalized vector, i.e. the unit vector along the direction of itself."""
         mag = self.mag
@@ -239,18 +243,69 @@ class Vector3D(object):
         else:
             return self
 
-    def perpendicular(self):
-        """Return the vector perpendicular to itself."""
-        raise NotImplementedError
+    def __iadd__(self, other):
+        """(self)Addition with another vector, i.e. self+other.
+        :Example:
+        >>> v1  = ...
+        >>> v2  = ...
+        >>> v1 += v2  
+        """
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented 
+        self.__values[0] += other.__values[0]
+        self.__values[1] += other.__values[1]
+        self.__values[2] += other.__values[2]
+        return self 
+
+    def __isub__(self, other):
+        """(self)Subtraction with another vector, i.e. self+other.
+        :Example:
+        >>> v1  = ...
+        >>> v2  = ...
+        >>> v1 -= v2  
+        """
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented 
+        self.__values[0] -= other.__values[0]
+        self.__values[1] -= other.__values[1]
+        self.__values[2] -= other.__values[2]
+        return self 
 
     def __add__(self, other):
         """Addition with another vector, i.e. self+other."""
-        return Vector3D.fromiterable([v1 + v2 for v1, v2 in zip(self.__values, other.__values)])
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented
+        v = self.copy()
+        v+= other
+        return v 
 
     def __sub__(self, other):
         """Subtraction with another vector, i.e. self-other."""
-        return Vector3D.fromiterable([v1 - v2 for v1, v2 in zip(self.__values, other.__values)])
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented
+        v = self.copy()
+        v+= other
+        return v 
 
+    def __imul__(self, other):
+        """Scaling of the vector  y a number
+        
+        :Example:
+        >>> v = ...
+        >>> v *= 2 
+        """
+        if isinstance ( other , ( int , float ) ) :
+            return Vector3D.fromiterable ( [v * other for v in self.__values ] )
+        else:
+            return NotImplemented 
+
+    def __idiv__(self, other):
+        """Scaling of the vector  y a number
+        
+        :Example:
+        >>> v  = ...
+        >>> v /= 2 
+        """
+        if not isinstance ( other , ( int , float ) ) or 0 == other : return NotImplemented 
+        self *= ( 1.0/other )
+        return self
+    
     def __mul__(self, other):
         """Multiplication of the vector by either another vector or a number.
         Multiplication of two vectors is equivalent to the dot product, see dot(...).
@@ -259,12 +314,11 @@ class Vector3D(object):
         >>> v2 = v1 * 2
         >>> number = v1 * v3
         """
-        if isinstance(other, (int, float)):
-            return Vector3D.fromiterable([v * other for v in self.__values])
-        elif isinstance(other, Vector3D):
+        if isinstance ( other , Vector3D ):
             return self.dot(other)
-        else:
-            raise TypeError('Input object not a vector nor a number! Cannot multiply.')
+        v = self.copy()
+        v *= other
+        return v
 
     def __rmul__(self, other):
         """Right multiplication of the vector by either another vector or a number."""
@@ -272,37 +326,63 @@ class Vector3D(object):
 
     def __div__(self, number):
         """Division of the vector by a number."""
-        if not isinstance(number, (int,float)):
-            raise ValueError('Argument is not a number!')
-        if number == 0.:
-            raise ZeroDivisionError
-        return Vector3D.fromiterable([v / number for v in self.__values])
-        
-    def __eq__(self, other):
-        """Equality with another vector, i.e. self==other."""            
-        diff_x = self.__values[0] - other.__values[0]
-        diff_y = self.__values[1] - other.__values[1]
-        diff_z = self.__values[2] - other.__values[2]
-        
-        if isclose(diff_x,0) and isclose(diff_y,0) and isclose(diff_z,0):
-            return True
-        else:
-            return False
-        
+        if not isinstance ( number, ( int , float ) ) or 0 ==  number : 
+            return NotImplemented
+        v = self.copy()
+        v /=  number
+        return v
+
+    def __eq__  ( self , other ) :
+        """Equality to another vector, or, equality to zero
+        :Example:
+        >>> v1 = ...
+        >>> v2 = ...
+        >>> print v1 == v2
+        >>> print v1 == 0  
+        """
+        from skhep.math.numeric import isequal
+
+        ## comparsion with scalar zero, very useful  in practice
+        if isinstance ( other , ( float , int , long ) ) and isequal ( other , 0 ) : 
+            return isequal ( self[0] , 0 ) and isequal ( self[1] , 0 ) and isequal ( self[2] , 0 ) 
+        elif not isinstance ( other , Vector3D) :
+            return NotImplemented
+        ##
+        return isequal ( self[0] , other[0] ) and isequal ( self[1] , other[1] ) and isequal ( self[2] , other[2] )  
+
+    def __ne__  (self, other) :
+        """Non-equality to another vector
+        :Example:
+        >>> v1 = ...
+        >>> v2 = ...
+        >>> print v1 != v2 
+        """
+        return not ( self == other )
+
+    def __nonzero__ ( self ) :
+        """Nonzero  vector?
+        :Example:
+        >>> vct = ...
+        >>> if vct : ...
+        """
+        return 0 != self.mag2
+
+    
+    __bool__ = __nonzero__
+    
     def __iter__(self):
         """Iterator implementation for the vector components."""
         return self.__values.__iter__()
-        
+
     def dot(self, other):
         """Dot product with another vector."""
         return sum(v1 * v2 for v1, v2 in zip(self.__values, other.__values))
 
-    def cross(self, other):
+    def cross(self, other ):
         """Cross product with another vector."""
-        v1, v2 = self.__values, other.__values
-        return Vector3D(v1[1] * v2[2] - v1[2] * v2[1],
-                        v1[2] * v2[0] - v1[0] * v2[2],
-                        v1[0] * v2[1] - v1[1] * v2[0]
+        return Vector3D( self[1] * other[2] - self[2] * other[1],
+                         self[2] * other[0] - self[0] * other[2],
+                         self[0] * other[1] - self[1] * other[0]
                         )
                         
     def rotate(self, angle, *args):
@@ -333,7 +413,7 @@ class Vector3D(object):
         zp = (ux * uz * c1 - uy * s) * self.x + (uy * uz * c1 + ux * s) * self.y \
             + (c + uz**2 * c1) * self.z 
             
-        return Vector3D(xp,yp,zp)
+        return Vector3D(xp, yp, zp)
         
     def rotatex(self, angle):
         """Rotate vector by a given angle (in radians) around the x axis."""
@@ -346,6 +426,18 @@ class Vector3D(object):
     def rotatez(self, angle):
         """Rotate vector by a given angle (in radians) around the z axis."""
         return self.rotate(angle, 0, 0, 1)
+    
+    def cosdelta ( self , other ) :
+        """Get cos(angle) with respect to another vector
+        """
+        m1 = self.mag2
+        if 0 >= m1 : return 1.0
+        m2 = other.mag2
+        if 0 >= m2 : return 1.0
+        
+        r = self.dot( other ) / sqrt ( m1 * m2 ) 
+        return max ( -1.0 , min ( 1.0 , r ) )
+    
         
     def angle(self, other, deg=False):
         """Angle with respect to another vector.
@@ -353,38 +445,40 @@ class Vector3D(object):
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        prod_mag = self.mag * other.mag
-
-        if prod_mag <= 0.:
-            return 0.
-        else:
-            arg = self.dot(other) / prod_mag
-            if arg > 1.:
-                arg = 1.
-            if arg < -1.:
-                arg = -1.
-            return acos(arg) if not deg else degrees(acos(arg))
+        cd = self.cosdelta ( other ) 
+        return acos(cd) if not deg else degrees(acos(cd))
 
     def isparallel(self, other):
         """Check if another vector is parallel.
         Two vectors are parallel if they have the same direction but not necessarily the same magnitude.
         """
-        return isclose(self.dot(other), self.mag * other.mag)
+        from skhep.math.numeric import isequal
+        return isequal ( self.cosdelta(other)  , 1 ) 
 
     def isantiparallel(self, other):
         """Check if another vector is antiparallel.
         Two vectors are antiparallel if they have opposite direction but not necessarily the same magnitude.
         """
-        return isclose(self.dot(other), -self.mag * other.mag)
+        from skhep.math.numeric import isequal
+        return isequal ( self.cosdelta(other) , -1 ) 
 
-    def isopposite(self, other):
+    def iscollinear ( self , other ) :
+        """Check if another vector is collinear
+        Two vectors are collinear if they have parallel or antiparallel
+        """
+        from skhep.math.numeric import isequal
+        return isequal ( abs ( self.cosdelta ( other ) ) , 1 ) 
+    
+    def isopposite ( self , other):
         """Two vectors are opposite if they have the same magnitude but opposite direction."""
+        from skhep.math.numeric import isequal
         added = self + other
-        return isclose(added.mag, 0.)
+        return isequal ( added , 0 ) 
 
     def isperpendicular(self, other):
         """Check if another vector is perpendicular."""
-        return isclose(self.dot(other), 0.)
+        from skhep.math.numeric import isequal
+        return isequal ( self.dot ( other ) , 0 , scale = max( self.mag2 , other.mag2 ) ) 
 
     def __repr__(self):
         """Class representation."""
@@ -394,11 +488,10 @@ class Vector3D(object):
         """Simple class representation."""
         return str(tuple(self.__values))
 
-
 #-----------------------------------------------------------------------------
 # Lorentz vector class
 #-----------------------------------------------------------------------------
-class LorentzVector(object):
+class LorentzVector(Vector3D):
     """
     Class representing a Lorentz vector,
     either a 4-dimensional Minkowski space-time vector or a 4-momentum vector.
@@ -558,7 +651,56 @@ class LorentzVector(object):
     def e(self, value):
         """Sets e, aka momentum coordinate at position 3."""
         self.__values[3] = value
-    
+        
+    def set(self, x, y, z, t):
+        """Update/set all components at once."""
+        self.__values = [x, y, z, t]
+        
+    def setpxpypzm(self, px, py, pz, m):
+        """Set the px,py,pz components and the mass."""
+        self.__values[0] = px; self.__values[1] = py; self.__values[2] = pz
+        if m > 0.:
+            self.__values[3] = sqrt(px**2 + py**2 + pz**2 + m**2)
+        else:
+            self.__values[3] = sqrt(px**2 + py**2 + pz**2 - m**2)
+            
+    def setpxpypze(self, px, py, pz, e):
+        """Set the px,py,pz components and the energy."""
+        self.set(px,py,pz,e)
+        
+    def setptetaphim(self, pt, eta, phi, m):
+        """ Set the transverse momentum, the pseudorapidity, the angle phi and the mass."""
+        px, py, pz = pt*cos(phi), pt*sin(phi), pt*sinh(eta)
+        self.setpxpypzm(px,py,pz,m)
+        
+    def setptetaphie(self, pt, eta, phi, e):
+        """ Set the transverse momentum, the pseudorapidity, the angle phi and the energy."""
+        px, py, pz = pt*cos(phi), pt*sin(phi), pt*sinh(eta)
+        self.setpxpypze(px,py,pz,e)
+        
+    def __setitem__(self, i, value):
+        """Update/set the ith vector component (commencing at 0, of course)."""
+        try:
+            self.__values[i] = value
+        except IndexError:
+            raise IndexError(
+                'Vector3D is of length {0} only!'.format(len(self)))
+
+    def __getitem__(self, i):
+        """Get the ith vector component (commencing at 0, of course)."""
+        try:
+            return self.__values[i]
+        except IndexError:
+            raise IndexError( 'LorentzVector is of length {0} only!'.format(len(self)))
+
+    def tolist(self):
+        """Return the LorentzVector as a list."""
+        return list(self.__values)
+
+    def __len__(self):
+        """Length of the LorentzVector, i.e. the number of elements = 4."""
+        return len(self.__values)
+        
     @property
     def p(self):
         """Return the momentum, aka norm of the momentum 3D-vector."""
@@ -592,7 +734,7 @@ class LorentzVector(object):
     def mass2(self):
         """Return the square of the invariant mass."""
         return self.m2
-      
+        
     @property  
     def mt(self):
         """Return the transverse mass."""
@@ -681,94 +823,132 @@ class LorentzVector(object):
         """Transverse component of the 3D-vector."""
         return sqrt(self.perp2)
 
-    def set(self, x, y, z, t):
-        """Update/set all components at once."""
-        self.__values = [x, y, z, t]
-
-    def setpx(self, px):
-        """Update/set the px component."""
-        self.__values[0] = px
-
-    def setpy(self, py):
-        """Update/set the py component."""
-        self.__values[1] = py
-
-    def setpz(self, pz):
-        """Update/set the pz component."""
-        self.__values[2] = pz
-
-    def sete(self, e):
-        """Update/set the energy/time component."""
-        self.__values[3] = e
+     def copy(self) :
+        """Get a copy of the LorentzVector
+        :Example:
+        >>> v = ...
+        >>> v1 = v.copy()
+        """
+        return LorentzVector( self[0] , self[1] , self[2] , self[3] ) 
         
-    def setpxpypzm(self, px, py, pz, m):
-        """Set the px,py,pz components and the mass."""
-        self.__values[0] = px; self.__values[1] = py; self.__values[2] = pz
-        if m > 0.:
-            self.__values[3] = sqrt(px**2 + py**2 + pz**2 + m**2)
-        else:
-            self.__values[3] = sqrt(px**2 + py**2 + pz**2 - m**2)
-            
-    def setpxpypze(self, px, py, pz, e):
-        """Set the px,py,pz components and the energy."""
-        self.set(px,py,pz,e)
         
-    def setptetaphim(self, pt, eta, phi, m):
-        """ Set the transverse momentum, the pseudorapidity, the angle phi and the mass."""
-        px, py, pz = pt*cos(phi), pt*sin(phi), pt*sinh(eta)
-        self.setpxpypzm(px,py,pz,m)
-        
-    def setptetaphie(self, pt, eta, phi, e):
-        """ Set the transverse momentum, the pseudorapidity, the angle phi and the energy."""
-        px, py, pz = pt*cos(phi), pt*sin(phi), pt*sinh(eta)
-        self.setpxpypze(px,py,pz,e)
-            
+    def __iadd__(self, other):
+        """(self)Addition with another vector, i.e. self+other.
+        :Example:
+        >>> v1  = ...
+        >>> v2  = ...
+        >>> v1 += v2  
+        """
+        if not isinstance ( other ,  LorentzVector ) : return NotImplemented 
+        self.__values[0] += other.__values[0]
+        self.__values[1] += other.__values[1]
+        self.__values[2] += other.__values[2]
+        self.__values[3] += other.__values[3]
+        return self 
+
+    def __isub__(self, other):
+        """(self)Subtraction with another vector, i.e. self+other.
+        :Example:
+        >>> v1  = ...
+        >>> v2  = ...
+        >>> v1 -= v2  
+        """
+        if not isinstance ( other ,  LorentzVector ) : return NotImplemented 
+        self.__values[0] -= other.__values[0]
+        self.__values[1] -= other.__values[1]
+        self.__values[2] -= other.__values[2]
+        self.__values[3] -= other.__values[3]
+        return self
+
     def __add__(self, other):
         """Addition with another 4-vector, i.e. self+other."""
-        return LorentzVector.fromiterable([v1 + v2 for v1, v2 in zip(self.__values, other.__values)])
+        if not isinstance ( other ,  LorentzVector ) : return NotImplemented
+            v = self.copy()
+            v+= other
+            return v 
 
     def __sub__(self, other):
         """Subtraction with another 4-vector, i.e. self-other."""
-        return LorentzVector.fromiterable([v1 - v2 for v1, v2 in zip(self.__values, other.__values)])
+        if not isinstance ( other ,  LorentzVector ) : return NotImplemented
+            v = self.copy()
+            v-= other
+            return v 
+        
+    def __imul__(self, other):
+        """Scaling of the LorentzVector with a number
+        
+        :Example:
+        >>> v = ...
+        >>> v *= 2 
+        """
+        if isinstance ( other , ( int , float ) ) :
+            return LorentzVector.fromiterable ( [v * other for v in self.__values ] )
+        else:
+            return NotImplemented 
+
+    def __idiv__(self, other):
+        """Scaling of the LorentzVector with a number
+        
+        :Example:
+        >>> v  = ...
+        >>> v /= 2 
+        """
+        if not isinstance ( other , ( int , float ) ) or 0 == other : return NotImplemented 
+        self *= ( 1.0/other )
+        return self
 
     def __mul__(self, other):
-        """Multiplication of the Lorentz vector by either another vector or a number.
-        Multiplication of two vectors is equivalent to the dot product, see dot(...).
-
+        """Multiplication of the LorentzVector by either another LorentzVector or a number.
+        Multiplication of two LorentzVector is equivalent to the dot product, see dot(...).
         Example:
         >>> v2 = v1 * 2
         >>> number = v1 * v3
         """
-        if isinstance(other, (int, float)):
-            return LorentzVector.fromiterable([v * other for v in self.__values])
-        elif isinstance(other, LorentzVector):
+        if isinstance ( other , LorentzVector ):
             return self.dot(other)
-        else:
-            raise TypeError('Input object not a Lorentz vector nor a number! Cannot multiply.')
-            
+        v = self.copy()
+        v *= other
+        return v
+
     def __rmul__(self, other):
-        """Right multiplication of the Lorentz vector by either another vector or a number."""
+        """Right multiplication of the LorentzVector by either another LorentzVector or a number."""
         return self.__mul__(other)
 
     def __div__(self, number):
-        """Division of the Lorentz vector by a number."""
-        if not isinstance(number, (int,float)):
-            raise ValueError('Argument is not a number!')
-        if number == 0.:
-            raise ZeroDivisionError
-        return LorentzVector.fromiterable([v / number for v in self.__values])
+        """Division of the LorentzVector by a number."""
+        if not isinstance ( number, ( int , float ) ) or 0 ==  number : 
+            return NotImplemented
+        v = self.copy()
+        v /=  number
+        return v
         
-    def __eq__(self, other):
-        """Equality with another Lorentz vector, i.e. self==other."""
-        diff_x = self.__values[0] - other.__values[0]
-        diff_y = self.__values[1] - other.__values[1]
-        diff_z = self.__values[2] - other.__values[2]
-        diff_t = self.__values[3] - other.__values[3]
-        
-        if isclose(diff_x,0) and isclose(diff_y,0) and isclose(diff_z,0) and isclose(diff_t,0):
-            return True
-        else:
-            return False
+    def __eq__  ( self , other ) :
+        """Equality to another LorentzVector, or, equality to zero
+        :Example:
+        >>> v1 = ...
+        >>> v2 = ...
+        >>> print v1 == v2
+        >>> print v1 == 0  
+        """
+        from skhep.math.numeric import isequal
+
+        ## comparsion with scalar zero, very useful  in practice
+        if isinstance ( other , ( float , int , long ) ) and isequal ( other , 0 ) : 
+            return isequal ( self[0] , 0 ) and isequal ( self[1] , 0 ) and isequal ( self[2] , 0 ) 
+        elif not isinstance ( other , LorentzVector) :
+            return NotImplemented
+        ##
+        return isequal ( self[0] , other[0] ) and isequal ( self[1] , other[1] ) \
+         and isequal ( self[2] , other[2] ) and isequal ( self[3] , other[3] )
+
+    def __ne__  (self, other) :
+        """Non-equality to another LorentzVector
+        :Example:
+        >>> v1 = ...
+        >>> v2 = ...
+        >>> print v1 != v2 
+        """
+        return not ( self == other )
 
     def __iter__(self):
         """Iterator implementation for the 4-vector components."""
@@ -832,7 +1012,7 @@ class LorentzVector(object):
         zp = (ux * uz * c1 - uy * s) * self.x + (uy * uz * c1 + ux * s) * self.y \
             + (c + uz**2 * c1) * self.z 
                 
-        return LorentzVector(xp,yp,zp,self.t)
+        return LorentzVector(xp, yp, zp, self.t)
         
     def rotatex(self, angle):
         """Rotate vector by a given angle (in radians) around the x axis."""
@@ -871,15 +1051,18 @@ class LorentzVector(object):
 
     def isspacelike(self):
         """Check if Lorentz vector is space-like."""
-        return self.mag2 < 0. and not isclose(self.mag2, 0.)
+        from skhep.math.numeric import isequal
+        return self.mag2 < 0. and not isequal(self.mag2, 0.)
 
     def istimelike(self):
         """Check if Lorentz vector is time-like."""
-        return self.mag2 > 0. and not isclose(self.mag2, 0.)
+        from skhep.math.numeric import isequal
+        return self.mag2 > 0. and not isequal(self.mag2, 0.)
 
     def islightlike(self):
         """Check if Lorentz vector is light-like."""
-        return isclose(self.mag2, 0.)
+        from skhep.math.numeric import isequal
+        return isequal(self.mag2, 0.)
 
     def __repr__(self):
         """Class representation."""
