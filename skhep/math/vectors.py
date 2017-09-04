@@ -937,8 +937,7 @@ class LorentzVector(Vector3D):
         elif not isinstance ( other , LorentzVector) :
             return NotImplemented
         ##
-        return isequal ( self[0] , other[0] ) and isequal ( self[1] , other[1] ) \
-         and isequal ( self[2] , other[2] ) and isequal ( self[3] , other[3] )
+        return isequal ( self[0] , other[0] ) and isequal ( self[1] , other[1] ) and isequal ( self[2] , other[2] ) and isequal ( self[3] , other[3] )
 
     def __ne__  (self, other) :
         """Non-equality to another LorentzVector
@@ -950,7 +949,7 @@ class LorentzVector(Vector3D):
         return not ( self == other )
 
     def __iter__(self):
-        """Iterator implementation for the 4-vector components."""
+        """Iterator implementation for the LorentzVector components."""
         return self.__values.__iter__()
         
     def boost(self, *args):
