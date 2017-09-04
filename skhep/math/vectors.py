@@ -16,7 +16,7 @@ Two vector classes are available:
 # -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from math import sqrt, atan2, cos, sin, acos, degrees
+from math import sqrt, atan2, cos, sin, acos, degrees, log, pi, sinh
 
 # -----------------------------------------------------------------------------
 # Vector class in 3D
@@ -163,15 +163,6 @@ class Vector3D(object):
         """
         theta = acos(self.costheta)
         return theta if not deg else degrees(theta)
-
-    @property
-    def theta(self, deg=False):
-        """Return the spherical coordinate theta.
-
-        Options:
-           deg : return the angle in degrees (default is radians)
-        """
-        raise NotImplementedError
 
     @property
     def phi(self, deg=False):
@@ -473,7 +464,7 @@ class Vector3D(object):
         """Two vectors are opposite if they have the same magnitude but opposite direction."""
         from skhep.math.numeric import isequal
         added = self + other
-        return isequal ( added , 0 )
+        return added == 0
 
     def isperpendicular(self, other):
         """Check if another vector is perpendicular."""
