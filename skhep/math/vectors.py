@@ -226,7 +226,7 @@ class Vector3D(object):
         >>> a = abs(v)
         """
         return self.mag 
-        
+    
     def copy(self) :
         """Get a copy of the vector
         :Example:
@@ -234,7 +234,7 @@ class Vector3D(object):
         >>> v1 = v.copy()
         """
         return Vector3D( self[0] , self[1] , self[2] ) 
-        
+    
     def unit(self):
         """Return the normalized vector, i.e. the unit vector along the direction of itself."""
         mag = self.mag
@@ -473,7 +473,7 @@ class Vector3D(object):
         """Two vectors are opposite if they have the same magnitude but opposite direction."""
         from skhep.math.numeric import isequal
         added = self + other
-        return isequal ( added , 0 ) 
+        return isequal ( added , 0 )
 
     def isperpendicular(self, other):
         """Check if another vector is perpendicular."""
@@ -831,7 +831,6 @@ class LorentzVector(Vector3D):
         """
         return LorentzVector( self[0] , self[1] , self[2] , self[3] ) 
         
-        
     def __iadd__(self, other):
         """(self)Addition with another vector, i.e. self+other.
         :Example:
@@ -863,16 +862,16 @@ class LorentzVector(Vector3D):
     def __add__(self, other):
         """Addition with another 4-vector, i.e. self+other."""
         if not isinstance ( other ,  LorentzVector ) : return NotImplemented
-            v = self.copy()
-            v+= other
-            return v 
+        v = self.copy()
+        v+= other
+        return v 
 
     def __sub__(self, other):
         """Subtraction with another 4-vector, i.e. self-other."""
         if not isinstance ( other ,  LorentzVector ) : return NotImplemented
-            v = self.copy()
-            v-= other
-            return v 
+        v = self.copy()
+        v-= other
+        return v 
         
     def __imul__(self, other):
         """Scaling of the LorentzVector with a number
