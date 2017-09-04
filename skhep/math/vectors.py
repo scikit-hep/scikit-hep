@@ -473,7 +473,7 @@ class Vector3D(object):
         """Two vectors are opposite if they have the same magnitude but opposite direction."""
         from skhep.math.numeric import isequal
         added = self + other
-        return isequal ( added , 0 ) 
+        return isequal ( added , 0 )
 
     def isperpendicular(self, other):
         """Check if another vector is perpendicular."""
