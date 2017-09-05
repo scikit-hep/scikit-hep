@@ -285,8 +285,19 @@ class Vector3D(object):
             return Vector3D.fromiterable ( [v * other for v in self.__values ] )
         else:
             return NotImplemented 
-
+                    
     def __idiv__(self, other):
+        """Scaling of the vector by a number
+        
+        :Example:
+        >>> v  = ...
+        >>> v /= 2 
+        """
+        if not isinstance ( other , ( int , float ) ) or 0 == other : return NotImplemented 
+        self *= ( 1.0/other )
+        return self
+        
+    def __itruediv__(self, other):
         """Scaling of the vector by a number
         
         :Example:
@@ -314,8 +325,16 @@ class Vector3D(object):
     def __rmul__(self, other):
         """Right multiplication of the vector by either another vector or a number."""
         return self.__mul__(other)
-
+        
     def __div__(self, number):
+        """Division of the vector by a number."""
+        if not isinstance ( number, ( int , float ) ) or 0 ==  number : 
+            return NotImplemented
+        v = self.copy()
+        v /=  number
+        return v
+        
+    def __truediv__(self, number):
         """Division of the vector by a number."""
         if not isinstance ( number, ( int , float ) ) or 0 ==  number : 
             return NotImplemented
@@ -886,6 +905,17 @@ class LorentzVector(object):
         if not isinstance ( other , ( int , float ) ) or 0 == other : return NotImplemented 
         self *= ( 1.0/other )
         return self
+        
+    def __itruediv__(self, other):
+        """Scaling of the LorentzVector with a number
+        
+        :Example:
+        >>> v  = ...
+        >>> v /= 2 
+        """
+        if not isinstance ( other , ( int , float ) ) or 0 == other : return NotImplemented 
+        self *= ( 1.0/other )
+        return self
 
     def __mul__(self, other):
         """Multiplication of the LorentzVector by either another LorentzVector or a number.
@@ -905,6 +935,14 @@ class LorentzVector(object):
         return self.__mul__(other)
 
     def __div__(self, number):
+        """Division of the LorentzVector by a number."""
+        if not isinstance ( number, ( int , float ) ) or 0 ==  number : 
+            return NotImplemented
+        v = self.copy()
+        v /=  number
+        return v
+        
+    def __truediv__(self, number):
         """Division of the LorentzVector by a number."""
         if not isinstance ( number, ( int , float ) ) or 0 ==  number : 
             return NotImplemented
