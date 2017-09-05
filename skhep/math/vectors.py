@@ -287,7 +287,7 @@ class Vector3D(object):
             return NotImplemented 
 
     def __idiv__(self, other):
-        """Scaling of the vector  y a number
+        """Scaling of the vector by a number
         
         :Example:
         >>> v  = ...
@@ -334,7 +334,7 @@ class Vector3D(object):
         from skhep.math.numeric import isequal
 
         ## comparsion with scalar zero, very useful  in practice
-        if isinstance ( other , ( float , int , long ) ) and isequal ( other , 0 ) : 
+        if isinstance ( other , ( float , int ) ) and isequal ( other , 0 ) : 
             return isequal ( self[0] , 0 ) and isequal ( self[1] , 0 ) and isequal ( self[2] , 0 ) 
         elif not isinstance ( other , Vector3D) :
             return NotImplemented
@@ -923,7 +923,7 @@ class LorentzVector(object):
         from skhep.math.numeric import isequal
 
         ## comparsion with scalar zero, very useful  in practice
-        if isinstance ( other , ( float , int , long ) ) and isequal ( other , 0 ) : 
+        if isinstance ( other , ( float , int ) ) and isequal ( other , 0 ) : 
             return isequal ( self[0] , 0 ) and isequal ( self[1] , 0 ) and isequal ( self[2] , 0 ) 
         elif not isinstance ( other , LorentzVector) :
             return NotImplemented
