@@ -67,8 +67,12 @@ class Test(unittest.TestCase):
         self.assertEqual(str(lv5), str((1., 1., 1., 0.)))
         
     def test_vectors_operators(self):
+        
+
+        
         self.assertRaises(TypeError, Vector3D.__mul__, 'str')
         self.assertRaises(TypeError, Vector3D.__div__, 'str')
+        self.assertRaises(TypeError, Vector3D.__truediv__, 'str')
 #        self.assertRaises(ZeroDivisionError, Vector3D.__div__, Vector3D(), 0.0)
         #
         v1, v2 = Vector3D(0., 0., 0.), Vector3D(1., 1., 1.)
@@ -101,6 +105,7 @@ class Test(unittest.TestCase):
         #
         self.assertRaises(TypeError, LorentzVector.__mul__, 'str')
         self.assertRaises(TypeError, LorentzVector.__div__, 'str')
+        self.assertRaises(TypeError, LorentzVector.__truediv__, 'str')
 #        self.assertRaises(ZeroDivisionError, LorentzVector.__div__, LorentzVector(), 0.0)
         #
         lv1, lv2 = LorentzVector(0., 0., 0., 0.), LorentzVector(1., 1., 1., 0.)
@@ -187,12 +192,6 @@ class Test(unittest.TestCase):
         self.assertEqual(v2.mag2, 12.)
         self.assertEqual(v2.mag, sqrt(12.))
         self.assertEqual(v1.unit().mag, 1.)
-#        self.assertEqual(v1.perp2, 2.)
-#        self.assertEqual(v1.perp, sqrt(2.))
-#        self.assertEqual(v2.perp2, 8.)
-#        self.assertEqual(v2.perp, sqrt(8.))
-#        self.assertEqual(v5.perp2, 2.)
-#        self.assertEqual(v6.perp2, 0.)
         self.assertEqual(v1.isparallel(v2), True)
         self.assertEqual(v2.isparallel(v1), True)
         self.assertEqual(v1.isantiparallel(v2), False)
