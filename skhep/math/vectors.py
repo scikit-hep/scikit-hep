@@ -230,7 +230,7 @@ class Vector3D(object):
     def unit(self):
         """Return the normalized vector, i.e. the unit vector along the direction of itself."""
         mag = self.mag
-        if mag > 0.:
+        if mag > 1.:
             return Vector3D.fromiterable([v / mag for v in self.__values])
         else:
             return self
@@ -242,7 +242,8 @@ class Vector3D(object):
         >>> v2  = ...
         >>> v1 += v2  
         """
-        if not isinstance ( other ,  Vector3D ) : raise  
+        if not isinstance ( other ,  Vector3D ) : 
+            raise InvalidOperationError("invalid operation '+=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
         self.__values[0] += other.__values[0]
         self.__values[1] += other.__values[1]
         self.__values[2] += other.__values[2]
@@ -255,7 +256,8 @@ class Vector3D(object):
         >>> v2  = ...
         >>> v1 -= v2  
         """
-        if not isinstance ( other ,  Vector3D ) : return NotImplemented 
+        if not isinstance ( other ,  Vector3D ) : 
+            raise InvalidOperationError("invalid operation '-=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__)) 
         self.__values[0] -= other.__values[0]
         self.__values[1] -= other.__values[1]
         self.__values[2] -= other.__values[2]
@@ -263,14 +265,20 @@ class Vector3D(object):
 
     def __add__(self, other):
         """Addition with another vector, i.e. self+other."""
-        if not isinstance ( other ,  Vector3D ) : return NotImplemented
+        try:
+            if not isinstance ( other ,  Vector3D ) : return other + self
+        except:
+            raise InvalidOperationError("invalid operation '+' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
         v = self.copy()
         v+= other
         return v
 
     def __sub__(self, other):
         """Subtraction with another vector, i.e. self-other."""
-        if not isinstance ( other ,  Vector3D ) : return NotImplemented
+        try:
+            if not isinstance ( other ,  Vector3D ) : return other + self
+        except:
+            raise InvalidOperationError("invalid operation '-' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
         v = self.copy()
         v-= other
         return v
@@ -285,7 +293,7 @@ class Vector3D(object):
         if isinstance ( other , ( int , float ) ) :
             return Vector3D.fromiterable ( [v * other for v in self.__values ] )
         else:
-            return NotImplemented
+            raise InvalidOperationError("invalid operation '*=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
                             
     def __itruediv__(self, number):
         """Scaling of the vector by a number
@@ -294,7 +302,8 @@ class Vector3D(object):
         >>> v  = ...
         >>> v /= 2 
         """
-        if not isinstance ( number , ( int , float ) ) : return NotImplemented
+        if not isinstance ( number , ( int , float ) ) : 
+            raise InvalidOperationError("invalid operation '/=' between a 'Vector3D' and a '{0}'".format(number.__class__.__name__))
         elif 0 == number : raise ZeroDivisionError 
         self *= ( 1.0/number )
         return self
@@ -302,7 +311,7 @@ class Vector3D(object):
     __idiv__ = __itruediv__
     
     def __mul__(self, other):
-        """""Multiplication of the vector by either another vector or a number.
+        """Multiplication of the vector by either another vector or a number.
         Multiplication of two vectors is equivalent to the dot product, see dot(...).
         Example:
         >>> v2 = v1 * 2
@@ -310,9 +319,12 @@ class Vector3D(object):
         """
         if isinstance ( other , Vector3D ):
             return self.dot(other)
-        v = self.copy()
-        v *= other
-        return v
+        try:
+            v = self.copy()
+            v *= other
+            return v
+        except InvalidOperationError:
+            raise InvalidOperationError("invalid operation '*' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
         
     def __rmul__(self, other):
         """Right multiplication of the vector by either another vector or a number."""
@@ -320,11 +332,12 @@ class Vector3D(object):
                 
     def __truediv__(self, number):
         """Division of the vector by a number."""
-        if not isinstance ( number , ( int , float ) ) : return NotImplemented
-        elif 0 == number : raise ZeroDivisionError 
-        v = self.copy()
-        v /=  number
-        return v
+        try:
+            v = self.copy()
+            v /= number
+            return v
+        except InvalidOperationError:
+            raise InvalidOperationError("invalid operation '/' between a 'Vector3D' and a '{0}'".format(number.__class__.__name__))
         
     __div__ = __truediv__
         

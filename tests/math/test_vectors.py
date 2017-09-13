@@ -126,8 +126,16 @@ class Test(unittest.TestCase):
         self.assertEqual([v for v in lv1], [1., 1., 1., 1.])
         
     def test_vectors_operators(self):
+        self.assertRaises(InvalidOperationError, Vector3D.__add__, Vector3D(), 1.)
+        self.assertRaises(InvalidOperationError, Vector3D.__iadd__, Vector3D(), "a")
+        self.assertRaises(InvalidOperationError, Vector3D.__sub__, Vector3D(), 1.)
+        self.assertRaises(InvalidOperationError, Vector3D.__isub__, Vector3D(), "a")
+        self.assertRaises(InvalidOperationError, Vector3D.__mul__, Vector3D(), "a")
+        self.assertRaises(InvalidOperationError, Vector3D.__imul__, Vector3D(), "b")
         self.assertRaises(ZeroDivisionError, Vector3D.__div__, Vector3D(), 0.0)
         self.assertRaises(ZeroDivisionError, Vector3D.__idiv__, Vector3D(), 0.0)
+        self.assertRaises(InvalidOperationError, Vector3D.__div__, Vector3D(), "a")
+        self.assertRaises(InvalidOperationError, Vector3D.__idiv__, Vector3D(), "b")
         #
         v1, v2 = Vector3D(0., 0., 0.), Vector3D(1., 1., 1.)
         v3, v4 = Vector3D(2., 2., 2.), Vector3D(3., 3., 3.)
@@ -326,6 +334,8 @@ class Test(unittest.TestCase):
         self.assertEqual(lv4.t, gamma * (lv3.t - beta * lv3.z))
         self.assertEqual(lv4, LorentzVector(lv3.x, lv3.y, lv3.z * gamma, gamma * (lv3.t - beta * lv3.z)))
         lv5 = LorentzVector(0., 0., 0., 1.)
+        self.assertEqual(lv5.beta, 0.)
+        self.assertEqual(lv5.gamma, 1.)
         self.assertEqual(lv5.boost(0,0,0), lv5)
         lv6 = lv5.boost([0,beta,0])
         self.assertEqual(lv6.x, lv5.x)
