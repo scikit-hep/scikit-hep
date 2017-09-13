@@ -418,3 +418,7 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(p9.p, p10.p, msg="Check boost to the C.O.M frame")
         p3_9, p3_10 = p9.vector, p10.vector
         self.assertEqual(p3_9.isopposite(p3_10), True)
+        p8 = LorentzVector()
+        p8.setptetaphie(10.,2E2,-2*(pi/3),20.) #sinh(eta) diverge quickly
+        self.assertEqual(p8.theta(), 0.0)
+        self.assertEqual(p8.eta, 10E10)
