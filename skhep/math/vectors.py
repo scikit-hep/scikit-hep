@@ -18,6 +18,8 @@ from __future__ import absolute_import
 
 from skhep.utils.py23 import *
 
+from skhep.utils.exceptions import *
+
 from math import sqrt, atan2, cos, sin, acos, degrees, log, pi, sinh
 
 # -----------------------------------------------------------------------------
@@ -240,14 +242,11 @@ class Vector3D(object):
         >>> v2  = ...
         >>> v1 += v2  
         """
-        if isinstance ( other ,  Vector3D ) \
-        or ( len(other) == 3 and hasattr(other, "x") and hasattr(other, "y") and hasattr(other, "z")): 
-            self.__values[0] += other.x
-            self.__values[1] += other.y
-            self.__values[2] += other.z
-            return self
-        else:
-            raise TypeError("unsupported operand type(s) for +=: 'Vector3D' and '{0}'".format(other.__class__.__name__))
+        if not isinstance ( other ,  Vector3D ) : raise  
+        self.__values[0] += other.__values[0]
+        self.__values[1] += other.__values[1]
+        self.__values[2] += other.__values[2]
+        return self
 
     def __isub__(self, other):
         """(self)Subtraction with another vector, i.e. self+other.
@@ -256,32 +255,25 @@ class Vector3D(object):
         >>> v2  = ...
         >>> v1 -= v2  
         """
-        if isinstance ( other ,  Vector3D ) \
-        or ( len(other) == 3 and hasattr(other, "x") and hasattr(other, "y") and hasattr(other, "z")): 
-            self.__values[0] -= other.x
-            self.__values[1] -= other.y
-            self.__values[2] -= other.z
-            return self 
-        else:
-            raise TypeError("unsupported operand type(s) for -=: 'Vector3D' and '{0}'".format(other.__class__.__name__))
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented 
+        self.__values[0] -= other.__values[0]
+        self.__values[1] -= other.__values[1]
+        self.__values[2] -= other.__values[2]
+        return self 
 
     def __add__(self, other):
         """Addition with another vector, i.e. self+other."""
-        try:
-            v = self.copy()
-            v += other
-            return v
-        except TypeError:
-            raise TypeError("unsupported operand type(s) for +: 'Vector3D' and '{0}'".format(other.__class__.__name__))
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented
+        v = self.copy()
+        v+= other
+        return v
 
     def __sub__(self, other):
         """Subtraction with another vector, i.e. self-other."""
-        try:
-            v = self.copy()
-            v -= other
-            return v
-        except TypeError:
-            raise TypeError("unsupported operand type(s) for -: 'Vector3D' and '{0}'".format(other.__class__.__name__))
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented
+        v = self.copy()
+        v-= other
+        return v
 
     def __imul__(self, other):
         """Scaling of the vector by a number
@@ -293,53 +285,46 @@ class Vector3D(object):
         if isinstance ( other , ( int , float ) ) :
             return Vector3D.fromiterable ( [v * other for v in self.__values ] )
         else:
-            raise TypeError("unsupported operand type(s) for *=: 'Vector3D' and '{0}'".format(other.__class__.__name__))
+            return NotImplemented
                             
     def __itruediv__(self, number):
         """Scaling of the vector by a number
-        
+            
         :Example:
         >>> v  = ...
         >>> v /= 2 
         """
-        if not isinstance ( number , ( int , float ) ):
-            raise TypeError("unsupported operand type(s) for /=: 'Vector3D' and '{0}'".format(number.__class__.__name__))
-        elif 0 == number : 
-            raise ZeroDivisionError 
+        if not isinstance ( number , ( int , float ) ) : return NotImplemented
+        elif 0 == number : raise ZeroDivisionError 
         self *= ( 1.0/number )
         return self
         
     __idiv__ = __itruediv__
     
     def __mul__(self, other):
-        """Multiplication of the vector by either another vector or a number.
+        """""Multiplication of the vector by either another vector or a number.
         Multiplication of two vectors is equivalent to the dot product, see dot(...).
-
         Example:
         >>> v2 = v1 * 2
         >>> number = v1 * v3
         """
         if isinstance ( other , Vector3D ):
             return self.dot(other)
-        try:
-            v = self.copy()
-            v *= other
-            return v
-        except TypeError:
-            raise TypeError("unsupported operand type(s) for *: 'Vector3D' and '{0}'".format(other.__class__.__name__))
-
+        v = self.copy()
+        v *= other
+        return v
+        
     def __rmul__(self, other):
         """Right multiplication of the vector by either another vector or a number."""
         return self.__mul__(other)
                 
     def __truediv__(self, number):
         """Division of the vector by a number."""
-        try:
-            v = self.copy()
-            v /= number
-            return v
-        except TypeError:
-            raise TypeError("unsupported operand type(s) for /: 'Vector3D' and '{0}'".format(number.__class__.__name__))
+        if not isinstance ( number , ( int , float ) ) : return NotImplemented
+        elif 0 == number : raise ZeroDivisionError 
+        v = self.copy()
+        v /=  number
+        return v
         
     __div__ = __truediv__
         
@@ -357,7 +342,7 @@ class Vector3D(object):
         if isinstance ( other , ( float , int , long ) ) and isequal ( other , 0 ) : 
             return isequal ( self[0] , 0 ) and isequal ( self[1] , 0 ) and isequal ( self[2] , 0 ) 
         elif not isinstance ( other , Vector3D) :
-            raise TypeError( "cannot compare 'Vector3D' to '{0}'".format(other.__class__.__name__))
+            return NotImplemented
         ##
         return isequal ( self[0] , other[0] ) and isequal ( self[1] , other[1] ) and isequal ( self[2] , other[2] )  
 
@@ -826,46 +811,48 @@ class LorentzVector(object):
         return LorentzVector( self[0] , self[1] , self[2] , self[3] ) 
         
     def __iadd__(self, other):
-        """(self)Addition with another vector, i.e. self+other.
+        """(self)Addition with another LorentzVector, i.e. self+other.
         :Example:
         >>> v1  = ...
         >>> v2  = ...
         >>> v1 += v2  
         """
         if not isinstance ( other ,  LorentzVector ) : 
-            raise TypeError("unsupported operand type(s) for +=: 'LorentzVector' and '{0}'".format(other.__class__.__name__))
+            raise InvalidOperationError("invalid operation '+=' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
         self.__vector3d += other.__vector3d
         self.__t += other.__t
         return self 
 
     def __isub__(self, other):
-        """(self)Subtraction with another vector, i.e. self+other.
+        """(self)Subtraction with another LorentzVector, i.e. self+other.
         :Example:
         >>> v1  = ...
         >>> v2  = ...
         >>> v1 -= v2  
         """
         if not isinstance ( other ,  LorentzVector ) : 
-            raise TypeError("unsupported operand type(s) for -=: 'LorentzVector' and '{0}'".format(other.__class__.__name__))
+            raise InvalidOperationError("invalid operation '-=' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
         self.__vector3d -= other.__vector3d
         self.__t -= other.__t
         return self
 
     def __add__(self, other):
-        """Addition with another 4-vector, i.e. self+other."""
-        if not isinstance ( other ,  LorentzVector ) : 
-            raise TypeError("unsupported operand type(s) for +: 'LorentzVector' and '{0}'".format(other.__class__.__name__))
-        v = self.copy()
-        v+= other
-        return v 
+        """Addition with another LorentzVector, i.e. self+other."""
+        try:
+            v = self.copy()
+            v+= other
+            return v 
+        except InvalidOperationError:
+            raise InvalidOperationError("invalid operation '+' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
 
     def __sub__(self, other):
-        """Subtraction with another 4-vector, i.e. self-other."""
-        if not isinstance ( other ,  LorentzVector ) : 
-            raise TypeError("unsupported operand type(s) for -: 'LorentzVector' and '{0}'".format(other.__class__.__name__))
-        v = self.copy()
-        v-= other
-        return v 
+        """Subtraction with another LorentzVector, i.e. self-other."""
+        try:
+            v = self.copy()
+            v-= other
+            return v 
+        except InvalidOperationError:
+            raise InvalidOperationError("invalid operation '-' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
         
     def __imul__(self, other):
         """Scaling of the LorentzVector with a number
@@ -877,7 +864,7 @@ class LorentzVector(object):
         if isinstance ( other , ( int , float ) ) :
             return LorentzVector.fromiterable ( [v * other for v in self.tolist() ] )
         else:
-            raise TypeError("unsupported operand type(s) for *: 'LorentzVector' and '{0}'".format(other.__class__.__name__)) 
+            raise InvalidOperationError("invalid operation '*=' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
         
     def __itruediv__(self, number):
         """Scaling of the LorentzVector with a number
@@ -887,9 +874,8 @@ class LorentzVector(object):
         >>> v /= 2 
         """
         if not isinstance ( number , ( int , float ) ) : 
-            raise TypeError("unsupported operand type(s) for /: 'LorentzVector' and '{0}'".format(number.__class__.__name__))
-        elif number == 0.:
-            raise ZeroDivisionError
+            raise InvalidOperationError("invalid operation '/=' between a 'LorentzVector' and a '{0}'".format(number.__class__.__name__))
+        elif 0 == number : raise ZeroDivisionError 
         self *= ( 1.0/number )
         return self
         
@@ -904,9 +890,13 @@ class LorentzVector(object):
         """
         if isinstance ( other , LorentzVector ):
             return self.dot(other)
-        v = self.copy()
-        v *= other
-        return v
+        try:
+            v = self.copy()
+            v *= other
+            return v
+        except InvalidOperationError:
+            raise InvalidOperationError("invalid operation '*' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
+            
 
     def __rmul__(self, other):
         """Right multiplication of the LorentzVector by either another LorentzVector or a number."""
@@ -914,9 +904,12 @@ class LorentzVector(object):
         
     def __truediv__(self, number):
         """Division of the LorentzVector by a number."""
-        v = self.copy()
-        v /=  number
-        return v
+        try:
+            v = self.copy()
+            v /= number
+            return v
+        except InvalidOperationError:
+            raise InvalidOperationError("invalid operation '/' between a 'LorentzVector' and a '{0}'".format(number.__class__.__name__))
     
     __div__ = __truediv__
                 
@@ -934,8 +927,8 @@ class LorentzVector(object):
         if isinstance ( other , ( float , int , long ) ) and isequal ( other , 0 ) : 
             return isequal ( self[0] , 0 ) and isequal ( self[1] , 0 ) and isequal ( self[2] , 0 ) \
              and isequal ( self[3] , 0 )
-        elif not isinstance ( other , LorentzVector) :
-            raise TypeError( "cannot compare 'LorentzVector' to '{0}'".format(other.__class__.__name__))
+        elif not isinstance ( other , LorentzVector ) :
+            return NotImplemented
         ##
         return isequal ( self[0] , other[0] ) and isequal ( self[1] , other[1] ) and isequal ( self[2] , other[2] ) \
          and isequal ( self[3] , other[3] )
@@ -954,7 +947,7 @@ class LorentzVector(object):
         return self.tolist().__iter__()
         
     def boost(self, *args):
-        """Apply a Lorentz boost on the Lorentz vector."""
+        """Apply a Lorentz boost on the LorentzVector."""
         if len(args) == 1 and isinstance(args[0], Vector3D):
             bx, by, bz = args[0].x, args[0].y, args[0].z
         elif len(args) == 1 and len(args[0]) == 3:
@@ -1003,7 +996,7 @@ class LorentzVector(object):
         return self.rotate(angle, 0, 0, 1)
         
     def dot(self, other):
-        """Dot product with another Lorentz vector."""
+        """Dot product with another LorentzVector."""
         return self.t * other.t - self.__vector3d * other.__vector3d
         
     def deltaeta(self, other):
@@ -1026,17 +1019,17 @@ class LorentzVector(object):
         return sqrt( self.deltaeta(other)**2 + self.deltaphi(other)**2 )
 
     def isspacelike(self):
-        """Check if Lorentz vector is space-like."""
+        """Check if LorentzVector is space-like."""
         from skhep.math.numeric import isequal
         return self.mag2 < 0. and not isequal(self.mag2, 0.)
 
     def istimelike(self):
-        """Check if Lorentz vector is time-like."""
+        """Check if LorentzVector is time-like."""
         from skhep.math.numeric import isequal
         return self.mag2 > 0. and not isequal(self.mag2, 0.)
 
     def islightlike(self):
-        """Check if Lorentz vector is light-like."""
+        """Check if LorentzVector is light-like."""
         from skhep.math.numeric import isequal
         return isequal(self.mag2, 0.)
 

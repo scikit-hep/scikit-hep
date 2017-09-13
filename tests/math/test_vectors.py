@@ -11,6 +11,7 @@ import unittest
 
 from skhep.math.vectors import *
 from skhep.utils.py23 import *
+from skhep.utils.exceptions import *
 from math import pi, sqrt
 
 
@@ -125,24 +126,8 @@ class Test(unittest.TestCase):
         self.assertEqual([v for v in lv1], [1., 1., 1., 1.])
         
     def test_vectors_operators(self):
-        
-        self.assertRaises(TypeError, Vector3D.__add__, 'str')
-        self.assertRaises(TypeError, Vector3D.__iadd__, 'str')
-        self.assertRaises(TypeError, Vector3D.__sub__, 'str')
-        self.assertRaises(TypeError, Vector3D.__isub__, 'str')
-        self.assertRaises(TypeError, Vector3D.__add__, LorentzVector())
-        self.assertRaises(TypeError, Vector3D.__iadd__, LorentzVector())
-        self.assertRaises(TypeError, Vector3D.__sub__, LorentzVector())
-        self.assertRaises(TypeError, Vector3D.__isub__, LorentzVector())
-        self.assertRaises(TypeError, Vector3D.__mul__, 'str')
-        self.assertRaises(TypeError, Vector3D.__imul__, 'str')
-        self.assertRaises(TypeError, Vector3D.__div__, 'str')
-        self.assertRaises(TypeError, Vector3D.__idiv__, 'str')
-        self.assertRaises(TypeError, Vector3D.__truediv__, 'str')
-        self.assertRaises(TypeError, Vector3D.__itruediv__, 'str')
-        self.assertRaises(TypeError, Vector3D.__eq__, 'str')
-        self.assertRaises(TypeError, Vector3D.__eq__, LorentzVector())
         self.assertRaises(ZeroDivisionError, Vector3D.__div__, Vector3D(), 0.0)
+        self.assertRaises(ZeroDivisionError, Vector3D.__idiv__, Vector3D(), 0.0)
         #
         v1, v2 = Vector3D(0., 0., 0.), Vector3D(1., 1., 1.)
         v3, v4 = Vector3D(2., 2., 2.), Vector3D(3., 3., 3.)
@@ -184,20 +169,19 @@ class Test(unittest.TestCase):
         self.assertTrue(v2 != v1)
         self.assertFalse(v2 != v2)
         self.assertFalse(v2 == v1)
+        self.assertFalse(v1 == "a")
+        self.assertFalse(v1 == 1)
         #
-        self.assertRaises(TypeError, LorentzVector.__add__, 'str')
-        self.assertRaises(TypeError, LorentzVector.__iadd__, 'str')
-        self.assertRaises(TypeError, LorentzVector.__sub__, 'str')
-        self.assertRaises(TypeError, LorentzVector.__isub__, 'str')
-        self.assertRaises(TypeError, LorentzVector.__mul__, 'str')
-        self.assertRaises(TypeError, LorentzVector.__imul__, 'str')
-        self.assertRaises(TypeError, LorentzVector.__div__, 'str')
-        self.assertRaises(TypeError, LorentzVector.__idiv__, 'str')
-        self.assertRaises(TypeError, LorentzVector.__truediv__, 'str')
-        self.assertRaises(TypeError, LorentzVector.__itruediv__, 'str')
-        self.assertRaises(TypeError, Vector3D.__eq__, 'str')
-        self.assertRaises(TypeError, Vector3D.__eq__, Vector3D())
+        self.assertRaises(InvalidOperationError, LorentzVector.__add__, LorentzVector(), 1.)
+        self.assertRaises(InvalidOperationError, LorentzVector.__iadd__, LorentzVector(), "a")
+        self.assertRaises(InvalidOperationError, LorentzVector.__sub__, LorentzVector(), 1.)
+        self.assertRaises(InvalidOperationError, LorentzVector.__isub__, LorentzVector(), "a")
+        self.assertRaises(InvalidOperationError, LorentzVector.__mul__, LorentzVector(), "a")
+        self.assertRaises(InvalidOperationError, LorentzVector.__imul__, LorentzVector(), "b")
         self.assertRaises(ZeroDivisionError, LorentzVector.__div__, LorentzVector(), 0.0)
+        self.assertRaises(ZeroDivisionError, LorentzVector.__idiv__, LorentzVector(), 0.0)
+        self.assertRaises(InvalidOperationError, LorentzVector.__div__, LorentzVector(), "a")
+        self.assertRaises(InvalidOperationError, LorentzVector.__idiv__, LorentzVector(), "b")
         #
         lv1, lv2 = LorentzVector(0., 0., 0., 0.), LorentzVector(1., 1., 1., 0.)
         lv3, lv4 = LorentzVector(2., 2., 2., 1.), LorentzVector(3., 3., 3., 1.)
@@ -231,6 +215,8 @@ class Test(unittest.TestCase):
         self.assertTrue(lv2 != lv1)
         self.assertFalse(lv2 != lv2)
         self.assertFalse(lv2 == lv1)
+        self.assertFalse(lv1 == "a")
+        self.assertFalse(lv1 == 1)
         
     def test_vectors_rotations(self):
         self.assertRaises(TypeError, Vector3D.rotate, Vector3D(), pi, 1)
@@ -410,7 +396,7 @@ class Test(unittest.TestCase):
         p7 = LorentzVector()
         p7.setpxpypzm(5.,5.,5.,0.)
         self.assertEqual(p7.beta, 1.)
-        self.assertGreaterEqual(p7.gamma, 10E10)
+        self.assertEqual(p7.gamma, 10E10, "Gamma of the photons is +inf")
         self.assertEqual(p7.p, p7.e, "Momentum = Energy for photons")
         self.assertEqual(p7.pseudorapidity, p7.rapidity)
         self.assertEqual(p7.pt, p7.et, msg="Transverse Momentum = Transverse Energy for photons")
