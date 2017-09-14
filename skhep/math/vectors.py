@@ -265,20 +265,14 @@ class Vector3D(object):
 
     def __add__(self, other):
         """Addition with another vector, i.e. self+other."""
-        try:
-            if not isinstance ( other ,  Vector3D ) : return other + self
-        except:
-            raise InvalidOperationError("invalid operation '+' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented
         v = self.copy()
         v+= other
         return v
 
     def __sub__(self, other):
         """Subtraction with another vector, i.e. self-other."""
-        try:
-            if not isinstance ( other ,  Vector3D ) : return other + self
-        except:
-            raise InvalidOperationError("invalid operation '-' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
+        if not isinstance ( other ,  Vector3D ) : return NotImplemented
         v = self.copy()
         v-= other
         return v
@@ -293,7 +287,7 @@ class Vector3D(object):
         if isinstance ( other , ( int , float ) ) :
             return Vector3D.fromiterable ( [v * other for v in self.__values ] )
         else:
-            raise InvalidOperationError("invalid operation '*=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
+            return NotImplemented
                             
     def __itruediv__(self, number):
         """Scaling of the vector by a number
@@ -302,8 +296,7 @@ class Vector3D(object):
         >>> v  = ...
         >>> v /= 2 
         """
-        if not isinstance ( number , ( int , float ) ) : 
-            raise InvalidOperationError("invalid operation '/=' between a 'Vector3D' and a '{0}'".format(number.__class__.__name__))
+        if not isinstance ( number , ( int , float ) ) : return NotImplemented
         elif 0 == number : raise ZeroDivisionError 
         self *= ( 1.0/number )
         return self
@@ -317,14 +310,11 @@ class Vector3D(object):
         >>> v2 = v1 * 2
         >>> number = v1 * v3
         """
-        if isinstance ( other , Vector3D ):
+        if isinstance ( other ,  Vector3D ) :
             return self.dot(other)
-        try:
-            v = self.copy()
-            v *= other
-            return v
-        except InvalidOperationError:
-            raise InvalidOperationError("invalid operation '*' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
+        v = self.copy()
+        v *= other
+        return v
         
     def __rmul__(self, other):
         """Right multiplication of the vector by either another vector or a number."""
@@ -332,13 +322,10 @@ class Vector3D(object):
                 
     def __truediv__(self, number):
         """Division of the vector by a number."""
-        try:
-            v = self.copy()
-            v /= number
-            return v
-        except InvalidOperationError:
-            raise InvalidOperationError("invalid operation '/' between a 'Vector3D' and a '{0}'".format(number.__class__.__name__))
-        
+        v = self.copy()
+        v /= number
+        return v
+
     __div__ = __truediv__
         
     def __eq__  ( self , other ) :
@@ -851,21 +838,16 @@ class LorentzVector(object):
 
     def __add__(self, other):
         """Addition with another LorentzVector, i.e. self+other."""
-        try:
-            v = self.copy()
-            v+= other
-            return v 
-        except InvalidOperationError:
-            raise InvalidOperationError("invalid operation '+' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
+        v = self.copy()
+        v+= other
+        return v 
 
     def __sub__(self, other):
         """Subtraction with another LorentzVector, i.e. self-other."""
-        try:
-            v = self.copy()
-            v-= other
-            return v 
-        except InvalidOperationError:
-            raise InvalidOperationError("invalid operation '-' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
+        v = self.copy()
+        v-= other
+        return v 
+
         
     def __imul__(self, other):
         """Scaling of the LorentzVector with a number
@@ -877,7 +859,7 @@ class LorentzVector(object):
         if isinstance ( other , ( int , float ) ) :
             return LorentzVector.fromiterable ( [v * other for v in self.tolist() ] )
         else:
-            raise InvalidOperationError("invalid operation '*=' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
+            return NotImplemented
         
     def __itruediv__(self, number):
         """Scaling of the LorentzVector with a number
@@ -886,8 +868,7 @@ class LorentzVector(object):
         >>> v  = ...
         >>> v /= 2 
         """
-        if not isinstance ( number , ( int , float ) ) : 
-            raise InvalidOperationError("invalid operation '/=' between a 'LorentzVector' and a '{0}'".format(number.__class__.__name__))
+        if not isinstance ( number , ( int , float ) ) : return NotImplemented
         elif 0 == number : raise ZeroDivisionError 
         self *= ( 1.0/number )
         return self
@@ -900,30 +881,23 @@ class LorentzVector(object):
         Example:
         >>> v2 = v1 * 2
         >>> number = v1 * v3
-        """
+        """        
         if isinstance ( other , LorentzVector ):
             return self.dot(other)
-        try:
-            v = self.copy()
-            v *= other
-            return v
-        except InvalidOperationError:
-            raise InvalidOperationError("invalid operation '*' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
-            
-
+        v = self.copy()
+        v *= other
+        return v
+        
     def __rmul__(self, other):
         """Right multiplication of the LorentzVector by either another LorentzVector or a number."""
         return self.__mul__(other)
         
     def __truediv__(self, number):
         """Division of the LorentzVector by a number."""
-        try:
-            v = self.copy()
-            v /= number
-            return v
-        except InvalidOperationError:
-            raise InvalidOperationError("invalid operation '/' between a 'LorentzVector' and a '{0}'".format(number.__class__.__name__))
-    
+        v = self.copy()
+        v /= number
+        return v
+     
     __div__ = __truediv__
                 
     def __eq__  ( self , other ) :

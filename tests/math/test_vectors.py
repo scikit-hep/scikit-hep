@@ -126,16 +126,8 @@ class Test(unittest.TestCase):
         self.assertEqual([v for v in lv1], [1., 1., 1., 1.])
         
     def test_vectors_operators(self):
-        self.assertRaises(InvalidOperationError, Vector3D.__add__, Vector3D(), 1.)
         self.assertRaises(InvalidOperationError, Vector3D.__iadd__, Vector3D(), "a")
-        self.assertRaises(InvalidOperationError, Vector3D.__sub__, Vector3D(), 1.)
         self.assertRaises(InvalidOperationError, Vector3D.__isub__, Vector3D(), "a")
-        self.assertRaises(InvalidOperationError, Vector3D.__mul__, Vector3D(), "a")
-        self.assertRaises(InvalidOperationError, Vector3D.__imul__, Vector3D(), "b")
-        self.assertRaises(ZeroDivisionError, Vector3D.__div__, Vector3D(), 0.0)
-        self.assertRaises(ZeroDivisionError, Vector3D.__idiv__, Vector3D(), 0.0)
-        self.assertRaises(InvalidOperationError, Vector3D.__div__, Vector3D(), "a")
-        self.assertRaises(InvalidOperationError, Vector3D.__idiv__, Vector3D(), "b")
         #
         v1, v2 = Vector3D(0., 0., 0.), Vector3D(1., 1., 1.)
         v3, v4 = Vector3D(2., 2., 2.), Vector3D(3., 3., 3.)
@@ -180,16 +172,8 @@ class Test(unittest.TestCase):
         self.assertFalse(v1 == "a")
         self.assertFalse(v1 == 1)
         #
-        self.assertRaises(InvalidOperationError, LorentzVector.__add__, LorentzVector(), 1.)
-        self.assertRaises(InvalidOperationError, LorentzVector.__iadd__, LorentzVector(), "a")
-        self.assertRaises(InvalidOperationError, LorentzVector.__sub__, LorentzVector(), 1.)
-        self.assertRaises(InvalidOperationError, LorentzVector.__isub__, LorentzVector(), "a")
-        self.assertRaises(InvalidOperationError, LorentzVector.__mul__, LorentzVector(), "a")
-        self.assertRaises(InvalidOperationError, LorentzVector.__imul__, LorentzVector(), "b")
         self.assertRaises(ZeroDivisionError, LorentzVector.__div__, LorentzVector(), 0.0)
         self.assertRaises(ZeroDivisionError, LorentzVector.__idiv__, LorentzVector(), 0.0)
-        self.assertRaises(InvalidOperationError, LorentzVector.__div__, LorentzVector(), "a")
-        self.assertRaises(InvalidOperationError, LorentzVector.__idiv__, LorentzVector(), "b")
         #
         lv1, lv2 = LorentzVector(0., 0., 0., 0.), LorentzVector(1., 1., 1., 0.)
         lv3, lv4 = LorentzVector(2., 2., 2., 1.), LorentzVector(3., 3., 3., 1.)
