@@ -287,7 +287,7 @@ class Vector3D(object):
         if isinstance ( other , ( int , float ) ) :
             return Vector3D.fromiterable ( [v * other for v in self.__values ] )
         else:
-            return NotImplemented
+            raise InvalidOperationError("invalid operation '*=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
                             
     def __itruediv__(self, number):
         """Scaling of the vector by a number
@@ -296,7 +296,8 @@ class Vector3D(object):
         >>> v  = ...
         >>> v /= 2 
         """
-        if not isinstance ( number , ( int , float ) ) : return NotImplemented
+        if not isinstance ( number , ( int , float ) ) : 
+            raise InvalidOperationError("invalid operation '/=' between a 'Vector3D' and a '{0}'".format(number.__class__.__name__))
         elif 0 == number : raise ZeroDivisionError 
         self *= ( 1.0/number )
         return self
@@ -859,7 +860,7 @@ class LorentzVector(object):
         if isinstance ( other , ( int , float ) ) :
             return LorentzVector.fromiterable ( [v * other for v in self.tolist() ] )
         else:
-            return NotImplemented
+            raise InvalidOperationError("invalid operation '*=' between a 'LorentzVector' and a '{0}'".format(other.__class__.__name__))
         
     def __itruediv__(self, number):
         """Scaling of the LorentzVector with a number
@@ -868,7 +869,8 @@ class LorentzVector(object):
         >>> v  = ...
         >>> v /= 2 
         """
-        if not isinstance ( number , ( int , float ) ) : return NotImplemented
+        if not isinstance ( number , ( int , float ) ) : 
+            raise InvalidOperationError("invalid operation '/=' between a 'LorentzVector' and a '{0}'".format(number.__class__.__name__))
         elif 0 == number : raise ZeroDivisionError 
         self *= ( 1.0/number )
         return self
