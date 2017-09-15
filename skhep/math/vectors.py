@@ -230,7 +230,7 @@ class Vector3D(object):
     def unit(self):
         """Return the normalized vector, i.e. the unit vector along the direction of itself."""
         mag = self.mag
-        if mag > 1.:
+        if mag > 0. or mag != 1. :
             return Vector3D.fromiterable([v / mag for v in self.__values])
         else:
             return self
@@ -243,7 +243,8 @@ class Vector3D(object):
         >>> v1 += v2  
         """
         if not isinstance ( other ,  Vector3D ) : 
-            raise InvalidOperationError("invalid operation '+=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
+            return NotImplemented
+#            raise InvalidOperationError("invalid operation '+=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
         self.__values[0] += other.__values[0]
         self.__values[1] += other.__values[1]
         self.__values[2] += other.__values[2]
@@ -257,7 +258,8 @@ class Vector3D(object):
         >>> v1 -= v2  
         """
         if not isinstance ( other ,  Vector3D ) : 
-            raise InvalidOperationError("invalid operation '-=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__)) 
+            return NotImplemented
+#            raise InvalidOperationError("invalid operation '-=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__)) 
         self.__values[0] -= other.__values[0]
         self.__values[1] -= other.__values[1]
         self.__values[2] -= other.__values[2]
@@ -536,7 +538,7 @@ class LorentzVector(object):
 
     @property
     def x(self):
-        """Return the Vector3D coordinate x, aka first coordinate at position 0."""
+        """Return the coordinate x, aka first coordinate at position 0."""
         return self.__vector3d.x
 
     @x.setter
@@ -546,7 +548,7 @@ class LorentzVector(object):
 
     @property
     def y(self):
-        """Return the Vector3D coordinate x, aka second coordinate at position 1."""
+        """Return the coordinate x, aka second coordinate at position 1."""
         return self.__vector3d.y
 
     @y.setter
@@ -556,7 +558,7 @@ class LorentzVector(object):
 
     @property
     def z(self):
-        """Return the Vector3D coordinate z, aka third coordinate at position 2."""
+        """Return the coordinate z, aka third coordinate at position 2."""
         return self.__vector3d.z
 
     @z.setter
@@ -566,7 +568,7 @@ class LorentzVector(object):
         
     @property
     def vector(self):
-        """Return the Vector3D."""
+        """Return a copy of the vector of spatial components."""
         return self.__vector3d.copy()
 
     @property
@@ -692,12 +694,12 @@ class LorentzVector(object):
         
     @property
     def p(self):
-        """Return the momentum, aka norm of the momentum Vector3D."""
+        """Return the momentum, aka norm of the momentum vector."""
         return self.__vector3d.mag
         
     @property
     def pt(self):
-        """Return the transverse momentum, aka transverse component of the momentum Vector3D."""
+        """Return the transverse momentum, aka transverse component of the momentum vector."""
         return self.perp
         
     @property
@@ -795,12 +797,12 @@ class LorentzVector(object):
                 
     @property
     def perp2(self):
-        """Square of the transverse component, in the (x,y) plane, of the Vector3D."""
+        """Square of the transverse component, in the (x,y) plane, of the spatial components."""
         return self.x**2 + self.y**2
         
     @property
     def perp(self):
-        """Transverse component of the Vector3D."""
+        """Transverse component of the spatial components."""
         return sqrt(self.perp2)
 
     def copy(self) :
@@ -923,7 +925,7 @@ class LorentzVector(object):
          and isequal ( self[3] , other[3] )
 
     def __ne__  (self, other) :
-        """Non-equality to another LorentzVector
+        """Non-equality to another Lorentz Vector
         :Example:
         >>> v1 = ...
         >>> v2 = ...
@@ -932,11 +934,11 @@ class LorentzVector(object):
         return not ( self == other )
 
     def __iter__(self):
-        """Iterator implementation for the LorentzVector components."""
+        """Iterator implementation for the Lorentz Vector components."""
         return self.tolist().__iter__()
         
     def boost(self, *args):
-        """Apply a Lorentz boost on the LorentzVector."""
+        """Apply a Lorentz boost on the Lorentz Vector."""
         if len(args) == 1 and isinstance(args[0], Vector3D):
             bx, by, bz = args[0].x, args[0].y, args[0].z
         elif len(args) == 1 and len(args[0]) == 3:
@@ -985,7 +987,7 @@ class LorentzVector(object):
         return self.rotate(angle, 0, 0, 1)
         
     def dot(self, other):
-        """Dot product with another LorentzVector."""
+        """Dot product with another Lorentz Vector."""
         return self.t * other.t - self.__vector3d * other.__vector3d
         
     def deltaeta(self, other):
@@ -1008,17 +1010,17 @@ class LorentzVector(object):
         return sqrt( self.deltaeta(other)**2 + self.deltaphi(other)**2 )
 
     def isspacelike(self):
-        """Check if LorentzVector is space-like."""
+        """Check if Lorentz Vector is space-like."""
         from skhep.math.numeric import isequal
         return self.mag2 < 0. and not isequal(self.mag2, 0.)
 
     def istimelike(self):
-        """Check if LorentzVector is time-like."""
+        """Check if Lorentz Vector is time-like."""
         from skhep.math.numeric import isequal
         return self.mag2 > 0. and not isequal(self.mag2, 0.)
 
     def islightlike(self):
-        """Check if LorentzVector is light-like."""
+        """Check if Lorentz Vector is light-like."""
         from skhep.math.numeric import isequal
         return isequal(self.mag2, 0.)
 
