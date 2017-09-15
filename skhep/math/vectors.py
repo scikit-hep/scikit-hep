@@ -230,8 +230,6 @@ class Vector3D(object):
     def unit(self):
         """Return the normalized vector, i.e. the unit vector along the direction of itself."""
         mag = self.mag
-        print mag
-        print mag != 1.
         if mag > 0. and mag != 1. :
             return Vector3D.fromiterable([v / mag for v in self.__values])
         else:
