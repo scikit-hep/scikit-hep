@@ -243,8 +243,7 @@ class Vector3D(object):
         >>> v1 += v2  
         """
         if not isinstance ( other ,  Vector3D ) : 
-            return NotImplemented
-#            raise InvalidOperationError("invalid operation '+=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
+            raise InvalidOperationError("invalid operation '+=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__))
         self.__values[0] += other.__values[0]
         self.__values[1] += other.__values[1]
         self.__values[2] += other.__values[2]
@@ -258,8 +257,7 @@ class Vector3D(object):
         >>> v1 -= v2  
         """
         if not isinstance ( other ,  Vector3D ) : 
-            return NotImplemented
-#            raise InvalidOperationError("invalid operation '-=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__)) 
+            raise InvalidOperationError("invalid operation '-=' between a 'Vector3D' and a '{0}'".format(other.__class__.__name__)) 
         self.__values[0] -= other.__values[0]
         self.__values[1] -= other.__values[1]
         self.__values[2] -= other.__values[2]
