@@ -30,3 +30,7 @@ class Test(unittest.TestCase):
     def test_width_lifetime_conversions(self):
         self.assertAlmostEqual(lifetime_to_width(1.5*ps)/GeV,4.388079676311604e-13)
         self.assertTrue(1.5*ps * lifetime_to_width(1.5*ps) == hbar)
+        self.assertTrue(width_to_lifetime(hbar) == 1 * MeV)
+        #
+        self.assertRaises(ValueError, lifetime_to_width, -1)
+        self.assertRaises(ValueError, width_to_lifetime, -1)
