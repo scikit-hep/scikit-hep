@@ -9,7 +9,7 @@ Tests for the skhep.constants.constants module.
 # -----------------------------------------------------------------------------
 import unittest
 
-from skhep.units import eV, s, nanometer
+from skhep.units import eV, nanometer, s, THz
 from skhep.constants import *
 
 
@@ -28,4 +28,4 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(hbarc_sq / c_light_sq, (h_Planck / two_pi) ** 2)
         self.assertTrue(hbar/(eV*s)  == hbar/1.e3)
         # wavelength of 555-ish nanometres (green light) has a frequency of 540 THz
-        self.assertAlmostEqual(c_light / (555.17121852 * nanometer), 540 * tera * Hz)
+        self.assertAlmostEqual(c_light / (555.17121852 * nanometer), 540 * THz)

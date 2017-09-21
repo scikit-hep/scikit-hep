@@ -164,6 +164,7 @@ megahertz = mega * hertz
 
 Hz = hertz
 
+THz = tera * hertz
 GHz = giga * hertz
 MHz = mega * hertz
 kHz = kilo * hertz
