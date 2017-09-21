@@ -21,7 +21,7 @@ from skhep.utils.py23 import *
 class Test(unittest.TestCase):
     def runTest(self):
         # required for Python 2.6 only
-        self.test_Kallen_function()
+        self.test_kinematics_Kallen_function()
         self.test_width_lifetime_conversions()
     
     def test_kinematics_Kallen_function(self):
