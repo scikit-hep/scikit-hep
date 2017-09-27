@@ -18,6 +18,7 @@ Please also check out the :ref:`list of affiliated packages <affiliations>`.
 
    about.rst
    installation.rst
+   help.rst
    documentation.rst
    contributing.rst
    affiliations.rst
