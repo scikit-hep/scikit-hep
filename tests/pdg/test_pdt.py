@@ -21,6 +21,7 @@ class Test(unittest.TestCase):
         tbl = ParticleDataTable('skhep/data/mass_width_2016.mcd')
         self.assertEqual(tbl('f(0)(500)0').name,tbl[9000221].name)
         self.assertEqual(tbl('f(0)(500)0').id,9000221)
+        self.assertEqual(tbl('nonexistentparticlename'),None)
         self.assertTrue(tbl.has_key(11))
         self.assertTrue(tbl.has_particle(2212))
         self.assertEqual(tbl.particle(21).__repr__(),'g0: ID=21, m=0 GeV, 3*q=0, width=0 GeV')
