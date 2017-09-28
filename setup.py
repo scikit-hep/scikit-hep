@@ -8,6 +8,9 @@ from setuptools import setup, find_packages
 from setuputils import read, find_version
 
 
+# Specification of minimal versions of required dependencies
+PYPDT_MIN_VERSION = '0.7.0'
+
 # Prevent setup from trying to create hard links
 # which are not allowed on AFS between directories.
 # This is a hack to force copying.
@@ -28,10 +31,11 @@ setup(
     long_description=read('README.rst'),
     license='new BSD',
     packages=find_packages(exclude=['tests']),
+    package_data={'skhep': ['data/*.*']},
     test_suite="tests",
     py_modules=['setuputils'],
     install_requires=[
-        'PyPDT>=0.7.0'
+        'PyPDT >= {0}'.format(PYPDT_MIN_VERSION)
     ],
     classifiers=[
         'Intended Audience :: Science/Research',
