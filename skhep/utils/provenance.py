@@ -18,8 +18,11 @@ User-facing classes that structure the provenance information, i.e. the history 
 # -----------------------------------------------------------------------------
 # Import statements
 # -----------------------------------------------------------------------------
+from __future__ import absolute_import
+
 import json
 
+from .exceptions import SkhepTypeError
 from .py23 import *
 
 
@@ -34,7 +37,7 @@ class Provenance(object):
     """
 
     def __init__(self):
-        raise SkhepTypeError(Provenance.__name__)
+        raise SkhepTypeError('Provenance')
 
     @property
     def detail(self):
@@ -52,7 +55,7 @@ class Origin(Provenance):
     """
 
     def __init__(self):
-        raise SkhepTypeError(Origin.__name__)
+        raise SkhepTypeError('Origin')
 
 
 class ObjectOrigin(Origin):
@@ -147,7 +150,7 @@ class Transformation(Provenance):
     <Transformation(all elms * 2)>
     """
 
-    def __init__(self, name, arg=[]):
+    def __init__(self, name, args=[]):
         self.name = name
         self.args = args
 
