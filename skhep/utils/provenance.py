@@ -3,13 +3,12 @@
 Submodule for helpers to the Dataset-like classes
 =================================================
 
-User-facing classes that structure the provenance information,
-i.e. the history of operations performed on the dataset.
+User-facing classes that structure the provenance information, i.e. the history of operations performed on the dataset.
 
 **Available classes:**
 
-* ``Provenance``.
-* ``Origin``.
+* ``Provenance`` (abstract base class).
+* ``Origin`` (abstract base class).
 * ``ObjectOrigin``.
 * ``FileOrigin``.
 * ``Transformation``.
@@ -19,8 +18,11 @@ i.e. the history of operations performed on the dataset.
 # -----------------------------------------------------------------------------
 # Import statements
 # -----------------------------------------------------------------------------
+from __future__ import absolute_import
+
 import json
 
+from .exceptions import SkhepTypeError
 from .py23 import *
 
 
@@ -30,11 +32,12 @@ from .py23 import *
 class Provenance(object):
     """
     Abstract base class for all classes containing provenance information.
+
+    Trying to instantiate it raises an exception. Instantiate one of its subclasses instead.
     """
 
     def __init__(self):
-        raise TypeError(
-            "'Provenance' is an abstract base class. Instantiate one of its subclasses instead.")
+        raise SkhepTypeError('Provenance')
 
     @property
     def detail(self):
@@ -47,11 +50,12 @@ class Provenance(object):
 class Origin(Provenance):
     """
     Abstract base class for all classes describing the first object in a provenance list.
+
+    Trying to instantiate it raises an exception. Instantiate one of its subclasses instead.
     """
 
     def __init__(self):
-        raise TypeError(
-            "'Origin' is an abstract base class. Instantiate one of its subclasses instead.")
+        raise SkhepTypeError('Origin')
 
 
 class ObjectOrigin(Origin):
@@ -64,7 +68,7 @@ class ObjectOrigin(Origin):
         String providing detailed information about the object origin.
 
     :Examples:
-    >>> from skhep.utils.provenance import ObjectOrigin
+    >>> from skhep.utils import ObjectOrigin
     >>> from array import array
     >>> data = array('i',[1,2,3])
     >>> provenance1 = ObjectOrigin(repr(data))
@@ -93,11 +97,17 @@ class ObjectOrigin(Origin):
 
 class FileOrigin(Origin):
     """
-    Declares that the dataset came from a file.
+    Declares that the dataset came from a file or a set of files.
 
     :Parameters:
     files: str or iterable of str or file objects
         File name(s) or object(s).
+
+    :Examples:
+    >>> from skhep.utils import FileOrigin
+    >>> prov = FileOrigin(['file1.root', 'file2.root','file3.root'])
+    >>> prov
+    <FileOrigin (3 files)>
     """
 
     def __init__(self, files):
@@ -120,7 +130,7 @@ class FileOrigin(Origin):
         return ", ".join(json.dumps(x) for x in self.files)
 
     def __repr__(self):
-        return "<FileOrigin {0}>".format(self.detail)
+        return "<FileOrigin ({0} file{1})>".format(len(self.files),'s' if len(self.files)>1 else '')
 
 
 class Transformation(Provenance):
@@ -132,19 +142,25 @@ class Transformation(Provenance):
         String detailing how the dataset got transformed.
     args: iterable, optional
         Optional set of arguments given extra detail on the transformation.
+
+    :Examples:
+    >>> from skhep.utils import Transformation
+    >>> transf = Transformation('all elms * 2')
+    >>> transf
+    <Transformation(all elms * 2)>
     """
 
-    def __init__(self, name, args):
+    def __init__(self, name, args=[]):
         self.name = name
         self.args = args
 
     @property
     def detail(self):
-        return "{0}({1})".format(self.name,
+        return "{0} ({1})".format(self.name,
                                  ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
 
     def __repr__(self):
-        return "<{0}>".format(self.name)
+        return "<Transformation({0})>".format(self.name)
 
 
 class Formatting(Provenance):

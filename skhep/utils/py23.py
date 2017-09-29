@@ -15,6 +15,8 @@ if sys.version_info[0] > 2:
     string_types = (bytes, str)
     xrange = range
     long = int
+    from io import IOBase
+    file = IOBase
 
 
     def head(x):

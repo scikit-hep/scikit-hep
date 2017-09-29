@@ -3,4 +3,5 @@
 Module for miscellaneous and general utilities.
 """
 
+from .exceptions import *
 from .provenance import ObjectOrigin, FileOrigin, Transformation, Formatting
