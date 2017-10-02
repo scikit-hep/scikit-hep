@@ -7,93 +7,77 @@ Tests for the skhep.units.units module.
 # -----------------------------------------------------------------------------
 # Import statements
 # -----------------------------------------------------------------------------
-import unittest
-
 from skhep.units import *
 from skhep.constants import two_pi
 from skhep.utils.py23 import *
+from pytest import approx
 
 
 # -----------------------------------------------------------------------------
 # Actual tests
 # -----------------------------------------------------------------------------
-class Test(unittest.TestCase):
-    def runTest(self):
-        # required for Python 2.6 only
-        self.test_length()
-        self.test_area()
-        self.test_crosssection()
-        self.test_luminosity()
-        self.test_volume()
-        self.test_time()
-        self.test_frequency()
-        self.test_energy()
-        self.test_angle()
-        self.test_magnetic_field()
-        self.test_electricity()
-        self.test_radiation_units()
 
-    def test_length(self):
-        self.assertAlmostEqual(3 * mm, m * 0.003)
-        self.assertAlmostEqual(3 * mm, cm * 0.3)
-        self.assertAlmostEqual(3 * mm, km * 0.000003)
-        self.assertAlmostEqual(3 * mm, micrometer * 3000)
-        self.assertAlmostEqual(3 * mm, nanometer * 3000000)
-        self.assertAlmostEqual(3 * mm, angstrom * 30000000)
-        self.assertAlmostEqual(3 * mm, fermi * 3e12)
+def test_length():
+    assert 3 * mm == approx(m * 0.003)
+    assert 3 * mm == approx(cm * 0.3)
+    assert 3 * mm == approx(km * 0.000003)
+    assert 3 * mm == approx(micrometer * 3000)
+    assert 3 * mm == approx(nanometer * 3000000)
+    assert 3 * mm == approx(angstrom * 30000000)
+    assert 3 * mm == approx(fermi * 3e12)
 
-    def test_area(self):
-        self.assertAlmostEqual((3 * mm) ** 2, 9 * mm2)
-        self.assertAlmostEqual((3 * cm) ** 2, 9 * cm2)
-        self.assertAlmostEqual((3 * km) ** 2, 9 * km2)
-        self.assertAlmostEqual(2e-28 * meter2, 2 * barn)
+def test_area():
+    assert (3 * mm) ** 2 == approx(9 * mm2)
+    assert (3 * cm) ** 2 == approx(9 * cm2)
+    assert (3 * km) ** 2 == approx(9 * km2)
+    assert 2e-28 * meter2 == approx(2 * barn)
 
-    def test_crosssection(self):
-        self.assertAlmostEqual(3e-31 * barn, 9 * millibarn)
-        self.assertAlmostEqual(3e-34 * barn, 9 * microbarn)
-        self.assertAlmostEqual(3e-37 * barn, 9 * nanobarn)
-        self.assertAlmostEqual(3e-40 * barn, 9 * picobarn)
-        self.assertAlmostEqual(1 * barn, 100 * fm2)
+def test_crosssection():
+    assert 3e-31 * barn == approx(9 * millibarn)
+    assert 3e-34 * barn == approx(9 * microbarn)
+    assert 3e-37 * barn == approx(9 * nanobarn)
+    assert 3e-40 * barn == approx(9 * picobarn)
+    assert 1 * barn == approx(100 * fm2)
 
-    def test_luminosity(self):
-        self.assertAlmostEqual(invpb / invfb, 1.e-3)
+def test_luminosity():
+    assert invpb / invfb == approx(1.e-3)
 
-    def test_volume(self):
-        self.assertAlmostEqual((3 * mm) ** 3, 27 * mm3)
-        self.assertAlmostEqual((3 * cm) ** 3, 27 * cm3)
-        self.assertAlmostEqual((3 * m) ** 3, 27 * m3)
+def test_volume():
+    assert (3 * mm) ** 3 == approx(27 * mm3)
+    assert (3 * cm) ** 3 == approx(27 * cm3)
+    assert (3 * m) ** 3 == approx(27 * m3)
 
-    def test_time(self):
-        self.assertAlmostEqual(3 * ns, 3e-9 * s)
-        self.assertAlmostEqual(3 * ns, 3e-6 * ms)
-        self.assertAlmostEqual(3 * ns, 3e-3 * microsecond)
-        self.assertAlmostEqual(3 * ns, 3000 * picosecond)
-        self.assertAlmostEqual(3 * ns, 3000000 * femtosecond)
-        self.assertEqual(day, 24 * 60 * minute)
+def test_time():
+    assert 3 * ns == approx(3e-9 * s)
+    assert 3 * ns == approx(3e-6 * ms)
+    assert 3 * ns == approx(3e-3 * microsecond)
+    assert 3 * ns == approx(3000 * picosecond)
+    assert 3 * ns == approx(3000000 * femtosecond)
+    assert day == 24 * 60 * minute
 
-    def test_frequency(self):
-        self.assertAlmostEqual(second ** -1, Hz)
-        self.assertAlmostEqual(1000 * hertz, kHz)
-        self.assertAlmostEqual(1000000 * hertz, MHz)
-        self.assertAlmostEqual(1000000000 * hertz, GHz)
+def test_frequency():
+    assert second ** -1 == approx(Hz)
+    assert 1000 * hertz == approx(kHz)
+    assert 1000000 * hertz == approx(MHz)
+    assert 1000000000 * hertz == approx(GHz)
 
-    def test_energy(self):
-        self.assertAlmostEqual(1e3 * eV, keV)
-        self.assertAlmostEqual(1e6 * eV, MeV)
-        self.assertAlmostEqual(1e9 * eV, GeV)
-        self.assertAlmostEqual(1e12 * eV, TeV)
-        self.assertAlmostEqual(1e15 * eV, PeV)
-        self.assertAlmostEqual(1e18 * eV, EeV)
+def test_energy():
+    assert 1e3 * eV == approx(keV)
+    assert 1e6 * eV == approx(MeV)
+    assert 1e9 * eV == approx(GeV)
+    assert 1e12 * eV == approx(TeV)
+    assert 1e15 * eV == approx(PeV)
+    assert 1e18 * eV == approx(EeV)
 
-    def test_angle(self):
-        self.assertEqual(360. * degree, two_pi * radian)
+def test_angle():
+    assert 360. * degree == two_pi * radian
 
-    def test_magnetic_field(self):
-        self.assertAlmostEqual(10 * gauss, 1 * milli * tesla)
+def test_magnetic_field():
+    assert 10 * gauss == approx(1 * milli * tesla)
 
-    def test_electricity(self):
-        self.assertAlmostEqual(1 * mega * joule / second, 1 * MW)
+def test_electricity():
+    assert 1 * mega * joule / second == approx(1 * MW)
 
-    def test_radiation_units(self):
-        self.assertEqual(gray, sievert)  # equal in terms of value
-        self.assertEqual(1 * curie, 37 * giga * becquerel)
+def test_radiation_units():
+    assert gray == sievert  # equal in terms of value
+    assert 1 * curie == 37 * giga * becquerel
