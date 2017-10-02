@@ -9,7 +9,7 @@ from setuputils import read, find_version
 
 
 # Specification of minimal versions of required dependencies
-PYPDT_MIN_VERSION = '0.7.1'
+PYPDT_MIN_VERSION = '0.7.3'
 
 # Prevent setup from trying to create hard links
 # which are not allowed on AFS between directories.
