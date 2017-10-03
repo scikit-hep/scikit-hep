@@ -25,8 +25,6 @@ import json
 from .exceptions import SkhepTypeError
 from .py23 import *
 
-import pytest
-
 
 # -----------------------------------------------------------------------------
 # Provenance-like classes
