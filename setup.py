@@ -24,6 +24,18 @@ LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 os.chdir(LOCAL_PATH)
 sys.path.insert(0, LOCAL_PATH)
 
+install_requires = [
+    'PyPDT>={0}'.format(PYPDT_MIN_VERSION)
+]
+
+test_requires = [
+    'pytest>=3.0'
+]
+
+setup_requires = [
+    'pytest-runner'
+]
+
 setup(
     name='scikit-hep',
     version=find_version('skhep/__init__.py'),
@@ -32,11 +44,10 @@ setup(
     license='new BSD',
     packages=find_packages(exclude=['tests']),
     package_data={'skhep': ['data/*.*']},
-    test_suite="tests",
     py_modules=['setuputils'],
-    install_requires=[
-        'PyPDT >= {0}'.format(PYPDT_MIN_VERSION)
-    ],
+    install_requires=install_requires,
+    test_requires=test_requires,
+    setup_requires=setup_requires,
     classifiers=[
         'Intended Audience :: Science/Research',
         'Intended Audience :: Developers',
@@ -48,6 +59,13 @@ setup(
         'Operating System :: MacOS',
         'License :: OSI Approved',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: C++',
         'Programming Language :: Cython',
         'Development Status :: 1 - Planning',
