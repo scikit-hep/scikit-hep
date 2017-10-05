@@ -2,3 +2,6 @@
 
 Examples
 ========
+
+.. toctree::
+    ex_visual.rst
