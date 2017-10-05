@@ -1,10 +1,17 @@
 import os
+import matplotlib as mpl
+
+if os.environ.get('DISPLAY','') == '':
+    print('no display found. Using non-interactive Agg backend')
+    mpl.use('Agg')
+
 import numpy as np
 import matplotlib.pyplot as plt
 import skhep
 from skhep.visual import MplPlotter as skh_plt
 
 test_dir = os.path.dirname(skhep.__file__)+'/../tests/visual'
+
 
 
 def test_simple_hist1(cmdopt, data_gen1):
