@@ -354,27 +354,21 @@ class HistContainer(object):
         # For error bars:
         self.err_dict = {}
         self.err_dict['errorbars'] = self.errorbars
-        if 'err_style' in kwargs:
-            self.err_dict['err_style'] = kwargs.pop('err_style')
-        elif self.histtype in ['stepfilled', 'bar']:
-            self.err_dict['err_style'] = 'band'
+
+        if self.histtype in ['stepfilled', 'bar']:
+            self.err_dict['err_style'] = kwargs.pop('err_style', 'band')
         else:
-            self.err_dict['err_style'] = 'line'
+            self.err_dict['err_style'] = kwargs.pop('err_style', 'line')
+
         self.err_dict['err_color'] = kwargs.pop('err_color', 'auto')
-        if 'suppress_zero' in kwargs:
-            self.err_dict['suppress_zero'] = kwargs.pop('suppress_zero')
+        self.err_dict['suppress_zero'] = kwargs.pop('suppress_zero', False)
+
+        if self.has_weights:
+            self.err_dict['err_type'] = kwargs.pop('err_type', 'sumW2')
         else:
-            self.err_dict['suppress_zero'] = False
-        if 'err_type' in kwargs:
-            self.err_dict['err_type'] = kwargs.pop('err_type')
-        elif self.has_weights:
-            self.err_dict['err_type'] = 'sumW2'
-        else:
-            self.err_dict['err_type'] = 'gaussian'
-        if 'err_x' in kwargs:
-            self.err_dict['err_x'] = kwargs.pop('err_x')
-        else:
-            self.err_dict['err_x'] = True
+            self.err_dict['err_type'] = kwargs.pop('err_type', 'gaussian')
+
+        self.err_dict['err_x'] = kwargs.pop('err_x', True)
 
         # tweak histogram styles for `band` err_style
 
@@ -412,10 +406,7 @@ class HistContainer(object):
         if 'linewidth' not in self.hist_dict and self.histtype == 'step':
             self.hist_dict['linewidth'] = 2
 
-        if 'log' in self.hist_dict:
-            self.logy = self.hist_dict.pop('log')
-        else:
-            self.logy = False
+        self.logy = self.hist_dict.pop('log', False)
 
     def _df_binning_init(self, data, weights):
         '''Do an initial binning to get bin edges, total hist range, and break each set of data and
