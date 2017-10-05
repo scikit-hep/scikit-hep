@@ -29,7 +29,7 @@ install_requires = [
     'PyPDT>={0}'.format(PYPDT_MIN_VERSION),
     'numpy>={0}'.format(NUMPY_MIN_VERSION),
     'pandas',
-    'matplotlib',
+    'matplotlib>2.0.0, <2.1',
 ]
 
 test_requires = [
