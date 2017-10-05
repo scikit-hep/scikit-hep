@@ -8,5 +8,4 @@ Module for visualization tools.
 # -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from .thing import *
-
+from .mpl_plotter import MplPlotter

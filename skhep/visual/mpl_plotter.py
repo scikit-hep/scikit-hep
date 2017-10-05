@@ -1,8 +1,8 @@
+# Licensed under a 3-clause BSD style license, see LICENSE.
 from __future__ import absolute_import
 from __future__ import division
 
 from skhep.utils.py23 import *
-from skhep.utils.exceptions import *
 
 from numbers import Number
 from collections import Iterable
@@ -18,124 +18,242 @@ from matplotlib.patches import Polygon
 
 import pandas as pd
 
-from histogram_plus.bayesian_blocks_hep import bayesian_blocks
-from histogram_plus.fill_between_steps import fill_between_steps
+from skhep.math import bayesian_blocks
+from skhep.visual.fill_between_steps import fill_between_steps
 
 import warnings
 warnings.filterwarnings('ignore')
 
 
-def hist(x, bins='auto', range=None, weights=None, errorbars=False, normed=False, scale=None,
-         stacked=False, histtype='stepfilled', **kwargs):
-    """Enhanced histogram, based on `hist` function from matplotlib and astroML.
-    The main additional features are the ability to use data-driven binning algorithms,
-    the addition of errorbars, scaling options (like dividing all bin values by their
-    widths), and marker-style draw options.  `hist` function wraps `HistContainer` class, which does
-    the majority of work.
+class MplPlotter(object):
+    def __init__(self, show_backend=False):
+        if show_backend:
+            import matplotlib
+            print(matplotlib.get_backend())
 
-    Args:
-        x (array_like, or list of array_like):  Array of data to be histogrammed.
-        bins (int or List or str, optional):  If `int`, `bins` number of equal-width bins are
-            generated.  The width is determined by either equal divison of the given `range`, or
-            equal division between the first and last data point if no `range` is specified.
+    @staticmethod
+    def hist(x, bins='auto', range=None, weights=None, errorbars=False, normed=False, scale=None,
+             stacked=False, histtype='stepfilled', **kwargs):
+        """Enhanced histogram, based on `hist` function from matplotlib and astroML.
+        The main additional features are the ability to use data-driven binning algorithms, the
+        addition of errorbars, scaling options (like dividing all bin values by their widths), and
+        marker-style draw options.  `hist` function wraps `HistContainer` class, which does the
+        majority of work.
 
-            If `List`, bin edges are taken directly from `List` (can be unequal width).
+        Args:
+            x (array_like, or list of array_like):  Array of data to be histogrammed.
+            bins (int or List or str, optional):  If `int`, `bins` number of equal-width bins are
+                generated.  The width is determined by either equal divison of the given `range`, or
+                equal division between the first and last data point if no `range` is specified.
 
-            If `str`, then it must be one of
-                'blocks' : use bayesian blocks for dynamic bin widths.
+                If `List`, bin edges are taken directly from `List` (can be unequal width).
 
-                'auto' : use `auto` feature from numpy.histogram.
+                If `str`, then it must be one of
+                    'blocks' : use bayesian blocks for dynamic bin widths.
 
-            Defaults to 'auto'.
-
-        range (tuple or None, optional):  If specificed, data will only be considered and shown
-            for the range given.  Otherwise, `range` will be between the highest and lowest
-            datapoint.
-
-            Defaults to None.
-
-        weights (array_like or None, optional): Weights associated with each data point.  If
-            specified, bin content will be equal to the sum of all relevant weights.
-
-            Defaults to None.
-
-        errorbars (boolean or array_like, optional):  If True, errorbars will be calculated and
-            displayed based on the `err_*` arguments. The errorbars will be appropriately
-            modified if `scale` and/or `normed` is True. If an array is specificed, those values
-            will be used (and will not be modifed by any other methods).
-
-            Defaults to False.
-
-        normed (boolean, optional): If True, histogram will be normalized such that the integral
-            over all bins with be equal to 1.  In general, this will NOT mean that the sum of all
-            bin contents will be 1, unless all bin widths are equal to 1. If used with `scale`
-            option, normalization happens before scale.
-
-            Defaults to False
-
-        scale (Number or 'binwidth', optional):  If Number, all bin contents are multiplied by the
-            given value.  If 'binwidth', every bin content is divided by the bin width. If used with
-            `normed` option, scaling occurs after normalization ('binwidth' will be ignored in this
-            case, because it is handled automatically when normalizing).
-
-            Defaults to None
-
-        stacked (boolean, optional): If True, multiple input data sets will be layered on top of
-            each other, such that the height of each bin is the sum of all the relevant dataset
-            contributions.  If used with errorbars, the bars will be associated with the bin totals,
-            not the individual components.
-
-            Defaults to False.
-
-        histtype (stepfilled', 'step', 'bar', or 'marker'): Draw options for histograms.
-            'stepfilled', 'step', and 'bar' inherit from `matplotlib`.  'marker' places a single
-            point at the center of each bin (best used with error bars).  'marker' will throw an
-            exception if used with 'stacked' option.
-
-            Defaults to 'stepfilled'.
-
-        **kwargs:
-            * ax (matplotlib axes instance):
-                Specify the Axes on which to draw the histogram.  If not specified, then the current
-                active axes will be used, or a new axes instance will be generated.
-
-                Defaults to current axis.
-
-            * err_style ('band' or 'line'):
-                Draw style for errorbars.
-
-                Defaults depend on `histtype`,
-                where histtype='stepfilled' corresponds to 'band', and all others correspond to
-                'line'.
-
-            * err_color ('auto' or valid `matplotlib` colors):
-                Color for error bars.  If 'auto' is
-                chosen and `stacked` is False, The color will be a slightly darker version of the
-                associated histogram color.  If `stacked` is True, color will be the next in the
-                current color cycle.
+                    'auto' : use `auto` feature from numpy.histogram.
 
                 Defaults to 'auto'.
 
-            * err_type ('sumW2' or 'gaussian'):
-               Method of calculating error bars, if no error is given.  The 'gaussian' method
-               displays the error of each bin as the square root of the bin content.   The 'sumW2'
-               method displays the error as the square of the sum of the squares of the weights.
+            range (tuple or None, optional):  If specificed, data will only be considered and shown
+                for the range given.  Otherwise, `range` will be between the highest and lowest
+                datapoint.
 
-               Defaults to 'gaussian' if no weights are given, else 'sumW2'.
+                Defaults to None.
 
-        Other keyword arguments are described in `pylab.hist()`.
+            weights (array_like or None, optional): Weights associated with each data point.  If
+                specified, bin content will be equal to the sum of all relevant weights.
+
+                Defaults to None.
+
+            errorbars (boolean or array_like, optional):  If True, errorbars will be calculated and
+                displayed based on the `err_*` arguments. The errorbars will be appropriately
+                modified if `scale` and/or `normed` is True. If an array is specificed, those values
+                will be used (and will not be modifed by any other methods).
+
+                Defaults to False.
+
+            normed (boolean, optional): If True, histogram will be normalized such that the integral
+                over all bins with be equal to 1.  In general, this will NOT mean that the sum of
+                all bin contents will be 1, unless all bin widths are equal to 1. If used with
+                `scale` option, normalization happens before scale.
+
+                Defaults to False
+
+            scale (Number or 'binwidth', optional):  If Number, all bin contents are multiplied by
+                the given value.  If 'binwidth', every bin content is divided by the bin width. If
+                used with `normed` option, scaling occurs after normalization ('binwidth' will be
+                ignored in this case, because it is handled automatically when normalizing).
+
+                Defaults to None
+
+            stacked (boolean, optional): If True, multiple input data sets will be layered on top of
+                each other, such that the height of each bin is the sum of all the relevant dataset
+                contributions.  If used with errorbars, the bars will be associated with the bin
+                totals, not the individual components.
+
+                Defaults to False.
+
+            histtype (stepfilled', 'step', 'bar', or 'marker'): Draw options for histograms.
+                'stepfilled', 'step', and 'bar' inherit from `matplotlib`.  'marker' places a single
+                point at the center of each bin (best used with error bars).  'marker' will throw an
+                exception if used with 'stacked' option.
+
+                Defaults to 'stepfilled'.
+
+            **kwargs:
+                * ax (matplotlib axes instance):
+                    Specify the Axes on which to draw the histogram.  If not specified, then the
+                    current active axes will be used, or a new axes instance will be generated.
+
+                    Defaults to current axis.
+
+                * err_style ('band' or 'line'):
+                    Draw style for errorbars.
+
+                    Defaults depend on `histtype`,
+                    where histtype='stepfilled' corresponds to 'band', and all others correspond to
+                    'line'.
+
+                * err_color ('auto' or valid `matplotlib` colors):
+                    Color for error bars.  If 'auto' is
+                    chosen and `stacked` is False, The color will be a slightly darker version of
+                    the associated histogram color.  If `stacked` is True, color will be the next in
+                    the current color cycle.
+
+                    Defaults to 'auto'.
+
+                * err_type ('sumW2' or 'gaussian'):
+                   Method of calculating error bars, if no error is given.  The 'gaussian' method
+                   displays the error of each bin as the square root of the bin content.   The
+                   'sumW2' method displays the error as the square of the sum of the squares of the
+                   weights.
+
+                   Defaults to 'gaussian' if no weights are given, else 'sumW2'.
+
+            Other keyword arguments are described in `pylab.hist()`.
 
 
 
-    Brian Pollack, 2017
-    """
+        Brian Pollack, 2017
+        """
 
-    # Generate a histogram object
+        # Generate a histogram object
 
-    hist_con = HistContainer(x, bins, range, weights, errorbars, normed, scale, stacked,
-                             histtype, **kwargs)
+        hist_con = HistContainer(x, bins, range, weights, errorbars, normed, scale, stacked,
+                                 histtype, **kwargs)
 
-    return hist_con.bin_content, hist_con.bin_edges, hist_con.vis_object
+        return hist_con.bin_content, hist_con.bin_edges, hist_con.vis_object
+
+    @staticmethod
+    def ratio_plot(hist_dict1, hist_dict2, bins=None, range=None, ratio_range=None,
+                   err_style='band', err_color='xkcd:gunmetal', ratio_mode='default', grid=False,
+                   unity_line='red', logx=False):
+        '''Function for creating ratio plots (comparing two histograms by dividing their bin content).
+        The call structure is very similar to producing two individual histograms, with additional
+        arguments specifying the nature of the ratio plot.  The number of bins and ranges for both
+        histograms must be equal.'''
+
+        bin_range = range
+        del range
+
+        bins, bin_range = _check_args_ratio(hist_dict1, hist_dict2, bins, bin_range)
+        hist_dict1['bins'] = bins
+        hist_dict1['range'] = bin_range
+
+        fig = plt.figure()
+        gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1])
+        ax1 = fig.add_subplot(gs[0])
+        if logx:
+            ax1.set_xscale("log", nonposy='clip')
+        ax2 = fig.add_subplot(gs[1], sharex=ax1)
+        # ax1.grid(True)
+        # ax2.grid(True)
+        plt.setp(ax1.get_xticklabels(), visible=False)
+        fig.subplots_adjust(hspace=0.001)
+
+        hist_dict1['ax'] = ax1
+        hist_dict2['ax'] = ax1
+
+        hist_con1 = HistContainer(**hist_dict1)
+        bin_edges = hist_con1.bin_edges
+        bin_range = (bin_edges[0], bin_edges[-1])
+        hist_dict2['bins'] = bin_edges
+        hist_dict2['range'] = bin_range
+        hist_con2 = HistContainer(**hist_dict2)
+        ax1.set_xlim(bin_range)
+
+        if hist_con1.stacked:
+            bc1 = hist_con1.bin_content[-1]
+        else:
+            bc1 = hist_con1.bin_content
+        if hist_con2.stacked:
+            bc2 = hist_con2.bin_content[-1]
+        else:
+            bc2 = hist_con2.bin_content
+
+        berr1 = getattr(hist_con1, 'bin_err', np.zeros(len(bc1)))
+        berr2 = getattr(hist_con2, 'bin_err', np.zeros(len(bc2)))
+
+        ratio = bc1/bc2
+        ratio_err = ratio*np.sqrt((berr1/bc1)**2+(berr2/bc2)**2)
+        ratio_err_hi = ratio + ratio_err
+        ratio_err_low = ratio - ratio_err
+
+        ratio[ratio == 0] = np.nan
+
+        fill_between_steps(ax2, hist_con1.bin_edges, ratio_err_hi, ratio_err_low,
+                           step_where='pre', linewidth=0, color=err_color, alpha=0.2, zorder=10)
+
+        ax2.errorbar(hist_con1.bin_centers, ratio, yerr=None,
+                     xerr=[hist_con1.bin_centers-hist_con1.bin_edges[0:-1],
+                           hist_con1.bin_edges[1:]-hist_con1.bin_centers], fmt='d',
+                     color='xkcd:gunmetal')
+
+        if unity_line:
+            ax2.axhline(1, linewidth=3, color=unity_line, zorder=0)
+        ax2.yaxis.set_major_locator(MaxNLocator(nbins=4, prune='upper'))
+        if ratio_range:
+            ax2.set_ylim(ratio_range)
+        else:
+            ax2.set_ylim((0, 2.0))
+
+        return (ax1, ax2), (hist_con1.bin_content, hist_con1.bin_edges, hist_con1.vis_object), \
+            (hist_con2.bin_content, hist_con2.bin_edges, hist_con2.vis_object)
+
+
+def _check_args_ratio(hist_dict1, hist_dict2, bins, bin_range):
+
+    # check that 'bins' is not conflicting
+    if bins is not None:
+        _bins = bins
+    elif 'bins' in hist_dict1:
+        _bins = hist_dict1['bins']
+    elif 'bins' in hist_dict2:
+        _bins = hist_dict2['bins']
+    else:
+        _bins = 'auto'
+
+    if (('bins' in hist_dict1 and hist_dict1['bins'] != _bins) or
+            ('bins' in hist_dict2 and hist_dict2['bins'] != _bins)):
+        raise KeyError('`bins` arg is inconsistent.  All declared `bins` args must be equal')
+
+    # check that 'range' is not conflicting
+
+    if bin_range is not None:
+        _bin_range = bin_range
+    elif 'range' in hist_dict1:
+        _bin_range = hist_dict1['range']
+    elif 'range' in hist_dict2:
+        _bin_range = hist_dict2['range']
+    else:
+        _bin_range = None
+
+    if (('range' in hist_dict1 and hist_dict1['range'] != _bin_range) or
+            ('range' in hist_dict2 and hist_dict2['range'] != _bin_range)):
+        raise KeyError('`range` arg is inconsistent.  All declared `range` args must be equal')
+
+    return _bins, _bin_range
 
 
 class HistContainer(object):
@@ -647,113 +765,3 @@ def poisson_error(bin_content, suppress_zero=False):
         return error_dict[bin_content]
     else:
         return (np.sqrt(bin_content), np.sqrt(bin_content))
-
-
-def ratio_plot(hist_dict1, hist_dict2, bins=None, range=None, ratio_range=None, err_style='band',
-               err_color='xkcd:gunmetal', ratio_mode='default', grid=False, unity_line='red',
-               logx=False):
-    '''Function for creating ratio plots (comparing two histograms by dividing their bin content).
-    The call structure is very similar to producing two individual histograms, with additional
-    arguments specifying the nature of the ratio plot.  The number of bins and ranges for both
-    histograms must be equal.'''
-
-    bin_range = range
-    del range
-
-    bins, bin_range = _check_args_ratio(hist_dict1, hist_dict2, bins, bin_range)
-    hist_dict1['bins'] = bins
-    hist_dict1['range'] = bin_range
-
-    fig = plt.figure()
-    gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1])
-    ax1 = fig.add_subplot(gs[0])
-    if logx:
-        ax1.set_xscale("log", nonposy='clip')
-    ax2 = fig.add_subplot(gs[1], sharex=ax1)
-    # ax1.grid(True)
-    # ax2.grid(True)
-    plt.setp(ax1.get_xticklabels(), visible=False)
-    fig.subplots_adjust(hspace=0.001)
-
-    hist_dict1['ax'] = ax1
-    hist_dict2['ax'] = ax1
-
-    hist_con1 = HistContainer(**hist_dict1)
-    bin_edges = hist_con1.bin_edges
-    bin_range = (bin_edges[0], bin_edges[-1])
-    hist_dict2['bins'] = bin_edges
-    hist_dict2['range'] = bin_range
-    hist_con2 = HistContainer(**hist_dict2)
-    ax1.set_xlim(bin_range)
-
-    if hist_con1.stacked:
-        bc1 = hist_con1.bin_content[-1]
-    else:
-        bc1 = hist_con1.bin_content
-    if hist_con2.stacked:
-        bc2 = hist_con2.bin_content[-1]
-    else:
-        bc2 = hist_con2.bin_content
-
-    berr1 = getattr(hist_con1, 'bin_err', np.zeros(len(bc1)))
-    berr2 = getattr(hist_con2, 'bin_err', np.zeros(len(bc2)))
-
-    ratio = bc1/bc2
-    ratio_err = ratio*np.sqrt((berr1/bc1)**2+(berr2/bc2)**2)
-    ratio_err_hi = ratio + ratio_err
-    ratio_err_low = ratio - ratio_err
-
-    ratio[ratio == 0] = np.nan
-
-    fill_between_steps(ax2, hist_con1.bin_edges, ratio_err_hi, ratio_err_low,
-                       step_where='pre', linewidth=0, color=err_color, alpha=0.2, zorder=10)
-
-    ax2.errorbar(hist_con1.bin_centers, ratio, yerr=None,
-                 xerr=[hist_con1.bin_centers-hist_con1.bin_edges[0:-1],
-                       hist_con1.bin_edges[1:]-hist_con1.bin_centers], fmt='d',
-                 color='xkcd:gunmetal')
-
-    if unity_line:
-        ax2.axhline(1, linewidth=3, color=unity_line, zorder=0)
-    ax2.yaxis.set_major_locator(MaxNLocator(nbins=4, prune='upper'))
-    if ratio_range:
-        ax2.set_ylim(ratio_range)
-    else:
-        ax2.set_ylim((0, 2.0))
-
-    return (ax1, ax2), (hist_con1.bin_content, hist_con1.bin_edges, hist_con1.vis_object), \
-        (hist_con2.bin_content, hist_con2.bin_edges, hist_con2.vis_object)
-
-
-def _check_args_ratio(hist_dict1, hist_dict2, bins, bin_range):
-
-    # check that 'bins' is not conflicting
-    if bins is not None:
-        _bins = bins
-    elif 'bins' in hist_dict1:
-        _bins = hist_dict1['bins']
-    elif 'bins' in hist_dict2:
-        _bins = hist_dict2['bins']
-    else:
-        _bins = 'auto'
-
-    if (('bins' in hist_dict1 and hist_dict1['bins'] != _bins) or
-            ('bins' in hist_dict2 and hist_dict2['bins'] != _bins)):
-        raise KeyError('`bins` arg is inconsistent.  All declared `bins` args must be equal')
-
-    # check that 'range' is not conflicting
-
-    if bin_range is not None:
-        _bin_range = bin_range
-    elif 'range' in hist_dict1:
-        _bin_range = hist_dict1['range']
-    elif 'range' in hist_dict2:
-        _bin_range = hist_dict2['range']
-    else:
-        _bin_range = None
-
-    if (('range' in hist_dict1 and hist_dict1['range'] != _bin_range) or
-            ('range' in hist_dict2 and hist_dict2['range'] != _bin_range)):
-        raise KeyError('`range` arg is inconsistent.  All declared `range` args must be equal')
-
-    return _bins, _bin_range
