@@ -48,7 +48,10 @@ class Vector(np.ndarray):
     # All valid subclasses must have NAMES in class
     __slots__ = ()
 
-    def __new__(cls, *args, dtype=np.double):
+    def __new__(cls, *args, **kargs):
+
+        dtype=kargs.get('dtype', np.double)
+
         if len(args)==0:
             args = np.zeros(len(cls.NAMES))
         args = [np.asarray(a).astype(dtype) for a in args]
@@ -228,7 +231,7 @@ class Vector2D(Vector):
 
 
     # Using Py3 keyword only syntax for dtype
-    def __new__(cls, x, y, dtype=np.double):
+    def __new__(cls, x=0, y=0, dtype=np.double):
         return Vector.__new__(cls, x, y, dtype=dtype)
 
     def phi(self):
@@ -245,7 +248,7 @@ class Vector3D(Vector2D):
     __slots__ = ()
     NAMES = ('x', 'y', 'z')
 
-    def __new__(cls, x, y, z, dtype=np.double):
+    def __new__(cls, x=0, y=0, z=0, dtype=np.double):
         return Vector.__new__(cls, x, y, z, dtype=dtype)
 
     def cross(self, other):
@@ -297,7 +300,7 @@ class LorentzVector(Vector3D):
     METRIC = np.array([-1,-1,-1,1])
     __slots__ = ()
 
-    def __new__(cls, x, y, z, t, dtype=np.double):
+    def __new__(cls, x=0, y=0, z=0, t=0, dtype=np.double):
         return Vector.__new__(cls, x, y, z, t, dtype=dtype)
 
     @property

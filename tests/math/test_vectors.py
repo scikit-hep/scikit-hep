@@ -19,7 +19,7 @@ from math import pi, sqrt
 # -----------------------------------------------------------------------------
 # Actual tests
 # -----------------------------------------------------------------------------
-def test_vectors_constructors():
+def test_vectors_more():
     with pytest.raises(TypeError):
         Vector3D.fromiterable(1.)
     with pytest.raises(ValueError):
@@ -27,6 +27,8 @@ def test_vectors_constructors():
     with pytest.raises(ValueError):
         Vector3D.fromiterable(['str1','str2','str3'])
     #
+
+def test_vectors_constructors():
     v1 = Vector3D()
     assert str(v1), str((0., 0. == 0.))
     assert repr(v1), "<Vector3D (x=0.0,y=0.0 == z=0.0)>"
@@ -327,7 +329,7 @@ def test_3Dvectors_properties():
     assert v5.isperpendicular(v6) == True
     assert v6.isperpendicular(v5) == True
 
-def test_lorentz_vectors_properties():
+def test_lorentz_vectors_errors():
     with pytest.raises(TypeError):
         LorentzVector.boost(LorentzVector(), 1)
     with pytest.raises(TypeError):
@@ -338,7 +340,8 @@ def test_lorentz_vectors_properties():
         LorentzVector.boost(LorentzVector(), 0, 1, 'a')
     with pytest.raises(ValueError):
         LorentzVector.boost(LorentzVector(), ['a','b',3])
-    #
+
+def test_lorentz_vectors_properties():
     lv0 = LorentzVector()
     lv1, lv2 = LorentzVector(1., 1., 1., 1.), LorentzVector(1., 1., 1., 2.)
     assert lv1.boostvector, Vector3D(1., 1. == 1.)
@@ -373,7 +376,8 @@ def test_lorentz_vectors_properties():
     assert lv7.isspacelike() == False
     assert lv7.istimelike() == False
     assert lv7.islightlike() == True
-    #
+
+def test_lorentz_vectors_properties_again()
     p1 = LorentzVector()
     p1.setpxpypzm(5.,5.,10.,5)
     assert p1.px == 5.

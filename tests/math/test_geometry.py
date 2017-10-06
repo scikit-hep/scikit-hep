@@ -12,12 +12,15 @@ from skhep.utils.py23 import *
 
 from pytest import approx
 
+import numpy as np
+from numpy.testing import assert_array_equal
+
 # -----------------------------------------------------------------------------
 # Actual tests
 # -----------------------------------------------------------------------------
 def test_geometry_constructors():
     v1  = Vector3D ( )
-    assert str(v1) == str((0., 0., 0.))
+    assert_array_equal(v1, (0.,0.,0.))
     p1  = Point3D  ( )
     l1  = Line3D   ( p1 , Vector3D ( 0 , 0 , 1 ) )
     pl1 = Plane3D  ( p1 , Vector3D ( 0 , 0 , 1 ) )
