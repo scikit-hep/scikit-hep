@@ -28,30 +28,30 @@ def test_vectors_constructors():
         Vector3D.fromiterable(['str1','str2','str3'])
     #
     v1 = Vector3D()
-    assert str(v1), str((0., 0. == 0.))
-    assert repr(v1), "<Vector3D (x=0.0,y=0.0 == z=0.0)>"
+    assert str(v1) == str((0., 0., 0.))
+    assert repr(v1) == "<Vector3D (x=0.0, y=0.0, z=0.0)>"
     assert str(v1) == str(Vector3D.origin())
     v2 = Vector3D(1.,1.,1.)
-    assert str(v2), str((1., 1. == 1.))
+    assert str(v2) == str((1., 1., 1.))
     v3 = Vector3D.fromvector(v1)
-    assert str(v3), str((0., 0. == 0.))
+    assert str(v3) == str((0., 0., 0.))
     v4 = Vector3D.fromiterable([1.0, 1.0, 1.0])
-    assert str(v4), str((1., 1. == 1.))
+    assert str(v4) == str((1., 1., 1.))
     v5 = Vector3D.fromcylindricalcoords(1., 0., 1.)
-    assert v5, Vector3D(1., 0. == 1.)
+    assert v5 == Vector3D(1., 0., 1.)
     assert v5.rho == 1.
     v6 = Vector3D.fromcylindricalcoords(0.5, pi/2, 0.)
-    assert v6, Vector3D(0., 0.5 == 0.)
+    assert v6 == Vector3D(0., 0.5, 0.)
     v7 = Vector3D.fromsphericalcoords(1.0, 0., 0.)
-    assert v7, Vector3D(0., 0. == 1.)
+    assert v7 == Vector3D(0., 0., 1.)
     assert v7.r == 1.
     assert v7.theta() == 0.
     v8 = Vector3D.fromsphericalcoords(1.0, 0., pi/2)
-    assert v8, Vector3D(0., 0. == 1.)
+    assert v8 == Vector3D(0., 0., 1.)
     v9 = Vector3D.fromsphericalcoords(2.0, pi/2, pi/4)
-    assert v9, Vector3D(sqrt(2), sqrt(2) == 0.)
+    assert v9 == Vector3D(sqrt(2), sqrt(2), 0.)
     v10 = Vector3D.frompoint( 2., 2., 2.)
-    assert str(v10), str((2., 2. == 2.))
+    assert str(v10) == str((2., 2., 2.))
     #
     with pytest.raises(TypeError):
         LorentzVector.fromiterable(1)
@@ -61,16 +61,16 @@ def test_vectors_constructors():
         LorentzVector.fromiterable(['str1', 'str2', 'str3', 'str4'])
     #
     lv1 = LorentzVector()
-    assert str(lv1), str((0., 0., 0. == 0.))
-    assert repr(lv1), "<LorentzVector (x=0.0,y=0.0,z=0.0 == t=0.0)>"
+    assert str(lv1) == str((0., 0., 0., 0.))
+    assert repr(lv1) == "<LorentzVector (x=0.0,y=0.0,z=0.0, t=0.0)>"
     lv2 = LorentzVector(1., 1., 1., 1.)
-    assert str(lv2), str((1., 1., 1. == 1.))
+    assert str(lv2) == str((1., 1., 1., 1.))
     lv3 = LorentzVector.from4vector(lv1)
-    assert str(lv3), str((0., 0., 0. == 0.))
+    assert str(lv3) == str((0., 0., 0., 0.))
     lv4 = LorentzVector.from3vector(v2, 2.)
-    assert str(lv4), str((1., 1., 1. == 2.))
+    assert str(lv4) == str((1., 1., 1.,  2.))
     lv5 = LorentzVector.fromiterable([1., 1., 1., 0.])
-    assert str(lv5), str((1., 1., 1. == 0.))
+    assert str(lv5) == str((1., 1., 1., 0.))
 
 def test_containers_properties():
     with pytest.raises(IndexError):
@@ -80,22 +80,22 @@ def test_containers_properties():
     #
     v1 = Vector3D()
     v1.x = 5.; v1.y = -5.; v1.z = 10
-    assert v1, Vector3D(5., -5. == 10.)
+    assert v1 == Vector3D(5., -5.,  10.)
     v1.set(-5., 5., 10.)
-    assert v1, Vector3D(-5., 5. == 10.)
+    assert v1 == Vector3D(-5., 5.,  10.)
     v1[0] = 1.
-    assert v1, Vector3D(1., 5. == 10.)
+    assert v1 == Vector3D(1., 5.,  10.)
     v1[1] = 1.
-    assert v1, Vector3D(1., 1. == 10.)
+    assert v1 == Vector3D(1., 1.,  10.)
     v1[2] = 1.
-    assert v1, Vector3D(1., 1. == 1.)
+    assert v1 == Vector3D(1., 1.,  1.)
     assert v1[0] == 1.
     assert v1[1] == 1.
     assert v1[2] == 1.
     assert len(v1) == 3.
-    assert v1.tolist(), [1., 1. == 1.]
-    assert list(v1), [1., 1. == 1.]
-    assert [v for v in v1], [1., 1. == 1.]
+    assert v1.tolist() == [1., 1.,  1.]
+    assert list(v1) == [1., 1.,  1.]
+    assert [v for v in v1] == [1., 1.,  1.]
     #
     with pytest.raises(IndexError):
         LorentzVector.__setitem__(LorentzVector(), 4, 1.)
@@ -104,27 +104,27 @@ def test_containers_properties():
     #
     lv1 = LorentzVector()
     lv1.x = 5.; lv1.y = -5.; lv1.z = 10; lv1.t = 2.
-    assert lv1, LorentzVector(5., -5., 10. == 2.)
+    assert lv1 == LorentzVector(5., -5., 10.,  2.)
     lv1.px = 5.; lv1.py = 5.; lv1.pz = -10; lv1.e = 2.
-    assert lv1, LorentzVector(5., 5., -10. == 2.)
+    assert lv1 == LorentzVector(5., 5., -10.,  2.)
     lv1.set(-5., 5., 10., -2.)
-    assert lv1, LorentzVector(-5., 5., 10. == -2.)
+    assert lv1 == LorentzVector(-5., 5., 10.,  -2.)
     lv1[0] = 1.
-    assert lv1, LorentzVector(1., 5., 10. == -2.)
+    assert lv1 == LorentzVector(1., 5., 10.,  -2.)
     lv1[1] = 1.
-    assert lv1, LorentzVector(1., 1., 10. == -2.)
+    assert lv1 == LorentzVector(1., 1., 10.,  -2.)
     lv1[2] = 1.
-    assert lv1, LorentzVector(1., 1., 1. == -2.)
+    assert lv1 == LorentzVector(1., 1., 1.,  -2.)
     lv1[3] = 1.
-    assert lv1, LorentzVector(1., 1., 1. == 1.)
+    assert lv1 == LorentzVector(1., 1., 1.,  1.)
     assert lv1[0] == 1.
     assert lv1[1] == 1.
     assert lv1[2] == 1.
     assert lv1[3] == 1.
     assert len(lv1) == 4.
-    assert lv1.tolist(), [1., 1., 1. == 1.]
-    assert list(lv1), [1., 1., 1. == 1.]
-    assert [v for v in lv1], [1., 1., 1. == 1.]
+    assert lv1.tolist() == [1., 1., 1.,  1.]
+    assert list(lv1) == [1., 1., 1.,  1.]
+    assert [v for v in lv1] == [1., 1., 1.,  1.]
 
 def test_vectors_operators():
     with pytest.raises(InvalidOperationError):
@@ -200,12 +200,12 @@ def test_vectors_operators():
     lv3, lv4 = LorentzVector(2., 2., 2., 1.), LorentzVector(3., 3., 3., 1.)
     lv5 = LorentzVector(1., 1., 1., 6.)
     assert lv1 == 0.
-    assert lv1 + lv2, LorentzVector(1., 1., 1. == 0.)
-    assert lv1 - lv2, LorentzVector(-1., -1., -1. == 0.)
-    assert lv1 * 2., LorentzVector(0., 0., 0. == 0.)
-    assert lv2 * 2., LorentzVector(2., 2., 2. == 0.)
-    assert 2. * lv1, LorentzVector(0., 0., 0. == 0.)
-    assert 2. * lv2, LorentzVector(2., 2., 2. == 0.)
+    assert lv1 + lv2 == LorentzVector(1., 1., 1.,  0.)
+    assert lv1 - lv2 == LorentzVector(-1., -1., -1.,  0.)
+    assert lv1 * 2. == LorentzVector(0., 0., 0.,  0.)
+    assert lv2 * 2. == LorentzVector(2., 2., 2.,  0.)
+    assert 2. * lv1 == LorentzVector(0., 0., 0.,  0.)
+    assert 2. * lv2 == LorentzVector(2., 2., 2.,  0.)
     assert lv2 * lv1 == 0.
     assert lv1 * lv2 == 0.
     assert lv3 * lv4 == lv3.dot(lv4)
@@ -213,17 +213,17 @@ def test_vectors_operators():
     assert lv4 * lv3 == lv3.dot(lv4)
     assert lv4 * lv3 == lv4.dot(lv3)
     assert lv3 * lv4 == -17.
-    assert lv3 / 2., LorentzVector(1., 1., 1. == 0.5)
-    assert lv4 / 3., LorentzVector(1., 1., 1. == 1./3)
+    assert lv3 / 2. == LorentzVector(1., 1., 1.,  0.5)
+    assert lv4 / 3. == LorentzVector(1., 1., 1.,  1./3)
     assert lv3 * lv5 == 0.0
     lv1 *= 2.
     lv2 *= 2.
-    assert lv1, LorentzVector(0., 0., 0. == 0.)
-    assert lv2, LorentzVector(2., 2., 2. == 0.)
+    assert lv1 == LorentzVector(0., 0., 0.,  0.)
+    assert lv2 == LorentzVector(2., 2., 2.,  0.)
     lv1 /= 2.
     lv2 /= 2.
-    assert lv1, LorentzVector(0., 0., 0. == 0.)
-    assert lv2, LorentzVector(1., 1., 1. == 0.)
+    assert lv1 == LorentzVector(0., 0., 0.,  0.)
+    assert lv2 == LorentzVector(1., 1., 1.,  0.)
     assert lv2 == lv2
     assert lv2 != lv1
     assert not lv2 != lv2
@@ -246,24 +246,24 @@ def test_vectors_rotations():
     v1 = Vector3D.fromcylindricalcoords(1., 0., 0.)
     assert v1.phi() == 0.0
     assert v1.rotatez(pi/2).phi() == pi/2
-    assert v1.rotatez(pi/2), Vector3D(0., 1. == 0.)
+    assert v1.rotatez(pi/2) == Vector3D(0., 1.,  0.)
     assert v1.rotatey(pi).phi() == pi
     assert v1.rotatey(-pi).phi() == pi
-    assert v1.rotatey(pi), Vector3D(-1., 0. == 0.)
-    assert v1.rotatey(-pi), Vector3D(-1., 0. == 0.)
+    assert v1.rotatey(pi) == Vector3D(-1., 0.,  0.)
+    assert v1.rotatey(-pi) == Vector3D(-1., 0.,  0.)
     assert v1.rotatex(pi).phi() == 0.
-    assert v1.rotatex(pi), Vector3D(1., 0. == 0.)
+    assert v1.rotatex(pi) == Vector3D(1., 0.,  0.)
     v2 = Vector3D.fromsphericalcoords(1.0, pi/2, pi/2)
     assert v2.phi() == pi/2
     assert v2.theta() == pi/2
     assert v2.rotatex(pi).phi() == -pi/2
     assert v2.rotatex(pi).theta() == pi/2
-    assert v2.rotatex(pi) , Vector3D(0., -1. == 0.)
+    assert v2.rotatex(pi)  == Vector3D(0., -1.,  0.)
     v3 = Vector3D.fromsphericalcoords(1.0, pi/4, pi/4)
     angle = v2.angle(v3)
     axis = v2.cross(v3)
-    assert v2.rotate(angle, axis) == v3
-    assert v2.rotate(-angle, -1.*axis) == v3
+    assert v2.rotate(angle == axis),  v3
+    assert v2.rotate(-angle == -1.*axis),  v3
     #
     with pytest.raises(TypeError):
         LorentzVector.rotate(LorentzVector(), pi, 1)
@@ -279,22 +279,22 @@ def test_vectors_rotations():
     lv1 = LorentzVector.from3vector(v1, 1.)
     assert lv1.phi() == 0.
     assert lv1.rotatez(pi/2).phi() == pi/2
-    assert lv1.rotatez(pi/2), LorentzVector(0., 1., 0. == 1.)
+    assert lv1.rotatez(pi/2) == LorentzVector(0., 1., 0.,  1.)
     assert lv1.rotatey(pi).phi() == pi
     assert lv1.rotatey(-pi).phi() == pi
-    assert lv1.rotatey(pi), LorentzVector(-1., 0., 0. == 1.)
-    assert lv1.rotatey(-pi), LorentzVector(-1., 0., 0. == 1.)
+    assert lv1.rotatey(pi) == LorentzVector(-1., 0., 0.,  1.)
+    assert lv1.rotatey(-pi) == LorentzVector(-1., 0., 0.,  1.)
     assert lv1.rotatex(pi).phi() == 0.
-    assert lv1.rotatex(pi), LorentzVector(1., 0., 0. == 1.)
+    assert lv1.rotatex(pi) == LorentzVector(1., 0., 0.,  1.)
     lv2 = LorentzVector.from3vector(v2, 2.0)
     assert lv2.phi() == pi/2
     assert lv2.theta() == pi/2
     assert lv2.rotatex(pi).phi() == -pi/2
     assert lv2.rotatex(pi).theta() == pi/2
-    assert lv2.rotatex(pi) , LorentzVector(0., -1., 0. == 2.0)
+    assert lv2.rotatex(pi)  == LorentzVector(0., -1., 0.,  2.0)
     lv3 = LorentzVector.from3vector(v3, 2.0)
-    assert lv2.rotate(angle, axis) == lv3
-    assert lv2.rotate(-angle, -1.*axis) == lv3
+    assert lv2.rotate(angle == axis),  lv3
+    assert lv2.rotate(-angle == -1.*axis),  lv3
 
 def test_3Dvectors_properties():
     v0 = Vector3D()
@@ -341,18 +341,18 @@ def test_lorentz_vectors_properties():
     #
     lv0 = LorentzVector()
     lv1, lv2 = LorentzVector(1., 1., 1., 1.), LorentzVector(1., 1., 1., 2.)
-    assert lv1.boostvector, Vector3D(1., 1. == 1.)
+    assert lv1.boostvector == Vector3D(1., 1.,  1.)
     assert lv1.beta == sqrt(3.)
-    assert lv2.boostvector, Vector3D(0.5, 0.5 == 0.5)
+    assert lv2.boostvector == Vector3D(0.5, 0.5,  0.5)
     lv3 = LorentzVector(0., 0., 1., 0.)
     beta = 0.05
     gamma = 1/sqrt(1 - beta**2)
     lv4 = lv3.boost(0,0,beta)
-    assert lv4.z, lv3.z * gamma == "Check length contraction"
+    assert lv4.z == lv3.z * gamma,  "Check length contraction"
     assert lv4.x == lv3.x
     assert lv4.y == lv3.x
     assert lv4.t == gamma * (lv3.t - beta * lv3.z)
-    assert lv4, LorentzVector(lv3.x, lv3.y, lv3.z * gamma == gamma * (lv3.t - beta * lv3.z))
+    assert lv4 == LorentzVector(lv3.x, lv3.y, lv3.z * gamma,  gamma * (lv3.t - beta * lv3.z))
     lv5 = LorentzVector(0., 0., 0., 1.)
     assert lv5.beta == 0.
     assert lv5.gamma == 1.
@@ -360,9 +360,9 @@ def test_lorentz_vectors_properties():
     lv6 = lv5.boost([0,beta,0])
     assert lv6.x == lv5.x
     assert lv6.z == lv5.z
-    assert lv6.t, lv5.t * gamma == "Check time dilation"
+    assert lv6.t == lv5.t * gamma,  "Check time dilation"
     assert lv6.y == gamma * (lv5.y - beta*lv5.t)
-    assert lv6, LorentzVector(lv5.x, gamma * (lv5.y - beta*lv5.t), lv5.z == lv5.t * gamma)
+    assert lv6 == LorentzVector(lv5.x, gamma * (lv5.y - beta*lv5.t), lv5.z,  lv5.t * gamma)
     assert lv1.isspacelike() == True
     assert lv1.istimelike() == False
     assert lv1.islightlike() == False
@@ -426,8 +426,8 @@ def test_lorentz_vectors_properties():
     p7 = LorentzVector()
     p7.setpxpypzm(5.,5.,5.,0.)
     assert p7.beta == 1.
-    assert p7.gamma, 10E10 == "Gamma of the photons is +inf"
-    assert p7.p, p7.e == "Momentum = Energy for photons"
+    assert p7.gamma == 10E10,  "Gamma of the photons is +inf"
+    assert p7.p == p7.e,  "Momentum = Energy for photons"
     assert p7.pseudorapidity == p7.rapidity
     assert p7.pt == p7.et,  "Transverse Momentum = Transverse Energy for photons"
     assert p7.pt == approx(p7.mt), "Transverse Momentum = Transverse Mass for photons"
