@@ -29,7 +29,7 @@ def test_vectors_constructors():
     #
     v1 = Vector3D()
     assert str(v1) == str((0., 0., 0.))
-    assert repr(v1) == "<Vector3D (x=0.0, y=0.0, z=0.0)>"
+    assert repr(v1) == "<Vector3D (x=0.0,y=0.0,z=0.0)>"
     assert str(v1) == str(Vector3D.origin())
     v2 = Vector3D(1.,1.,1.)
     assert str(v2) == str((1., 1., 1.))
@@ -62,7 +62,7 @@ def test_vectors_constructors():
     #
     lv1 = LorentzVector()
     assert str(lv1) == str((0., 0., 0., 0.))
-    assert repr(lv1) == "<LorentzVector (x=0.0,y=0.0,z=0.0, t=0.0)>"
+    assert repr(lv1) == "<LorentzVector (x=0.0,y=0.0,z=0.0,t=0.0)>"
     lv2 = LorentzVector(1., 1., 1., 1.)
     assert str(lv2) == str((1., 1., 1., 1.))
     lv3 = LorentzVector.from4vector(lv1)
@@ -262,8 +262,8 @@ def test_vectors_rotations():
     v3 = Vector3D.fromsphericalcoords(1.0, pi/4, pi/4)
     angle = v2.angle(v3)
     axis = v2.cross(v3)
-    assert v2.rotate(angle == axis),  v3
-    assert v2.rotate(-angle == -1.*axis),  v3
+    assert v2.rotate(angle,  axis) ==  v3
+    assert v2.rotate(-angle,  -1.*axis) ==  v3
     #
     with pytest.raises(TypeError):
         LorentzVector.rotate(LorentzVector(), pi, 1)
@@ -293,8 +293,8 @@ def test_vectors_rotations():
     assert lv2.rotatex(pi).theta() == pi/2
     assert lv2.rotatex(pi)  == LorentzVector(0., -1., 0.,  2.0)
     lv3 = LorentzVector.from3vector(v3, 2.0)
-    assert lv2.rotate(angle == axis),  lv3
-    assert lv2.rotate(-angle == -1.*axis),  lv3
+    assert lv2.rotate(angle, axis) ==  lv3
+    assert lv2.rotate(-angle, -1.*axis) == lv3
 
 def test_3Dvectors_properties():
     v0 = Vector3D()
