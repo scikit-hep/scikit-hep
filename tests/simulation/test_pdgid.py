@@ -7,18 +7,16 @@ Tests for the skhep.simulation.pdgid module.
 # -----------------------------------------------------------------------------
 # Import statements
 # -----------------------------------------------------------------------------
-import unittest
-
 from skhep.simulation.pdgid import *
 from skhep.utils.py23 import *
+from pytest import approx
 
 
 # -----------------------------------------------------------------------------
 # Actual tests
 # -----------------------------------------------------------------------------
-class Test(unittest.TestCase):
-    def __init__(self, *args, **kwargs):
-        unittest.TestCase.__init__(self, *args, **kwargs)
+class PdgIdTest(object):
+    def __init__(self):
         # Set of PDG IDs used for tests
         # FIXME: even better if IDs taken directly by name from the Particle Data Table
         # Bosons
@@ -50,155 +48,147 @@ class Test(unittest.TestCase):
         self.id_invalid1 = 0  # illegal ID
         self.id_invalid2 = 99999999  # general form is a 7-digit number
 
-    def runTest(self):
-        # Required for Python 2.6 only
-        self.test_charge_functions()
-        self.test_spin_functions()
-        self.test_is_functions()
-        self.test_has_functions()
-        self.test_ion_functions()
-
     def test_charge_functions(self):
-        self.assertEqual(charge(self.id_gluon), 0)
-        self.assertEqual(charge(self.id_photon), 0)
-        self.assertEqual(charge(self.id_electron), -1)
-        self.assertEqual(charge(self.id_proton), +1)
-        self.assertEqual(charge(self.id_piminus), -1)
-        self.assertEqual(charge(self.id_Kplus), +1)
-        self.assertEqual(threeCharge(self.id_photon), 0)
-        self.assertEqual(threeCharge(self.id_electron), -3)
-        self.assertEqual(threeCharge(self.id_proton), +3)
-        self.assertEqual(threeCharge(self.id_Kplus), +3)
+        assert charge(self.id_gluon) == 0
+        assert charge(self.id_photon) == 0
+        assert charge(self.id_electron) == -1
+        assert charge(self.id_proton) == +1
+        assert charge(self.id_piminus) == -1
+        assert charge(self.id_Kplus) == +1
+        assert threeCharge(self.id_photon) == 0
+        assert threeCharge(self.id_electron) == -3
+        assert threeCharge(self.id_proton) == +3
+        assert threeCharge(self.id_Kplus) == +3
 
     def test_spin_functions(self):
-        self.assertEqual(jSpin(self.id_gluon), 3)
-        self.assertEqual(jSpin(self.id_photon), 3)
-        self.assertEqual(jSpin(self.id_electron), 2)
-        self.assertEqual(jSpin(self.id_proton), 2)
-        self.assertEqual(jSpin(self.id_piminus), 1)
-        self.assertEqual(jSpin(self.id_Kplus), 1)
+        assert jSpin(self.id_gluon) == 3
+        assert jSpin(self.id_photon) == 3
+        assert jSpin(self.id_electron) == 2
+        assert jSpin(self.id_proton) == 2
+        assert jSpin(self.id_piminus) == 1
+        assert jSpin(self.id_Kplus) == 1
         #
-        # self.assertEqual( sSpin(self.id_photon   ), 3 )
-        # self.assertEqual( sSpin(self.id_electron ), 1 )
-        # self.assertEqual( sSpin(self.id_proton   ), 1 )
-        self.assertEqual(sSpin(self.id_piminus), 0)
-        self.assertEqual(sSpin(self.id_Kplus), 0)
+        # assert  sSpin(self.id_photon   ) == 3
+        # assert  sSpin(self.id_electron ) == 1
+        # assert  sSpin(self.id_proton   ) == 1
+        assert sSpin(self.id_piminus) == 0
+        assert sSpin(self.id_Kplus) == 0
         #
-        self.assertEqual(lSpin(self.id_photon), None)
-        self.assertEqual(lSpin(self.id_electron), None)
-        # self.assertEqual( lSpin(self.id_proton   ), None )
-        self.assertEqual(lSpin(self.id_piminus), 0)
-        self.assertEqual(lSpin(self.id_Kplus), 0)
+        assert lSpin(self.id_photon) == None
+        assert lSpin(self.id_electron) == None
+        # assert  lSpin(self.id_proton   ) == None
+        assert lSpin(self.id_piminus) == 0
+        assert lSpin(self.id_Kplus) == 0
 
     def test_is_functions(self):
-        self.assertEqual(isValid(self.id_gluon), True)
-        self.assertEqual(isValid(self.id_photon), True)
-        self.assertEqual(isValid(self.id_electron), True)
-        self.assertEqual(isValid(self.id_proton), True)
-        self.assertEqual(isValid(self.id_piminus), True)
-        self.assertEqual(isValid(self.id_invalid1), None)
-        self.assertEqual(isValid(self.id_invalid2), False)
+        assert isValid(self.id_gluon) == True
+        assert isValid(self.id_photon) == True
+        assert isValid(self.id_electron) == True
+        assert isValid(self.id_proton) == True
+        assert isValid(self.id_piminus) == True
+        assert isValid(self.id_invalid1) == None
+        assert isValid(self.id_invalid2) == False
         #
-        self.assertEqual(isHadron(self.id_proton), isBaryon(self.id_proton))
-        self.assertEqual(isHadron(self.id_electron), isBaryon(self.id_electron))
+        assert isHadron(self.id_proton) == isBaryon(self.id_proton)
+        assert isHadron(self.id_electron) == isBaryon(self.id_electron)
         #
-        self.assertEqual(isHadron(self.id_gluon), False)
-        self.assertEqual(isHadron(self.id_photon), False)
-        self.assertEqual(isHadron(self.id_electron), False)
-        self.assertEqual(isHadron(self.id_proton), True)
-        self.assertEqual(isHadron(self.id_piminus), True)
+        assert isHadron(self.id_gluon) == False
+        assert isHadron(self.id_photon) == False
+        assert isHadron(self.id_electron) == False
+        assert isHadron(self.id_proton) == True
+        assert isHadron(self.id_piminus) == True
         #
-        self.assertEqual(isBaryon(self.id_gluon), False)
-        self.assertEqual(isBaryon(self.id_photon), False)
-        self.assertEqual(isBaryon(self.id_electron), False)
-        self.assertEqual(isBaryon(self.id_proton), True)
-        self.assertEqual(isBaryon(self.id_piminus), False)
+        assert isBaryon(self.id_gluon) == False
+        assert isBaryon(self.id_photon) == False
+        assert isBaryon(self.id_electron) == False
+        assert isBaryon(self.id_proton) == True
+        assert isBaryon(self.id_piminus) == False
         #
-        self.assertEqual(isMeson(self.id_gluon), False)
-        self.assertEqual(isMeson(self.id_photon), False)
-        self.assertEqual(isMeson(self.id_electron), False)
-        self.assertEqual(isMeson(self.id_proton), False)
-        self.assertEqual(isMeson(self.id_piminus), True)
+        assert isMeson(self.id_gluon) == False
+        assert isMeson(self.id_photon) == False
+        assert isMeson(self.id_electron) == False
+        assert isMeson(self.id_proton) == False
+        assert isMeson(self.id_piminus) == True
         #
-        self.assertEqual(isLepton(self.id_gluon), False)
-        self.assertEqual(isLepton(self.id_photon), False)
-        self.assertEqual(isLepton(self.id_electron), True)
-        self.assertEqual(isLepton(self.id_proton), False)
-        self.assertEqual(isLepton(self.id_piminus), False)
+        assert isLepton(self.id_gluon) == False
+        assert isLepton(self.id_photon) == False
+        assert isLepton(self.id_electron) == True
+        assert isLepton(self.id_proton) == False
+        assert isLepton(self.id_piminus) == False
         #
-        self.assertEqual(isNucleus(self.id_gluon), False)
-        self.assertEqual(isNucleus(self.id_photon), False)
-        self.assertEqual(isNucleus(self.id_electron), False)
-        self.assertEqual(isNucleus(self.id_proton), True)
-        self.assertEqual(isNucleus(self.id_piminus), False)
+        assert isNucleus(self.id_gluon) == False
+        assert isNucleus(self.id_photon) == False
+        assert isNucleus(self.id_electron) == False
+        assert isNucleus(self.id_proton) == True
+        assert isNucleus(self.id_piminus) == False
         #
-        self.assertEqual(isDiQuark(self.id_gluon), False)
-        self.assertEqual(isDiQuark(self.id_photon), False)
-        self.assertEqual(isDiQuark(self.id_electron), False)
-        self.assertEqual(isDiQuark(self.id_proton), False)
-        self.assertEqual(isDiQuark(self.id_piminus), False)
+        assert isDiQuark(self.id_gluon) == False
+        assert isDiQuark(self.id_photon) == False
+        assert isDiQuark(self.id_electron) == False
+        assert isDiQuark(self.id_proton) == False
+        assert isDiQuark(self.id_piminus) == False
         #
-        self.assertEqual(isDyon(self.id_gluon), False)
-        self.assertEqual(isDyon(self.id_photon), False)
-        self.assertEqual(isDyon(self.id_electron), False)
-        self.assertEqual(isDyon(self.id_proton), False)
-        self.assertEqual(isDyon(self.id_piminus), False)
+        assert isDyon(self.id_gluon) == False
+        assert isDyon(self.id_photon) == False
+        assert isDyon(self.id_electron) == False
+        assert isDyon(self.id_proton) == False
+        assert isDyon(self.id_piminus) == False
         #
-        self.assertEqual(isPentaquark(self.id_gluon), False)
-        self.assertEqual(isPentaquark(self.id_photon), False)
-        self.assertEqual(isPentaquark(self.id_electron), False)
-        self.assertEqual(isPentaquark(self.id_proton), False)
-        self.assertEqual(isPentaquark(self.id_piminus), False)
+        assert isPentaquark(self.id_gluon) == False
+        assert isPentaquark(self.id_photon) == False
+        assert isPentaquark(self.id_electron) == False
+        assert isPentaquark(self.id_proton) == False
+        assert isPentaquark(self.id_piminus) == False
         # Other functions to test:
         # isQBall, isRhadron, isSUSY
 
     def test_has_functions(self):
-        # self.assertEqual( hasFundamentalAnti(self.id_photon  ), False )
-        self.assertEqual(hasFundamentalAnti(self.id_electron), True)
-        # self.assertEqual( hasFundamentalAnti(self.id_proton  ), True  )
+        # assert  hasFundamentalAnti(self.id_photon  ) == False
+        assert hasFundamentalAnti(self.id_electron) == True
+        # assert  hasFundamentalAnti(self.id_proton  ) == True
         #
-        self.assertEqual(hasUp(self.id_photon), False)
-        self.assertEqual(hasUp(self.id_electron), False)
-        self.assertEqual(hasUp(self.id_proton), True)
-        self.assertEqual(hasUp(self.id_piminus), True)
-        self.assertEqual(hasUp(self.id_Kplus), True)
+        assert hasUp(self.id_photon) == False
+        assert hasUp(self.id_electron) == False
+        assert hasUp(self.id_proton) == True
+        assert hasUp(self.id_piminus) == True
+        assert hasUp(self.id_Kplus) == True
         #
-        self.assertEqual(hasDown(self.id_photon), False)
-        self.assertEqual(hasDown(self.id_electron), False)
-        self.assertEqual(hasDown(self.id_proton), True)
-        self.assertEqual(hasDown(self.id_piminus), True)
-        self.assertEqual(hasDown(self.id_Kplus), False)
+        assert hasDown(self.id_photon) == False
+        assert hasDown(self.id_electron) == False
+        assert hasDown(self.id_proton) == True
+        assert hasDown(self.id_piminus) == True
+        assert hasDown(self.id_Kplus) == False
         #
-        self.assertEqual(hasStrange(self.id_photon), False)
-        self.assertEqual(hasStrange(self.id_electron), False)
-        self.assertEqual(hasStrange(self.id_proton), False)
-        self.assertEqual(hasStrange(self.id_piminus), False)
-        self.assertEqual(hasStrange(self.id_Kplus), True)
+        assert hasStrange(self.id_photon) == False
+        assert hasStrange(self.id_electron) == False
+        assert hasStrange(self.id_proton) == False
+        assert hasStrange(self.id_piminus) == False
+        assert hasStrange(self.id_Kplus) == True
         #
-        self.assertEqual(hasCharm(self.id_photon), False)
-        self.assertEqual(hasCharm(self.id_electron), False)
-        self.assertEqual(hasCharm(self.id_proton), False)
-        self.assertEqual(hasCharm(self.id_piminus), False)
-        self.assertEqual(hasCharm(self.id_Kplus), False)
+        assert hasCharm(self.id_photon) == False
+        assert hasCharm(self.id_electron) == False
+        assert hasCharm(self.id_proton) == False
+        assert hasCharm(self.id_piminus) == False
+        assert hasCharm(self.id_Kplus) == False
         #
-        self.assertEqual(hasBottom(self.id_photon), False)
-        self.assertEqual(hasBottom(self.id_electron), False)
-        self.assertEqual(hasBottom(self.id_proton), False)
-        self.assertEqual(hasBottom(self.id_piminus), False)
-        self.assertEqual(hasBottom(self.id_Kplus), False)
+        assert hasBottom(self.id_photon) == False
+        assert hasBottom(self.id_electron) == False
+        assert hasBottom(self.id_proton) == False
+        assert hasBottom(self.id_piminus) == False
+        assert hasBottom(self.id_Kplus) == False
         #
-        self.assertEqual(hasTop(self.id_photon), False)
-        self.assertEqual(hasTop(self.id_electron), False)
-        self.assertEqual(hasTop(self.id_proton), False)
-        self.assertEqual(hasTop(self.id_piminus), False)
-        self.assertEqual(hasTop(self.id_Kplus), False)
+        assert hasTop(self.id_photon) == False
+        assert hasTop(self.id_electron) == False
+        assert hasTop(self.id_proton) == False
+        assert hasTop(self.id_piminus) == False
+        assert hasTop(self.id_Kplus) == False
 
     def test_ion_functions(self):
-        self.assertEqual(ionZ(self.id_electron), None)
-        self.assertEqual(ionZ(self.id_proton), 1)
+        assert ionZ(self.id_electron) == None
+        assert ionZ(self.id_proton) == 1
         #
-        self.assertEqual(ionA(self.id_electron), None)
-        self.assertEqual(ionA(self.id_proton), 1)
+        assert ionA(self.id_electron) == None
+        assert ionA(self.id_proton) == 1
         #
-        self.assertEqual(ionNlambda(self.id_electron), None)
-        self.assertEqual(ionNlambda(self.id_proton), 0)
+        assert ionNlambda(self.id_electron) == None
+        assert ionNlambda(self.id_proton) == 0
