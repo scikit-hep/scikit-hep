@@ -682,7 +682,7 @@ class HistContainer(object):
 
     def redraw(self):
         self.bc_scales = np.divide(self.bin_content, self.bin_content_orig)
-        np.nan_to_num(self.bc_scales[-1], copy=False)
+        self.bc_scales[-1] = np.nan_to_num(self.bc_scales[-1])
         self.do_redraw = False
         if self.n_data_sets == 1:
             bin_content = [self.bin_content]
