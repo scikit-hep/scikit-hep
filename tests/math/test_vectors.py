@@ -377,7 +377,7 @@ def test_lorentz_vectors_properties():
     assert lv7.istimelike() == False
     assert lv7.islightlike() == True
 
-def test_lorentz_vectors_properties_again()
+def test_lorentz_vectors_properties_again():
     p1 = LorentzVector()
     p1.setpxpypzm(5.,5.,10.,5)
     assert p1.px == 5.
