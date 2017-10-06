@@ -48,6 +48,8 @@ The current list of contact persons is the following:
     Belle II              Karim Trabelsi, Nils Braun
     CMS                   Valentin Kuznetsov
     DUNE                  Dorota Stefan, Robert Sulej
+    LHCb                  Matthieu Marinangeli
+    Mu2e                  Brian Pollack
     ===================   =================================
 
 Contributors

@@ -1,11 +1,6 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
-Module for mathematical functions and utilities.
-
-This module contains in particular:
-
-  * Vector classes.
-  * Geometry classes.
+Module for PDG-related tools.
 """
 
 #-----------------------------------------------------------------------------
@@ -13,6 +8,7 @@ This module contains in particular:
 #-----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from .kinematics import *
-from .vectors import *
-from .geometry import *
+from .pdt import *
+
+# Expose all classes imported from pdt
+#__all__.extend( [ 'ParticleData', 'ParticleDataTable', 'PDT' ] )

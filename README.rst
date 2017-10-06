@@ -58,6 +58,15 @@ which can be done with the command:
 .. _Scikit-HEP website: http://scikit-hep.org/
 .. _Sphinx: http://www.sphinx-doc.org/en/stable/
 
+Getting in touch
+----------------
+Mailing list to ping all admins at once: `scikit-hep-admins`_.
+
+Forum for general matters, announcements and discussions concerning the Scikit-HEP project : `scikit-hep-forum`_.
+
+.. _scikit-hep-admins: scikit-hep-admins@googlegroups.com
+.. _scikit-hep-forum: scikit-hep-forum@googlegroups.com
+
 License
 -------
 The scikit-hep project is licensed under a 3-clause BSD style license - see the
