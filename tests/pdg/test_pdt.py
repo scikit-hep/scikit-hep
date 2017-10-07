@@ -18,4 +18,4 @@ def test_pdt():
     assert tbl('nonexistentparticlename') == None
     #assert tbl.has_key(11)
     #assert tbl.has_particle(2212)
-    assert tbl.particle(21).__repr__(),'g0: ID=21, m=0 GeV, 3*q=0 == width=0 GeV'
+    assert repr(tbl.particle(21)) == 'g0: ID=21, m=0 GeV, 3*q=0, width=0 GeV'
