@@ -52,7 +52,7 @@ def fill_between_steps(ax, x, y1, y2=0, step_where='pre', **kwargs):
         else:
             y2 = y2
 
-    if step_where not in {'pre', 'post', 'mid'}:
+    if step_where not in ['pre', 'post', 'mid']:
         raise ValueError("where must be one of {{'pre', 'post', 'mid'}} "
                          "You passed in {wh}".format(wh=step_where))
 
