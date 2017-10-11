@@ -267,20 +267,14 @@ class Vector3D(object):
         """Addition with another vector, i.e. self+other."""
         if not isinstance ( other ,  Vector3D ) : return NotImplemented
         v = self.copy()
-        try:
-            v+= other
-        except InvalidOperationError as e:
-            raise InvalidOperationError(e.message.replace("'+='","'+'"))
+        v+= other
         return v
 
     def __sub__(self, other):
         """Subtraction with another vector, i.e. self-other."""
         if not isinstance ( other ,  Vector3D ) : return NotImplemented
         v = self.copy()
-        try:
-            v-= other
-        except InvalidOperationError as e:
-            raise InvalidOperationError(e.message.replace("'-='","'-'"))
+        v-= other
         return v
 
     def __imul__(self, other):
@@ -289,7 +283,7 @@ class Vector3D(object):
         :Example:
         >>> v = ...
         >>> v *= 2 
-        """        
+        """
         if isinstance ( other , ( int , float ) ) :
             return Vector3D.fromiterable ( [v * other for v in self.__values ] )
         else:
@@ -316,16 +310,13 @@ class Vector3D(object):
         Example:
         >>> v2 = v1 * 2
         >>> number = v1 * v3
-        """        
+        """
         if isinstance ( other ,  Vector3D ) :
             return self.dot(other)
         v = self.copy()
-        try:
-            v *= other
-        except InvalidOperationError as e:
-            raise InvalidOperationError(e.message.replace("'*='","'*'"))
+        v *= other
         return v
-#        
+        
     def __rmul__(self, other):
         """Right multiplication of the vector by either another vector or a number."""
         return self.__mul__(other)
@@ -333,10 +324,7 @@ class Vector3D(object):
     def __truediv__(self, number):
         """Division of the vector by a number."""
         v = self.copy()
-        try:
-            v /= number
-        except InvalidOperationError as e:
-            raise InvalidOperationError(e.message.replace("'/='","'/'"))
+        v /= number
         return v
 
     __div__ = __truediv__
@@ -852,19 +840,13 @@ class LorentzVector(object):
     def __add__(self, other):
         """Addition with another LorentzVector, i.e. self+other."""
         v = self.copy()
-        try:
-            v+= other
-        except InvalidOperationError as e:
-            raise InvalidOperationError(e.message.replace("'+='","'+'"))
+        v+= other
         return v 
 
     def __sub__(self, other):
         """Subtraction with another LorentzVector, i.e. self-other."""
         v = self.copy()
-        try:
-            v-= other
-        except InvalidOperationError as e:
-            raise InvalidOperationError(e.message.replace("'-='","'-'"))
+        v-= other
         return v 
 
         
@@ -905,10 +887,7 @@ class LorentzVector(object):
         if isinstance ( other , LorentzVector ):
             return self.dot(other)
         v = self.copy()
-        try:
-            v*= other
-        except InvalidOperationError as e:
-            raise InvalidOperationError(e.message.replace("'*='","'*'"))
+        v *= other
         return v
         
     def __rmul__(self, other):
@@ -918,10 +897,7 @@ class LorentzVector(object):
     def __truediv__(self, number):
         """Division of the LorentzVector by a number."""
         v = self.copy()
-        try:
-            v/= number
-        except InvalidOperationError as e:
-            raise InvalidOperationError(e.message.replace("'/='","'/'")) 
+        v /= number
         return v
      
     __div__ = __truediv__
