@@ -22,8 +22,6 @@ from skhep.utils.exceptions import *
 
 from math import sqrt, atan2, cos, sin, acos, degrees, log, pi, sinh
 
-import numpy as np
-
 # -----------------------------------------------------------------------------
 # Vector class in 3D
 # -----------------------------------------------------------------------------
@@ -496,7 +494,7 @@ class Vector3D(object):
 
     def __str__(self):
         """Simple class representation."""
-        return str(tuple(self))
+        return str(tuple(self.__values))
 
 #-----------------------------------------------------------------------------
 # Lorentz vector class
