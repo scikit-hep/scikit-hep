@@ -10,7 +10,10 @@ Tests for the skhep.math.geometry module.
 from skhep.math.geometry import *
 from skhep.utils.py23 import *
 
+import pytest
 from pytest import approx
+
+from math import pi
 
 # -----------------------------------------------------------------------------
 # Actual tests
@@ -24,6 +27,7 @@ def test_geometry_constructors():
 
     l2  = Line3D .from_points ( p1 , Point3D(1,2,3) )
     pl2 = Plane3D.from_points ( p1 , Point3D(1,2,3) , Point3D (3,2,1) )
+    p2 = Point3D .frompoint   ( 1, 1, 1 )
 
 def test_operators ():
     v1 = Vector3D(1,2,3)
@@ -39,6 +43,10 @@ def test_operators ():
 
     p1 - v1
     p1 - p2
+    
+    p1 == p1
+    p1 != p2
+    
 
 def test_contains():
     line  = Line3D   ( Point3D() , Vector3D(0,0,1) )
@@ -61,6 +69,14 @@ def test_contains():
 
 
 def test_distance():
+    
+    with pytest.raises(NotImplementedError):
+        Point3D.distance(Point3D(), 2.)
+    with pytest.raises(NotImplementedError):
+        Line3D.distance(Line3D(), 2.)
+    with pytest.raises(NotImplementedError):
+        Plane3D.distance(Plane3D(), 2.)
+    
     p0 = Point3D()
     p1 = Point3D(1,0,0)
 
@@ -85,4 +101,78 @@ def test_distance():
 
     assert plane.distance(line1) == 0
     assert plane.distance(line2) == 1
+    
+def test_angle():
+    
+    p0 = Point3D()
+    
+    with pytest.raises(NotImplementedError):
+        Line3D.angle(Line3D(), p0)
+    with pytest.raises(NotImplementedError):
+        Plane3D.angle(Plane3D(), p0)
+    
+    line0  = Line3D   ( Point3D() , Vector3D(0,0,1) )
+    line1  = Line3D   ( Point3D(0,0,1) , Vector3D(0,1,0) )
 
+    plane0 = Plane3D  ( Point3D() , Vector3D(0,0,1) )
+    plane1 = Plane3D  ( Point3D(0,0,1) , Vector3D(0,1,0) )
+    
+    assert line0.angle ( line1 ) == pi/2.
+    assert line1.angle ( line0 ) == pi/2.
+    assert line1.angle ( line1 ) == 0.
+    assert line0.angle ( plane0 ) == 0.
+    assert line0.angle ( plane1 ) == pi/2.
+    assert line1.angle ( plane0 ) == pi/2.
+    assert line1.angle ( plane1 ) == 0.
+    
+    assert plane0.angle ( plane1 ) == pi/2.
+    assert plane1.angle ( plane0 ) == pi/2.
+    assert plane1.angle ( plane1 ) == 0.
+    
+    assert plane0.angle ( line0 ) == 0.
+    assert plane0.angle ( line1 ) == pi/2.
+    assert plane1.angle ( line0 ) == pi/2.
+    assert plane1.angle ( line1 ) == 0.
+
+    
+def test_intersect():
+
+    with pytest.raises(NotImplementedError):
+        Line3D.intersect(Line3D(), 1)
+    with pytest.raises(NotImplementedError):
+        Plane3D.intersect(Plane3D(), 1)
+    
+    p0 = Point3D()
+    p1 = Point3D(0,0,1)
+    
+    line0  = Line3D   ( Point3D() , Vector3D(0,0,1) )
+    line1  = Line3D   ( Point3D(0,0,1) , Vector3D(0,1,0) )
+
+    plane0 = Plane3D  ( Point3D() , Vector3D(0,0,1) )
+    plane1 = Plane3D  ( Point3D(0,0,1) , Vector3D(0,1,0) )
+    
+    assert line0.intersect( p0 ) == p0
+    assert line0.intersect( p1 ) == p1
+    assert line1.intersect( p0 ) == None
+    assert line1.intersect( p1 ) == p1
+    
+    assert line0.intersect( line1 ) == Point3D(0,0,1)
+    assert line1.intersect( line0 ) == Point3D(0,0,1)
+    
+    assert line0.intersect( plane0 ) == Point3D()
+    assert line0.intersect( plane1 ) == line0
+    assert line1.intersect( plane0 ) == None
+    assert line1.intersect( plane1 ) == Point3D(0,0,1)
+        
+    assert plane0.intersect( p0 ) == p0
+    assert plane0.intersect( p1 ) == None
+    assert plane1.intersect( p0 ) == p0
+    assert plane1.intersect( p1 ) == p1
+    
+    assert plane0.intersect( line0 ) == Point3D()
+    assert plane0.intersect( line1 ) == None
+    assert plane1.intersect( line0 ) == line0
+    assert plane1.intersect( line1 ) == Point3D(0,0,1)
+    
+    assert plane0.intersect( plane1 ) == Line3D( Point3D() , Vector3D(1,0,0) )
+    assert plane1.intersect( plane0 ) == Line3D( Point3D() , Vector3D(1,0,0) )
