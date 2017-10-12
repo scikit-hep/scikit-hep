@@ -4,4 +4,4 @@ Examples
 ========
 
 .. toctree::
-    ex_visual.rst
+    visual/ex_visual.rst
