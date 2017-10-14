@@ -2,6 +2,7 @@ from __future__ import absolute_import
 import numpy as np
 import numpy.ma as ma
 import collections
+import matplotlib
 
 
 def fill_between_steps(ax, x, y1, y2=0, step_where='pre', **kwargs):

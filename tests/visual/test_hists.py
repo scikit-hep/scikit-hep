@@ -67,3 +67,66 @@ def test_multi_hist1(cmdopt, data_gen1):
         answers = np.load(answer_dir+'/answers_multi_hist1.npz')
         assert(np.all(output[0] == answers['bc']))
         assert(np.all(output[1] == answers['be']))
+
+
+def test_error_bars(cmdopt, data_gen1):
+
+    output = skh_plt.hist(data_gen1[0], bins=20, errorbars=True, err_return=True)
+
+    if cmdopt == "generate":
+        with open(answer_dir+'/answers_error_bars.npz', 'wb') as f:
+            np.savez(f, bc=output[0], be=output[1], berr=output[2])
+        plt.show()
+    elif cmdopt == "test":
+        answers = np.load(answer_dir+'/answers_error_bars.npz')
+        assert(np.all(output[0] == answers['bc']))
+        assert(np.all(output[1] == answers['be']))
+        assert(np.all(output[2] == answers['berr']))
+
+
+def test_error_bars_weighted(cmdopt, data_gen1):
+
+    output = skh_plt.hist(data_gen1[0], weights=data_gen1[1], bins=20, errorbars=True,
+                          err_return=True)
+
+    if cmdopt == "generate":
+        with open(answer_dir+'/answers_error_bars_weighted.npz', 'wb') as f:
+            np.savez(f, bc=output[0], be=output[1], berr=output[2])
+        plt.show()
+    elif cmdopt == "test":
+        answers = np.load(answer_dir+'/answers_error_bars_weighted.npz')
+        assert(np.all(output[0] == answers['bc']))
+        assert(np.all(output[1] == answers['be']))
+        assert(np.all(output[2] == answers['berr']))
+
+
+def test_error_bars_multi(cmdopt, data_gen1):
+
+    output = skh_plt.hist([data_gen1[0], data_gen1[2]], bins=20, stacked=False, errorbars=True,
+                          err_return=True)
+
+    if cmdopt == "generate":
+        with open(answer_dir+'/answers_error_bars_multi.npz', 'wb') as f:
+            np.savez(f, bc=output[0], be=output[1], berr=output[2])
+        plt.show()
+    elif cmdopt == "test":
+        answers = np.load(answer_dir+'/answers_error_bars_multi.npz')
+        assert(np.all(output[0] == answers['bc']))
+        assert(np.all(output[1] == answers['be']))
+        assert(np.all(output[2] == answers['berr']))
+
+
+def test_error_bars_stacked(cmdopt, data_gen1):
+
+    output = skh_plt.hist([data_gen1[0], data_gen1[2]], bins=20, stacked=True, errorbars=True,
+                          err_return=True)
+
+    if cmdopt == "generate":
+        with open(answer_dir+'/answers_error_bars_stacked.npz', 'wb') as f:
+            np.savez(f, bc=output[0], be=output[1], berr=output[2])
+        plt.show()
+    elif cmdopt == "test":
+        answers = np.load(answer_dir+'/answers_error_bars_stacked.npz')
+        assert(np.all(output[0] == answers['bc']))
+        assert(np.all(output[1] == answers['be']))
+        assert(np.all(output[2] == answers['berr']))

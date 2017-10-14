@@ -1,6 +1,8 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
+# Brian Pollack, 2017
 from __future__ import absolute_import
 from __future__ import division
+import sys
 
 from skhep.utils.py23 import *
 
@@ -131,8 +133,30 @@ class MplPlotter(object):
 
                    Defaults to 'gaussian' if no weights are given, else 'sumW2'.
 
+                * err_return (bool):
+                    Return additional objects corresponding to the values of the error associated
+                    with each bin, and the patches used to display the error bars.
+
+                    Defaults to 'False'
+
             Other keyword arguments are described in `pylab.hist()`.
 
+        Returns:
+            bin_content (array or list of arrays): The values of the histogram bins. See normed or
+                density and weights for a description of the possible semantics. If input x is an
+                array, then this is an array of length nbins. If input is a sequence arrays [data1,
+                data2,..], then this is a list of arrays with the values of the histograms for each
+                of the arrays in the same order.
+
+            bin_edges (array): The edges of the bins. Length nbins + 1 (nbins left edges and right
+                edge of last bin). Always a single array even when multiple data sets are passed in.
+
+            error_bars (array or list of arrays, optional): The values of the error bars
+                associated with each bin.  It is only returned if `errorbars` is `True` and
+                `err_return` is True.
+
+            bin_patches (list or list of lists): Silent list of individual patches used to create
+                the histogram or list of such list if multiple input datasets.
 
 
         Brian Pollack, 2017
@@ -143,7 +167,10 @@ class MplPlotter(object):
         hist_con = HistContainer(x, bins, range, weights, errorbars, normed, scale, stacked,
                                  histtype, **kwargs)
 
-        return hist_con.bin_content, hist_con.bin_edges, hist_con.vis_object
+        if hist_con.err_return:
+            return hist_con.bin_content, hist_con.bin_edges, hist_con.bin_err, hist_con.vis_object
+        else:
+            return hist_con.bin_content, hist_con.bin_edges, hist_con.vis_object
 
     @staticmethod
     def ratio_plot(hist_dict1, hist_dict2, bins=None, range=None, ratio_range=None,
@@ -361,6 +388,10 @@ class HistContainer(object):
             self.err_dict['err_style'] = kwargs.pop('err_style', 'line')
 
         self.err_dict['err_color'] = kwargs.pop('err_color', 'auto')
+        # err_color='auto' is not currently supported in python 2.6
+        if sys.version_info < (2, 7):
+            self.err_dict['err_color'] = 'k'
+
         self.err_dict['suppress_zero'] = kwargs.pop('suppress_zero', False)
 
         if self.has_weights:
@@ -369,6 +400,10 @@ class HistContainer(object):
             self.err_dict['err_type'] = kwargs.pop('err_type', 'gaussian')
 
         self.err_dict['err_x'] = kwargs.pop('err_x', True)
+        self.err_dict['err_return'] = kwargs.pop('err_return', False)
+        self.err_return = self.err_dict['err_return']
+        if self.err_return and not self.errorbars:
+            raise KeyError('Cannot set `err_return=True` if `errorbars=False`')
 
         # tweak histogram styles for `band` err_style
 
