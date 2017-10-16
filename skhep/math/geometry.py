@@ -25,7 +25,7 @@ __all__  = (
 # Import statements
 # =============================================================================
 from   skhep.math.vectors import Vector3D
-
+from   skhep.math.numeric import isequal
 
 # =============================================================================
 # 3D-point
@@ -138,7 +138,7 @@ class Point3D(object) :
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        raise self._vct.theta 
+        return self._vct.theta( deg ) 
 
     @property
     def phi(self, deg=False):
@@ -147,7 +147,7 @@ class Point3D(object) :
         Options:
            deg : return the angle in degrees (default is radians)
         """
-        raise self._vct.phi
+        return self._vct.phi( deg )
     
     def copy  ( self ) :
         """Make a copy of this point
@@ -267,7 +267,7 @@ class Point3D(object) :
         
     def __repr__(self):
         """Class representation."""
-        return "<Point3D (x={0},y={1},z={2})>".format(self.x,self.y,self.z)
+        return "<Point3D(x={0},y={1},z={2})>".format(self.x,self.y,self.z)
 
     def __str__(self):
         """Simple class representation."""
@@ -357,9 +357,6 @@ class Line3D(object) :
     
     def __repr__(self):
         """Simple class representation."""
-
-    def __repr__(self):
-        """Simple class representation."""
         return "<Line3D({0},{1})>".format( self.point , self.direction ) 
 
     def __str__(self):
@@ -445,7 +442,7 @@ class Line3D(object) :
         a11  = -line.direction.mag2 
         
         deti = a00 * a11 -  a01 * a10
-        from skhep.math.numeric import isequal
+        
 
         ## two lines are actually parallel 
         if isequal ( deti , 0 , scale = abs ( a00 * a11) ) :
@@ -528,8 +525,6 @@ class Line3D(object) :
         elif isinstance ( other , Line3D ):
             dist = self.distance ( other )
             
-            from skhep.math.numeric import isequal
-            
             if isequal ( dist, 0.0 ):
                 return self.closest_points( other )[0]
             else:
@@ -570,7 +565,7 @@ class Plane3D(object) :
             raise NotImplementedError("Plane3D: invalid ``normal'' argument" )
         
         if 0 == normal.mag2  :
-            raise ValueError ("Plane3D: ``normal'' must be zero!" )
+            raise ValueError ("Plane3D: ``normal'' must not be zero!" )
 
         self.point     = point  .copy() 
         self.normal    = normal .copy() 
@@ -595,7 +590,7 @@ class Plane3D(object) :
         line   : the line in plane 
         point  : the point in plane 
         """
-        return cls ( point1 ,  line.vector.cross ( point - line.point ) )  
+        return cls ( point ,  line.direction.cross ( point - line.point ) )  
     
     ## is the point or line on plane ? 
     def __contains__ ( self , obj ) :
@@ -651,7 +646,7 @@ class Plane3D(object) :
         :Example:
         >>> plane1 = ...
         >>> plane2 = ...
-        >>> print plane1 == plane2 
+        >>> print plane1 != plane2 
         """
         return not ( self  == other )
 

@@ -19,34 +19,79 @@ from math import pi
 # Actual tests
 # -----------------------------------------------------------------------------
 def test_geometry_constructors():
+    
     v1  = Vector3D ( )
-    assert str(v1) == str((0., 0., 0.))
     p1  = Point3D  ( )
+    assert str(p1)  == "Point3D(x=0.0,y=0.0,z=0.0)"
+    assert repr(p1) == "<Point3D(x=0.0,y=0.0,z=0.0)>"
+    
     l1  = Line3D   ( p1 , Vector3D ( 0 , 0 , 1 ) )
+    assert str(l1)  == "Line3D({0},{1})"   .format(p1, Vector3D ( 0 , 0 , 1 ))
+    assert repr(l1) == "<Line3D({0},{1})>" .format(p1, Vector3D ( 0 , 0 , 1 ))
+    
     pl1 = Plane3D  ( p1 , Vector3D ( 0 , 0 , 1 ) )
+    assert str(pl1)  == "Plane3D({0},{1})"   .format(p1, Vector3D ( 0 , 0 , 1 ))
+    assert repr(pl1) == "<Plane3D({0},{1})>" .format(p1, Vector3D ( 0 , 0 , 1 ))
 
-    l2  = Line3D .from_points ( p1 , Point3D(1,2,3) )
-    pl2 = Plane3D.from_points ( p1 , Point3D(1,2,3) , Point3D (3,2,1) )
-    p2 = Point3D .frompoint   ( 1, 1, 1 )
+    l2  = Line3D  .from_points         ( p1 , Point3D(1,2,3) )
+    pl2 = Plane3D .from_points         ( p1 , Point3D(1,2,3) , Point3D (3,2,1) )
+    p2  = Point3D .frompoint           ( 1, 1, 1 )
+    pl3 = Plane3D .from_line_and_point ( l1 , p2 )
+    
+    
+    p3 = Point3D.fromiterable([1., 1., 1.])
+    assert p3 == Point3D(1., 1., 1.)
+    p4 = Point3D.fromcylindricalcoords(1., 0., 1.)
+    assert p4 == Point3D(1., 0., 1.)
+    assert p4.rho   == 1.
+    p5 = Point3D.fromsphericalcoords(1.0, 0., 0.)
+    assert p5 == Point3D(0., 0., 1.)
+    assert p5.theta == 0.
+    assert p5.phi   == 0.
+    
+    v2  = Vector3D ( 1, 1, 1)
+    with pytest.raises(NotImplementedError):
+        Line3D.__init__(Line3D(), p1, p1)
+    with pytest.raises(NotImplementedError):
+        Line3D.__init__(Line3D(), v2, v2)
+    with pytest.raises(ValueError):
+        Line3D.__init__(Line3D(), p1, v1)
+        
+    with pytest.raises(NotImplementedError):
+        Plane3D.__init__(Plane3D(), p1, p1)
+    with pytest.raises(NotImplementedError):
+        Plane3D.__init__(Plane3D(), v2, v2)
+    with pytest.raises(ValueError):
+        Plane3D.__init__(Plane3D(), p1, v1)
 
 def test_operators ():
     v1 = Vector3D(1,2,3)
     v2 = Vector3D(3,2,1)
     p1 = Point3D (0,0,1)
     p2 = Point3D (0,1,0)
-
-    v1 + v2
-    v1 - v2
-
-    p1 + v1
-    v1 + p1
-
-    p1 - v1
-    p1 - p2
+    line1 = Line3D( p1 , v1)
+    line2 = Line3D( p2 , v2)
+    plane1 = Plane3D( p1 , v1)
+    plane2 = Plane3D( p2 , v2)
     
-    p1 == p1
-    p1 != p2
+    assert p1 + v1 == Point3D (1,2,4)
+    assert v1 + p1 == Point3D (1,2,4)
     
+    assert p1 - v1 == Point3D (-1,-2,-2)
+    assert p1 - p2 == Vector3D(0,-1,1)
+    
+    p1 -= v1
+    p1 += v1
+    
+    assert p1 == p1
+    assert p1 != p2
+    
+    assert line1 == line1
+    assert line1 != line2
+    
+    assert plane1 == plane1
+    assert plane1 != line2
+
 
 def test_contains():
     line  = Line3D   ( Point3D() , Vector3D(0,0,1) )
@@ -101,6 +146,12 @@ def test_distance():
 
     assert plane.distance(line1) == 0
     assert plane.distance(line2) == 1
+    assert line1.distance(plane) == 0
+    assert line2.distance(plane) == 1
+    
+    line3 = Line3D ( Point3D(0,0,2) , Vector3D (1,1,0) )
+    
+    assert line3.distance(line2) == 1
     
 def test_angle():
     
@@ -176,3 +227,7 @@ def test_intersect():
     
     assert plane0.intersect( plane1 ) == Line3D( Point3D() , Vector3D(1,0,0) )
     assert plane1.intersect( plane0 ) == Line3D( Point3D() , Vector3D(1,0,0) )
+    
+    assert plane0.intersect( plane0 ) == None
+    line2  = Line3D   ( Point3D(0,1,0) , Vector3D(0,0,1) )
+    assert line2.intersect( line0 ) == None
