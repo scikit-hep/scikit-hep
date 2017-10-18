@@ -14,7 +14,7 @@ def cmdopt(request):
 
 
 @pytest.fixture(scope="module")
-def data_gen1():
+def data_gen():
     np.random.seed(111)
     data1 = np.random.normal(size=1000)
     data2 = np.random.normal(2, 1, size=1000)

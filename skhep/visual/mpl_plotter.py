@@ -174,7 +174,7 @@ class MplPlotter(object):
 
     @staticmethod
     def ratio_plot(hist_dict1, hist_dict2, bins=None, range=None, ratio_range=None,
-                   err_style='band', err_color='xkcd:gunmetal', ratio_mode='default', grid=False,
+                   err_style='band', err_color='dimgray', ratio_mode='default', grid=False,
                    unity_line='red', logx=False):
         '''Function for creating ratio plots (comparing two histograms by dividing their bin content).
         The call structure is very similar to producing two individual histograms, with additional
@@ -235,7 +235,7 @@ class MplPlotter(object):
         ax2.errorbar(hist_con1.bin_centers, ratio, yerr=None,
                      xerr=[hist_con1.bin_centers-hist_con1.bin_edges[0:-1],
                            hist_con1.bin_edges[1:]-hist_con1.bin_centers], fmt='d',
-                     color='xkcd:gunmetal')
+                     color=err_color)
 
         if unity_line:
             ax2.axhline(1, linewidth=3, color=unity_line, zorder=0)
@@ -704,10 +704,16 @@ class HistContainer(object):
                                      yerr=bin_err[i], linewidth=2, color=err_color)
 
                 elif self.err_dict['err_style'] == 'band':
-                    fill_between_steps(self.ax, self.bin_edges, bin_height[i]+bin_err[i],
-                                       bin_height[i]-bin_err[i], step_where='pre', linewidth=0,
-                                       color=err_color, alpha=self.hist_dict['alpha']*0.8,
-                                       zorder=10)
+                    if self.err_dict['err_type'] == 'poisson':
+                        fill_between_steps(self.ax, self.bin_edges, bin_height[i]+bin_err[i][1],
+                                           bin_height[i]-bin_err[i][0], step_where='pre',
+                                           linewidth=0, color=err_color,
+                                           alpha=self.hist_dict['alpha']*0.8, zorder=10)
+                    else:
+                        fill_between_steps(self.ax, self.bin_edges, bin_height[i]+bin_err[i],
+                                           bin_height[i]-bin_err[i], step_where='pre', linewidth=0,
+                                           color=err_color, alpha=self.hist_dict['alpha']*0.8,
+                                           zorder=10)
 
                     if self.stacked:
                         poly_patch = self.vis_object[-1][0].get_xy()
