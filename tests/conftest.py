@@ -13,7 +13,7 @@ def cmdopt(request):
     return request.config.getoption("--cmdopt")
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def data_gen():
     np.random.seed(111)
     data1 = np.random.normal(size=1000)

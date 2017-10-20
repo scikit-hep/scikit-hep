@@ -372,6 +372,7 @@ class HistContainer(object):
             raise ValueError('`marker` histtype does not currently support multiple input datasets')
 
         if self.histtype == 'barstacked' and not self.stacked:
+            self.histtype = 'stepfilled'
             self.stacked = True
 
         # Get current axis
@@ -563,8 +564,6 @@ class HistContainer(object):
 
     def rescale(self, scale):
         self.do_redraw = True
-        if self.bin_content is None:
-            raise ValueError('Cannot scale before histogramming')
 
         if isinstance(scale, Number):
             self.bin_content = np.multiply(self.bin_content, scale)
@@ -644,9 +643,6 @@ class HistContainer(object):
 
             elif hist_mod == 'scale':
                 self.bin_err = np.multiply(bin_err_tmp, scale)
-
-            else:
-                raise KeyError('`hist_mod: {}` not implemented'.format(hist_mod))
 
         # if errors already exist due to norm calc
         else:

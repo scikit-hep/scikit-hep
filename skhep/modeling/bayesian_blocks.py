@@ -45,18 +45,10 @@ class Events(object):
 
     def prior(self, N, Ntot):
         if self.gamma is not None:
-            return self.gamma_prior(N, Ntot)
+            return -np.log(self.gamma)
         else:
             # eq. 21 from Scargle 2012
             return 4 - np.log(73.53 * self.p0 * (N ** -0.478))
-
-    def gamma_prior(self, N, Ntot):
-        """Basic prior, parametrized by gamma (eq. 3 in Scargle 2012)"""
-        if self.gamma == 1:
-            return 0
-        else:
-            return (np.log(1 - self.gamma) - np.log(1 - self.gamma ** (Ntot + 1)) + N *
-                    np.log(self.gamma))
 
     # the fitness_args property will return the list of arguments accepted by
     # the method fitness().  This allows more efficient computation below.
