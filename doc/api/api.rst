@@ -14,3 +14,4 @@ API
    simulation.rst
    units.rst
    utils.rst
+   visual.rst

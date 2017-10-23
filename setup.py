@@ -10,6 +10,7 @@ from setuputils import read, find_version
 
 # Specification of minimal versions of required dependencies
 PYPDT_MIN_VERSION = '0.7.3'
+NUMPY_MIN_VERSION = '1.11.0'
 
 # Prevent setup from trying to create hard links
 # which are not allowed on AFS between directories.
@@ -25,7 +26,13 @@ os.chdir(LOCAL_PATH)
 sys.path.insert(0, LOCAL_PATH)
 
 install_requires = [
-    'PyPDT>={0}'.format(PYPDT_MIN_VERSION)
+    'PyPDT>={0}'.format(PYPDT_MIN_VERSION),
+    'numpy>=1.11.0,<1.12.0;python_version<"2.7"',
+    'numpy>={0};python_version>="2.7"'.format(NUMPY_MIN_VERSION),
+    'pandas==0.16.2;python_version<"2.7"',
+    'pandas;python_version>="2.7"',
+    'matplotlib<1.5;python_version<"2.7"',
+    'matplotlib>2.0.0,<2.1;python_version>="2.7"',
 ]
 
 test_requires = [
