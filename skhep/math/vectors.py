@@ -38,7 +38,7 @@ class Vector3D(object):
         fromcylindricalcoords(rho, phi, z)
         fromiterable(values)
     """
-
+    
     def __init__(self, x=0., y=0., z=0.):
         """Default constructor.
 
