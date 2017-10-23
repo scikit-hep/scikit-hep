@@ -609,7 +609,16 @@ class HistContainer(object):
             elif self.err_dict['err_type'] == 'sumW2':
                 bin_err_tmp = []
                 if self.stacked:
-                    df_list_tmp = [pd.concat(self.df_list, ignore_index=True)]
+                    if sys.version_info < (2, 7):
+                        # bug in pd.concat for py26?
+                        df_list_tmp = [self.df_list[0].drop('bins', axis=1)]
+                        for df in self.df_list[1:]:
+                            df_list_tmp.append(df.drop('bins', axis=1))
+                        df_list_tmp = [pd.concat(df_list_tmp, ignore_index=True)]
+                        df_bins = pd.cut(df_list_tmp[0].data, self.bin_edges, include_lowest=True)
+                        df_list_tmp[0]['bins'] = df_bins
+                    else:
+                        df_list_tmp = [pd.concat(self.df_list, ignore_index=True)]
                 else:
                     df_list_tmp = self.df_list
 
@@ -628,7 +637,7 @@ class HistContainer(object):
                 bin_err_tmp = np.asarray([err_low, err_hi])
 
             else:
-                raise KeyError('`err_type: {}` not implemented'.format(self.err_dict['err_type']))
+                raise KeyError('`err_type: {0}` not implemented'.format(self.err_dict['err_type']))
 
             # Modifiy the error bars if needed (due to normalization or scaling)
             if hist_mod == 'default':

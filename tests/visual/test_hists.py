@@ -1,4 +1,5 @@
 import os
+import sys
 import matplotlib as mpl
 
 if os.environ.get('DISPLAY', '') == '':
@@ -299,9 +300,13 @@ def test_hist_fails(cmdopt, data_gen):
         skh_plt.hist(data_gen[0], err_type='fake', errorbars=True)
 
     output1 = skh_plt.hist(5)
-    output2 = skh_plt.hist([], range=(0, 1))
     assert(np.all(output1[0] == 1))
-    assert(np.all(output2[0] == 0))
+    if sys.version_info < (2, 7):
+        with pytest.raises(ValueError):
+            output2 = skh_plt.hist([], range=(0, 1))
+    else:
+        output2 = skh_plt.hist([], range=(0, 1))
+        assert(np.all(output2[0] == 0))
 
 
 def test_ratio_plot(cmdopt, data_gen):
