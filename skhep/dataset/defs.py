@@ -36,12 +36,12 @@ class Dataset(object):
 
         Use this to pass the data to an external library (without provenance).
         """
-        return self.__data
+        return self._data
 
     @property
     def provenance(self):
         """The series of transformations that produced this dataset as a tuple."""
-        return self.__provenance
+        return self._provenance
 
     @property
     def datashape(self):
@@ -171,12 +171,11 @@ class ToFiles(ToPersistent):
         return base
 
     def to_file(self, base, **options):
-        """Save this dataset to a file or collection of files.
+        """
+        Save this dataset to a file or collection of files.
 
         base: str or iterable of str
             String file name or iterable of string file names.
-        options: optional, of course!
-            May contain relevant parameters to pass to the concrete implementation.
         """
         raise NotImplementedError
 
@@ -186,6 +185,9 @@ class AsNumpy(ConvertibleInPlace):
         """View this dataset as a NumpyDataset, sharing their underlying data.
 
         A change in the NumpyDataset modifies the original.
+
+        options: optional, of course!
+            May contain relevant parameters to pass to the concrete implementation.
         """
         raise NotImplementedError
 
@@ -195,6 +197,9 @@ class NewNumpy(ConvertibleCopy):
         """Copy this dataset into a new NumpyDataset, without sharing any underlying data.
 
         A change in the NumpyDataset leaves the original untouched.
+
+        options: optional, of course!
+            May contain relevant parameters to pass to the concrete implementation.
         """
         raise NotImplementedError
 
@@ -204,6 +209,9 @@ class AsROOT(ConvertibleInPlace):
         """View this dataset as a ROOTDataset, sharing their underlying data.
 
         A change in the ROOTDataset modifies the original.
+
+        options: optional, of course!
+            May contain relevant parameters to pass to the concrete implementation.
         """
         raise NotImplementedError
 

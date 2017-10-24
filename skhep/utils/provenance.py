@@ -157,7 +157,7 @@ class Transformation(Provenance):
     @property
     def detail(self):
         return "{0} ({1})".format(self.name,
-                                 ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
+                                 ",".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
 
     def __repr__(self):
         return "<Transformation({0})>".format(self.name)
@@ -175,4 +175,4 @@ class Formatting(Provenance):
     @property
     def detail(self):
         return "{0}({1})".format(self.format,
-                                 ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
+                                 ",".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
