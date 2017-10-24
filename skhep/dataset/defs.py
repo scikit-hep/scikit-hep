@@ -32,7 +32,7 @@ class Dataset(object):
 
     @property
     def data(self):
-        """The data underlying this Dataset.
+        """The actual data underlying this dataset.
 
         Use this to pass the data to an external library (without provenance).
         """
@@ -45,16 +45,15 @@ class Dataset(object):
 
     @property
     def datashape(self):
-        """Every Dataset has a datashape, which describes its data types in a unified way."""
+        """Every dataset has a datashape, which describes its data types in a unified way."""
         # There is a standard for this:
         #     http://libndtypes.readthedocs.io/en/latest/datashape.html
-        #
-        # We should use it! That's why I deleted typesystem.py.
+        # We should use it!
         raise NotImplementedError
 
     @property
     def immutable(self):
-        """If True, this Dataset cannot be modified in place, only transformed.
+        """If True, this dataset cannot be modified in place, only transformed.
 
         Opposite of mutable.
         """
@@ -62,7 +61,7 @@ class Dataset(object):
 
     @property
     def mutable(self):
-        """If True, this Dataset can be modified in place.
+        """If True, this dataset can be modified in place.
 
         Opposite of immutable.
         """
@@ -70,9 +69,9 @@ class Dataset(object):
 
     @property
     def persistent(self):
-        """If True, this Dataset exists in a form that survives the Python session, such as a file or database.
+        """If True, this dataset exists in a form that survives the Python session, such as a file or database.
 
-        If mutable, changes in this Dataset are reflected in that persistent form.
+        If mutable, changes in this dataset are reflected in that persistent form.
 
         Opposite of transient.
         """
@@ -80,9 +79,9 @@ class Dataset(object):
 
     @property
     def transient(self):
-        """If True, this Dataset only exists in the Python session; changes will be lost if it is not saved.
+        """If True, this dataset only exists in the Python session; changes will be lost if it is not saved.
 
-        If mutable, changes in this Dataset do not propagate back to its source, if any.
+        If mutable, changes in this dataset do not propagate back to its source, if any.
 
         Opposite of persistent.
         """
@@ -124,20 +123,21 @@ class FromFiles(FromPersistent):
             yield x
 
     @staticmethod
-    def fromFiles(files, **options):
-        """Load a Dataset from a file or collection of files.
+    def from_file(files, **options):
+        """Load a dataset from a file or collection of files.
 
-        files: a string file name (glob pattern), iterable of string file names, or an iterable of files open for
-               reading (binary).
+        files: a string file name (glob pattern), iterable of string file names, or an iterable of files open for reading (binary).
+        options: optional, of course!
+            May contain relevant parameters to pass to the concrete implementation.
         """
         # NOTE: can't @inheritdoc because this is a @staticmethod
         raise NotImplementedError
 
 
-class ToFiles(FromPersistent):
+class ToFiles(ToPersistent):
     @staticmethod
     def _openRolloverFiles(base, rollover_pattern=None):
-        # generic method to generate an infinite series of files with _1, _2, etc. in their names
+        """Generic method to generate an infinite series of files with _1, _2, etc. in their names."""
         if rollover_pattern is None:
             # TODO: Rewrite this using os.path
             def rollover_pattern(base_pattern, number):
@@ -160,7 +160,7 @@ class ToFiles(FromPersistent):
                 name = rollover_pattern(base, n)
                 f = open(name, "wb")
             assert "w" in f.mode
-            yield f  # use the first file if given, otherwise start rollover with _0
+            yield f   # use the first file if given, otherwise start rollover with _0
             f = None  # second file in rollover is always _1 and continuing from there
 
     @staticmethod
@@ -170,14 +170,20 @@ class ToFiles(FromPersistent):
         assert isinstance(base, file) and "w" in base.mode
         return base
 
-    def toFiles(self, base, **options):
-        """Save this Dataset to a file or collection of files."""
+    def to_file(self, base, **options):
+        """Save this dataset to a file or collection of files.
+
+        base: str or iterable of str
+            String file name or iterable of string file names.
+        options: optional, of course!
+            May contain relevant parameters to pass to the concrete implementation.
+        """
         raise NotImplementedError
 
 
 class AsNumpy(ConvertibleInPlace):
     def asNumpy(self, **options):
-        """View this Dataset as a NumpyDataset, sharing their underlying data.
+        """View this dataset as a NumpyDataset, sharing their underlying data.
 
         A change in the NumpyDataset modifies the original.
         """
@@ -186,7 +192,7 @@ class AsNumpy(ConvertibleInPlace):
 
 class NewNumpy(ConvertibleCopy):
     def newNumpy(self, **options):
-        """Copy this Dataset into a new NumpyDataset, without sharing any underlying data.
+        """Copy this dataset into a new NumpyDataset, without sharing any underlying data.
 
         A change in the NumpyDataset leaves the original untouched.
         """
@@ -195,7 +201,7 @@ class NewNumpy(ConvertibleCopy):
 
 class AsROOT(ConvertibleInPlace):
     def asROOT(self, **options):
-        """View this Dataset as a ROOTDataset, sharing their underlying data.
+        """View this dataset as a ROOTDataset, sharing their underlying data.
 
         A change in the ROOTDataset modifies the original.
         """
@@ -204,7 +210,7 @@ class AsROOT(ConvertibleInPlace):
 
 class NewROOT(ConvertibleCopy):
     def newROOT(self, **options):
-        """Copy this Dataset into a new ROOTDataset, without sharing any underlying data.
+        """Copy this dataset into a new ROOTDataset, without sharing any underlying data.
 
         A change in the ROOTDataset leaves the original untouched.
         """

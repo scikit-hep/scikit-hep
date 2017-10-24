@@ -80,8 +80,8 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         return False
 
     @staticmethod
-    def fromFiles(files, **options):
-        """Load a Dataset from a file or collection of files.
+    def from_file(files, **options):
+        """Load a dataset from a file or collection of files.
 
         Recognizes zipped Numpy (.npz) format.
 
@@ -124,7 +124,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         return NumpyDataset(data, FileOrigin(files))
 
     @inheritdoc(ToFiles, gap="\n")
-    def toFiles(self, base, **options):
+    def to_file(self, base, **options):
         """options: none"""
 
         # always write column-wise: collection of 1d arrays in a zip file (.npz)

@@ -7,6 +7,9 @@ import os
 from setuptools import setup, find_packages
 from setuputils import read, find_version
 
+# Check the Python version
+if sys.version_info < (2, 6):
+    sys.exit('scikit-hep only supports Python 2.6 and above!')
 
 # Specification of minimal versions of required dependencies
 PYPDT_MIN_VERSION = '0.7.3'

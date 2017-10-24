@@ -35,17 +35,17 @@ root_numpy = softimport("root_numpy")
 # ROOTDataset
 # -----------------------------------------------------------------------------
 class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
-    def __init__(self, file_name, provenance=None):
+    def __init__(self, filename, provenance=None):
         """Default constructor for ROOTDataset.
 
-        file_name: string name or glob pattern of ROOT files on disk
+        filename: string name or glob pattern of ROOT files on disk
         provenance: history of the data before being wrapped as a ROOTDataset
         """
 
         self.__data = None
 
         if provenance is None:
-            provenance = FileOrigin(file_name)
+            provenance = FileOrigin(filename)
         self.__provenance = provenance
 
     @inheritdoc(Dataset)
@@ -56,15 +56,15 @@ class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
     def immutable(self): return False
 
     @inheritdoc(Dataset)
-    # a ROOT feature that is different from Numpy
+    # ROOT datasets exist in a form that survives the Python session (feature that is different from Numpy)
     def persistent(self): return True
 
     @staticmethod
-    def fromFiles(files, **options):
+    def from_file(files, **options):
         return ROOTDataset(files)
 
     @inheritdoc(ToFiles, gap="\n")
-    def toFiles(self, base, **options):
+    def to_file(self, base, **options):
         raise NotImplementedError  # TODO!
 
     @inheritdoc(NewROOT)
@@ -74,7 +74,7 @@ class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
 
         out = root_numpy.root2array()
 
-        from .rootdataset import ROOTDataset
+        from .numpydataset import NumpyDataset
         return NumpyDataset(out, self.__provenance + (Formatting("NumpyDataset"),))
 
     def __getitem__(self, name):
