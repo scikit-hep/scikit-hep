@@ -127,7 +127,7 @@ class FileOrigin(Origin):
 
     @property
     def detail(self):
-        return ", ".join(json.dumps(x) for x in self.files)
+        return ",".join(json.dumps(x) for x in self.files)
 
     def __repr__(self):
         return "<FileOrigin ({0} file{1})>".format(len(self.files),'s' if len(self.files)>1 else '')
