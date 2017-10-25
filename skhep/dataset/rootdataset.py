@@ -47,10 +47,10 @@ class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
         provenance: history of the data before being wrapped as a ROOTDataset.
         """
         self._data = data
-        if isinstance(data, ROOT.TTree) and provenance is None:
+        if isinstance(data, ROOT.TChain) and (provenance is None):
+            provenance = FileOrigin([f.GetTitle() for f in data.GetListOfFiles()])
+        elif isinstance(data, ROOT.TTree) and (provenance is None):
             provenance = ObjectOrigin(data.GetName())
-        elif isinstance(data, ROOT.TChain) and provenance is None:
-            self._provenance = FileOrigin([f.GetTitle() for f in data.GetListOfFiles()])
         self._provenance = provenance
 
     @property
