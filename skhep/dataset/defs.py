@@ -124,11 +124,10 @@ class FromFiles(FromPersistent):
 
     @staticmethod
     def from_file(files, **options):
-        """Load a dataset from a file or collection of files.
+        """
+        Load a dataset from a file or collection of files.
 
         files: a string file name (glob pattern), iterable of string file names, or an iterable of files open for reading (binary).
-        options: optional, of course!
-            May contain relevant parameters to pass to the concrete implementation.
         """
         # NOTE: can't @inheritdoc because this is a @staticmethod
         raise NotImplementedError
@@ -185,9 +184,6 @@ class AsNumpy(ConvertibleInPlace):
         """View this dataset as a NumpyDataset, sharing their underlying data.
 
         A change in the NumpyDataset modifies the original.
-
-        options: optional, of course!
-            May contain relevant parameters to pass to the concrete implementation.
         """
         raise NotImplementedError
 
@@ -197,9 +193,6 @@ class NewNumpy(ConvertibleCopy):
         """Copy this dataset into a new NumpyDataset, without sharing any underlying data.
 
         A change in the NumpyDataset leaves the original untouched.
-
-        options: optional, of course!
-            May contain relevant parameters to pass to the concrete implementation.
         """
         raise NotImplementedError
 
@@ -209,9 +202,6 @@ class AsROOT(ConvertibleInPlace):
         """View this dataset as a ROOTDataset, sharing their underlying data.
 
         A change in the ROOTDataset modifies the original.
-
-        options: optional, of course!
-            May contain relevant parameters to pass to the concrete implementation.
         """
         raise NotImplementedError
 

@@ -36,6 +36,22 @@ root_numpy = softimport("root_numpy")
 # NumpyDataset
 # -----------------------------------------------------------------------------
 class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
+    def __init__(self, data, provenance=None, **options):
+        """Default constructor for NumpyDataset.
+
+        Parameters
+        ----------
+        data: a dictionary of equal-length, one-dimensional Numpy arrays or, equivalently, a Numpy record array.
+        provenance: history of the data before being wrapped as a NumpyDataset.
+        options: none.
+        """
+        assert self.isrecarray(data) or self.isdictof1d(data)
+        self._data = data
+
+        if provenance is None:
+            provenance = ObjectOrigin(repr(data))
+        self._provenance = provenance
+
     @staticmethod
     def isrecarray(data):
         is_valid_recarray = isinstance(data, numpy.recarray)
@@ -52,24 +68,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
                                      for column in data.values())
         columns_have_valid_shape = all(column.shape == head(data.values()).shape for column in data.values())
         return is_dict and is_non_empty and has_only_valid_columns and columns_have_valid_shape
-
-    def __init__(self, data, provenance=None, **options):
-        """Default constructor for NumpyDataset.
-
-        Parameters
-        ----------
-        data: a dictionary of equal-length, one-dimensional Numpy arrays or, equivalently, a Numpy record array
-        provenance: history of the data before being wrapped as a NumpyDataset
-        options: none
-        """
-
-        assert self.isrecarray(data) or self.isdictof1d(data)
-        self._data = data
-
-        if provenance is None:
-            provenance = ObjectOrigin(repr(data))
-        self._provenance = provenance
-
+    
     @property
     @inheritdoc(Dataset)
     def datashape(self):
@@ -87,15 +86,15 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
 
     @staticmethod
     def from_file(files, **options):
-        """Load a dataset from a file or collection of files.
+        """
+        Load a dataset from a file or collection of files.
 
         Recognizes zipped Numpy (.npz) format.
 
         files: a string file name (glob pattern), iterable of string file names, or an iterable of files open for reading (binary).
         options:
-            columns: a set of columns to select from the files
+            columns: a set of columns to select from the files.
         """
-
         requested_columns = options.get("columns")
 
         columns = None
