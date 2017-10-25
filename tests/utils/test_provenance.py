@@ -41,14 +41,14 @@ def test_FileOrigin():
     assert prov1bis.detail == '"file.root"'
     prov3 = FileOrigin(['file1.root', 'file2.root','file3.root'])
     assert prov3.__repr__() == '<FileOrigin (3 files)>'
-    assert prov3.detail == '"file1.root", "file2.root", "file3.root"'
+    assert prov3.detail == '"file1.root","file2.root","file3.root"'
 
 def test_Transformation():
     with pytest.raises(TypeError):
         Transformation.__init__()
     transf = Transformation('all elms * 2')
     assert transf.__repr__() == '<Transformation(all elms * 2)>'
-    assert transf.detail == 'all elms * 2 (, )'
+    assert transf.detail == 'all elms * 2 (,)'
 
 def test_Formatting():
     with pytest.raises(TypeError):
