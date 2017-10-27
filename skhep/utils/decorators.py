@@ -3,7 +3,7 @@
 Submodule for decorators
 ========================
 
-Note: not meant for user code in general, though possible.
+.. note:: not meant for user code in general, though possible.
 """
 
 
@@ -11,7 +11,9 @@ def inheritdoc(cls, gap="\n\n"):
     """
     Decorator to automatize the inheritance of documentation from a class method.
 
-    :Example:
+    Example
+    -------
+
     >>> from skhep.utils.decorators import inheritdoc
     >>> class ADerivedClass(ABaseClass):                 # doctest: +SKIP
     ...    @inheritdoc(ABaseClass)                       # doctest: +SKIP

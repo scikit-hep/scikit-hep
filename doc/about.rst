@@ -65,7 +65,7 @@ for details on how to get involved.
 Other credits
 .............
 
-* Thank you to Alex Pearce for designing the website.
+* Thank you to Alex Pearce for designing the starting website.
 
 Licensing
 ---------

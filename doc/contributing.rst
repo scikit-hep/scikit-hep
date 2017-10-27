@@ -5,7 +5,9 @@ Contributing
 
 If you already have an idea for a feature you'd like to see in *scikit-hep*,
 you can start by seeing how to :ref:`contribute code <contributing_code>`.
-If not, we have :ref:`plenty of ideas <ideas>` we'd love to see!
+If not, we have :ref:`plenty of ideas <ideas>` we'd love to see materialising!
+
+BTW, check also the :ref:`affiliated packages <affiliations>` as your must-have feature could already exist there ...
 
 .. _contributing_code:
 
