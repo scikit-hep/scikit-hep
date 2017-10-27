@@ -5,7 +5,7 @@ Subpackage to handle Particle Data Tables
 
 Standard use case:
     >>> from skhep.pdg import ParticleDataTable
-    >>> tbl = ParticleDataTable('data/mass_width_2016.mcd')   # doctest: +SKIP
+    >>> tbl = ParticleDataTable('data/mass_width_2017.mcd')    # doctest: +SKIP
     >>> tbl[9000221].name                                      # doctest: +SKIP
     f(0)(500)0                                                 # doctest: +SKIP
     >>> tbl('f(0)(500)0').id                                   # doctest: +SKIP
