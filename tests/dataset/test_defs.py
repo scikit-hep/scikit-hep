@@ -23,5 +23,4 @@ def test_base_classes():
 def test_mixins():
     FromPersistent()
     ToPersistent()
-    ConvertibleInPlace()
     ConvertibleCopy()
