@@ -131,13 +131,19 @@ class ROOTDataset(FromFiles, ToFiles, NewNumpy, Dataset):
         del outfile
 
     @inheritdoc(NewNumpy, gap="\n")
-    def newNumpy(self, **options):
+    def to_array(self, **options):
         """
+        Parameters
+        ----------
         options: see options of root_numpy.tree2array.
+
+        Returns
+        -------
+        NumpyDataset holding the new NumPy structured array.
         """
         ar = root_numpy.tree2array(self.data, options)
         from .numpydataset import NumpyDataset
-        return NumpyDataset(ar, self._provenance + (Formatting("NumpyDataset"),))
+        return NumpyDataset(ar, self._provenance+(Formatting('NumpyDataset'),))
 
     def __getitem__(self, name):
         raise NotImplementedError  # TODO!

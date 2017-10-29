@@ -140,10 +140,18 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
             data = self.data
         numpy.savez(NumpyDataset._openSingleFile(base), **data)
 
-    @inheritdoc(NewROOT)
-    def newROOT(self, filename, **options):
-        """filename: string name of ROOT file
-        options: none    # but consider file update vs recreate, etc.
+    @inheritdoc(NewROOT, gap='')
+    def to_tree(self, treename, **options):
+        """
+        Parameters
+        ----------
+        treename: str
+            Name of ROOT TTree to be created.
+        options: none
+
+        Returns
+        -------
+        ROOTDataset holding new ROOT TTree.
         """
 
         if self.isrecarray(self.data):
@@ -155,11 +163,10 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
                 data[name] = self.data[name]
         else:
             assert False, "data must be a Numpy record array or a Python dictionary of 1d Numpy arrays."
-
-        root_numpy.array2root(data, filename, mode="recreate")
-
+        
+        tree = root_numpy.array2tree(self.data, treeename)
         from .rootdataset import ROOTDataset
-        return ROOTDataset(filename, self.__provenance + (Formatting("ROOTDataset", filename),))
+        return ROOTDataset(tree, self._provenance+(Formatting('ROOTDataset', treename),))
 
     def __getitem__(self, name):
         return self.data[name]
