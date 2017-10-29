@@ -18,8 +18,9 @@ def Kallen_function(x, y, z):
     The Kallen function, aka triangle or lambda function,
     named after physicist Anders Olof Gunnar Kallen [Kallen]_.
 
-    :Definition:
-
+    Definition
+    ----------
+    
     .. math::
 
       \\begin{eqnarray}
@@ -27,8 +28,8 @@ def Kallen_function(x, y, z):
                       &=& (x-y-z)^2 - 4 y z \\\\
                       &=& [ x - (\\sqrt{y}+\\sqrt{z})^2 ] [ x - (\\sqrt{y}-\\sqrt{z})^2 ] \\,\\,\\,\\mathrm{if} \\,\\,\\,y, z > 0
       \\end{eqnarray}
-    :Example:
-
+    Example
+    -------
     Calculate in the rest frame of a particle of mass M decaying to 2 particles labeled 1 and 2,
     :math:`P (M) \\to p1 (m1) + p2 (m2)`, the momenta of 1 and 2 given by :math:`p = |\\mathbf{p1}| = |\\mathbf{p2}|`:
 
@@ -40,8 +41,8 @@ def Kallen_function(x, y, z):
         >>> print p / GeV   # print the CMS momentum in GeV
         2.61453580221
 
-    :Reference:
-
+    Reference
+    ---------
     .. [Kallen] https://en.wikipedia.org/wiki/K%C3%A4ll%C3%A9n_function
     """
     return (x - y - z) ** 2 - 4 * y * z  # faster to evaluate condensed form used
@@ -50,11 +51,13 @@ def Kallen_function(x, y, z):
 def lifetime_to_width(tau):
     """Convert from a particle lifetime to a decay width.
 
-    :Parameters:
+    Parameters
+    -----------
     tau : float > 0
         Particle lifetime, typically in picoseconds (any HEP time unit is OK).
 
-    :Returns:
+    Returns
+    -------
     Particle decay width, in the HEP standard energy unit MeV.
     """
 
@@ -68,11 +71,13 @@ def lifetime_to_width(tau):
 def width_to_lifetime(Gamma):
     """Convert from a particle decay width to a lifetime.
 
-    :Parameters:
+    Parameters
+    ----------
     Gamma : float > 0
         Particle decay width, typically in MeV (any HEP energy unit is OK).
 
-    :Returns:
+    Returns
+    -------
     Particle lifetime, in the HEP standard time unit ns.
     """
 

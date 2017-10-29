@@ -2,6 +2,8 @@
 """
 Submodule for useful exceptions
 ===============================
+
+.. note:: not meant for user code in general, though possible.
 """
 
 # Definition of handy colours for printing

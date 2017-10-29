@@ -1,3 +1,4 @@
+# Licensed under a 3-clause BSD style license, see LICENSE.
 import numpy as np
 import pytest
 
