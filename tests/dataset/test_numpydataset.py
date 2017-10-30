@@ -45,5 +45,3 @@ def test_methods():
     with pytest.raises(IOError):
         ds = NumpyDataset.from_file('non_existent_file')
     assert ds1['x'].tolist() == [1,2,3]
-
-del ar
