@@ -182,7 +182,7 @@ def addNumpyMethod(method):
 
     fn.__name__ = method.__name__
     fn.__doc__ = method.__doc__
-    if sys.version_info.major==2:  # ugly but works! TODO: find nicer way
+    if sys.version_info[0]==2:  # ugly but works! TODO: find nicer way
         setattr(NumpyDataset, method.__name__, MethodType(fn, None, NumpyDataset))
     else:
         setattr(NumpyDataset, method.__name__, MethodType(fn, NumpyDataset))
