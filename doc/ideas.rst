@@ -85,9 +85,10 @@ Analysis Development
 Continuous integration, testing, code health, etc.
 --------------------------------------------------
 
+* Worth adding CI tests with `CircleCI <https://circleci.com/>`_? |Miscellaneous_open|
 * Add CI on Windows for as long as possible - nice since a totally different plaform compared to Linux. |Miscellaneous_open|
-* How do `coveralls.io <https://coveralls.io>`_ and `codecov.io <https://codecov.io>`_ compare? Worth having both? That would mean adding codecov.
-* Look at `landscape.io <https://landscape.io>`_ and decide if worth having CI runs there.
+* How do `coveralls <https://coveralls.io>`_ and `codecov <https://codecov.io>`_ compare? Worth having both? That would mean adding codecov. |Miscellaneous_open|
+* Look at `Landscape <https://landscape.io>`_ and decide if worth having such code quality metrics automatically handled. |Miscellaneous_open|
 
 
 .. |AffiliatedPackages_open| image:: images/AffiliatedPackages-open-orange.png

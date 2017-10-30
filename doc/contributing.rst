@@ -42,4 +42,4 @@ Feedback and bug reporting
 --------------------------
 
 For now please provide feedback and/or report bugs via the
-`Scikit-HEP GitHub Issues <https://github.com/scikit-hep/scikit-hep/issues>`_ page.
+`GitHub Issues <https://github.com/scikit-hep/scikit-hep/issues>`_ page.

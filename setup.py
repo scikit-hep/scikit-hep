@@ -12,7 +12,7 @@ if sys.version_info < (2, 6):
     sys.exit('scikit-hep only supports Python 2.6 and above!')
 
 # Specification of minimal versions of required dependencies
-PYPDT_MIN_VERSION = '0.7.3'
+PYPDT_MIN_VERSION = '0.7.4'
 NUMPY_MIN_VERSION = '1.11.0'
 
 # Prevent setup from trying to create hard links
