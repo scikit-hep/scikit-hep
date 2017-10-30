@@ -31,7 +31,7 @@ from   skhep.math.numeric import isequal
 # 3D-point
 # =============================================================================
 class Point3D(object) :
-    """Point in 3D space
+    """Point in 3D space.
     """
     def __init__ ( self , *args , **kwargs ) :
         self._vct = Vector3D( *args , **kwargs )
@@ -139,9 +139,10 @@ class Point3D(object) :
     def theta(self, deg=False):
         """Return the spherical coordinate theta.
 
-        Options
-        -------
-        deg : float. Return the angle in degrees (default is radians).
+        Parameters
+        ----------
+        deg : float, optional
+            Return the angle in degrees (default is radians).
         """
         return self._vct.theta( deg )
 
@@ -149,9 +150,10 @@ class Point3D(object) :
     def phi(self, deg=False):
         """Return the spherical or cylindrical coordinate phi.
 
-        Options
-        -------
-        deg : float. Return the angle in degrees (default is radians).
+        Parameters
+        ----------
+        deg : float, optional
+            Return the angle in degrees (default is radians).
         """
         return self._vct.phi( deg )
 
@@ -318,7 +320,7 @@ class Point3D(object) :
         return 0 == v.mag2 or plane.normal.isperpendicular ( v )
 
     def distance ( self , other ) :
-        """Get ``distance'' between point  and other object.
+        """Get 'distance' between point  and other object.
         """
         if   isinstance ( other , Point3D ) :
             return abs ( self - other )
@@ -427,7 +429,7 @@ class Line3D(object) :
         return self.point.on_plane ( plane ) and self.direction.isperpendicular ( plane.normal )
 
     def point_on_line (  self , mu ) :
-        """ Get the point on line, that  corresponds to parameter ``mu''.
+        """ Get the point on line, that  corresponds to parameter 'mu'.
 
         Example
         -------
@@ -438,7 +440,7 @@ class Line3D(object) :
         return self.point + mu * self.direction
 
     def closest_point_param ( self , point) :
-        """Get the ``mu'' parameter of the point on line that is closest to the given point in space.
+        """Get the 'mu' parameter of the point on line that is closest to the given point in space.
 
         Example
         -------
@@ -449,7 +451,7 @@ class Line3D(object) :
         return ( self.direction * ( self.point - point ) ) / self.direction.mag2
 
     def closest_points_params ( self , line ) :
-        """Get the ``mu'' parameters of two points on lines that is closest to each other.
+        """Get the 'mu' parameters of two points on lines that is closest to each other.
 
         Example
         -------
@@ -505,10 +507,10 @@ class Line3D(object) :
         return self.point_on_line ( mu1 ), line.point_on_line ( mu2 )
 
     def distance ( self , other ) :
-        """Get ``distance'' between line and other object.
+        """Get 'distance' between line and other object.
 
-        Example
-        -------
+        Examples
+        --------
         >>> line  = ...
         >>> point = ...
         >>> line2 = ...
@@ -530,7 +532,7 @@ class Line3D(object) :
         raise NotImplementedError("Distance from Line3D to %s is not defined" % other )
 
     def angle ( self, other ) :
-        """Get the ``angle'' between a line and other object.
+        """Get the 'angle' between a line and other object.
         """
         if   isinstance ( other ,  Line3D ) :
             return self.direction.angle ( other.direction )
@@ -540,7 +542,7 @@ class Line3D(object) :
         raise NotImplementedError("Angle between a Line3D and a %s is not defined" % other )
 
     def intersect ( self, other ) :
-        """Get the ``intersection'' between a line and other object.
+        """Get the 'intersection' between a line and other object.
         """
 
         if isinstance ( other , Point3D ):
@@ -579,8 +581,7 @@ class Line3D(object) :
 # 3D-Plane
 # =============================================================================
 class Plane3D(object) :
-    """Plane in 3D space
-    Plane is defined by a point on plane and by the normal vector
+    """Plane in 3D space, defined by a point on plane and by the normal vector.
     """
     def __init__ ( self                            ,
                    point  = Point3D  ( 0  ,0 , 0 ) ,
@@ -688,10 +689,10 @@ class Plane3D(object) :
         return not ( self  == other )
 
     def distance ( self , other ) :
-        """Get ``distance'' between plane and other object.
+        """Get 'distance' between plane and other object.
 
-        Example
-        -------
+        Examples
+        --------
         >>> line  = ...
         >>> point = ...
         >>> line2 = ...
@@ -716,7 +717,7 @@ class Plane3D(object) :
 
 
     def angle ( self, other ) :
-        """Get the ``angle'' between a plane and other object
+        """Get the 'angle' between a plane and other object.
         """
         if   isinstance ( other ,  Line3D ) :
             return self.normal.angle ( other.direction )
@@ -726,7 +727,7 @@ class Plane3D(object) :
         raise NotImplementedError("Angle between a Line3D and a %s is not defined" % other )
 
     def intersect ( self, other ) :
-        """Get the ``intersection'' between a line and other object
+        """Get the 'intersection' between a line and other object
         """
 
         if isinstance ( other , Point3D ):
@@ -800,8 +801,3 @@ if '__main__' == __name__ :
 
     plane = Plane3D.from_points ( p , Point3D(3,2,1) , Point3D(0,0,3) )
     p in plane
-
-
-# =============================================================================
-#                                                                       The END
-# =============================================================================
