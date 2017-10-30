@@ -33,6 +33,8 @@ def test_properties():
     assert ds.immutable == False
     assert ds.transient == True
     assert ds.persistent == False
+    with pytest.raises(NotImplementedError):
+        ds.datashape
 
 def test_methods():
     ds1 = NumpyDataset(ar)
@@ -40,3 +42,8 @@ def test_methods():
     ds2 = NumpyDataset.from_file('npds.npz')
     assert ds2.provenance.__repr__() == '<FileOrigin (1 file)>'
     os.remove('npds.npz')
+    with pytest.raises(IOError):
+        ds = NumpyDataset.from_file('non_existent_file')
+    assert ds1['x'].tolist() == [1,2,3]
+
+del ar
