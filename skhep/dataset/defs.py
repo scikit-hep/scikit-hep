@@ -1,7 +1,7 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
 **************************************
-Module for Dataset-related definitions
+Module for dataset-related definitions
 **************************************
 
 The module contains the definition of the ``Dataset`` abstract base class
@@ -103,8 +103,9 @@ class ToPersistent(object):
     pass
 
 
-class ConvertibleInPlace(object):
-    pass
+# Uncomment when actually using/implementing this
+#class ConvertibleInPlace(object):
+#    pass
 
 
 class ConvertibleCopy(object):
@@ -179,37 +180,41 @@ class ToFiles(ToPersistent):
         raise NotImplementedError
 
 
-class AsNumpy(ConvertibleInPlace):
-    def asNumpy(self, **options):
-        """View this dataset as a NumpyDataset, sharing their underlying data.
-
-        A change in the NumpyDataset modifies the original.
-        """
-        raise NotImplementedError
+# Uncomment when actually using/implementing this
+#class AsNumpy(ConvertibleInPlace):
+#    def as_array(self, **options):
+#        """View this dataset as a NumpyDataset, sharing its underlying data.
+#
+#        A change in the NumpyDataset modifies the original.
+#        """
+#        raise NotImplementedError
 
 
 class NewNumpy(ConvertibleCopy):
-    def newNumpy(self, **options):
-        """Copy this dataset into a new NumpyDataset, without sharing any underlying data.
-
+    def to_array(self, **options):
+        """
+        Copy this dataset into a new NumpyDataset, without sharing any underlying data.
+        
         A change in the NumpyDataset leaves the original untouched.
         """
         raise NotImplementedError
 
 
-class AsROOT(ConvertibleInPlace):
-    def asROOT(self, **options):
-        """View this dataset as a ROOTDataset, sharing their underlying data.
-
-        A change in the ROOTDataset modifies the original.
-        """
-        raise NotImplementedError
+# Uncomment when actually using/implementing this
+#class AsROOT(ConvertibleInPlace):
+#    def as_tree(self, **options):
+#        """View this dataset as a ROOTDataset, sharing its underlying data.
+#
+#        A change in the ROOTDataset modifies the original.
+#        """
+#        raise NotImplementedError
 
 
 class NewROOT(ConvertibleCopy):
-    def newROOT(self, **options):
-        """Copy this dataset into a new ROOTDataset, without sharing any underlying data.
-
+    def to_tree(self, **options):
+        """
+        Copy this dataset into a new ROOTDataset, without sharing any underlying data.
+        
         A change in the ROOTDataset leaves the original untouched.
         """
         raise NotImplementedError

@@ -18,10 +18,21 @@ from skhep.dataset.defs import *
 
 def test_base_classes():
     with pytest.raises(TypeError):
-        Dataset.__init__()
+        Dataset()
 
 def test_mixins():
     FromPersistent()
     ToPersistent()
-    ConvertibleInPlace()
     ConvertibleCopy()
+    ff = FromFiles()
+    with pytest.raises(NotImplementedError):
+        ff.from_file('non_existent_file')
+    tf = ToFiles()
+    with pytest.raises(NotImplementedError):
+        tf.to_file('non_existent_file')
+    np = NewNumpy()
+    with pytest.raises(NotImplementedError):
+        np.to_array()
+    nr = NewROOT()
+    with pytest.raises(NotImplementedError):
+        nr.to_tree()

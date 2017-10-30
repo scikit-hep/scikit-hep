@@ -7,7 +7,7 @@ Submodule for decorators
 """
 
 
-def inheritdoc(cls, gap="\n\n"):
+def inheritdoc(cls, gap="\n"):
     """
     Decorator to automatize the inheritance of documentation from a class method.
 

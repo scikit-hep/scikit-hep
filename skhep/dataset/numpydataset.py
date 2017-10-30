@@ -19,6 +19,7 @@ Note: usage of course requires that NumPy is installed.
 # -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
+import sys
 from types import MethodType
 
 from ..utils.py23 import *
@@ -68,7 +69,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
                                      for column in data.values())
         columns_have_valid_shape = all(column.shape == head(data.values()).shape for column in data.values())
         return is_dict and is_non_empty and has_only_valid_columns and columns_have_valid_shape
-    
+
     @property
     @inheritdoc(Dataset)
     def datashape(self):
@@ -140,10 +141,18 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
             data = self.data
         numpy.savez(NumpyDataset._openSingleFile(base), **data)
 
-    @inheritdoc(NewROOT)
-    def newROOT(self, filename, **options):
-        """filename: string name of ROOT file
-        options: none    # but consider file update vs recreate, etc.
+    @inheritdoc(NewROOT, gap='')
+    def to_tree(self, treename, **options):
+        """
+        Parameters
+        ----------
+        treename: str
+            Name of ROOT TTree to be created.
+        options: none
+
+        Returns
+        -------
+        ROOTDataset holding new ROOT TTree.
         """
 
         if self.isrecarray(self.data):
@@ -156,10 +165,9 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         else:
             assert False, "data must be a Numpy record array or a Python dictionary of 1d Numpy arrays."
 
-        root_numpy.array2root(data, filename, mode="recreate")
-
+        tree = root_numpy.array2tree(self.data, treeename)
         from .rootdataset import ROOTDataset
-        return ROOTDataset(filename, self.__provenance + (Formatting("ROOTDataset", filename),))
+        return ROOTDataset(tree, self._provenance+(Formatting('ROOTDataset', treename),))
 
     def __getitem__(self, name):
         return self.data[name]
@@ -174,13 +182,15 @@ def addNumpyMethod(method):
 
     fn.__name__ = method.__name__
     fn.__doc__ = method.__doc__
-    setattr(NumpyDataset, method.__name__, MethodType(fn, None, NumpyDataset))
+    if sys.version_info[0]==2:  # ugly but works! TODO: find nicer way
+        setattr(NumpyDataset, method.__name__, MethodType(fn, None, NumpyDataset))
+    else:
+        setattr(NumpyDataset, method.__name__, MethodType(fn, NumpyDataset))
 
-
-#try:
-#    addNumpyMethod(numpy.ndarray.__add__)
-#    addNumpyMethod(numpy.ndarray.__mul__)
-#    addNumpyMethod(numpy.ndarray.sum)
-#    addNumpyMethod(numpy.ndarray.mean)
-#except ImportError:
-#    pass
+try:
+    addNumpyMethod(numpy.ndarray.__add__)
+    addNumpyMethod(numpy.ndarray.__mul__)
+    addNumpyMethod(numpy.ndarray.sum)
+    addNumpyMethod(numpy.ndarray.mean)
+except ImportError:
+    pass

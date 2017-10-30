@@ -87,6 +87,8 @@ def test_properties():
     assert ds1.persistent == True
     ds2 = ROOTDataset(chain)
     assert ds2.provenance.__repr__() == '<FileOrigin (2 files)>'
+    with pytest.raises(NotImplementedError):
+        ds1.datashape
     del ds1, ds2
 
 def test_methods():
