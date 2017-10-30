@@ -5,6 +5,7 @@ Miscellaneous resources
 
 A collection of presentations, videos and publications
 on, or related to, the Scikit-HEP project.
+The material hence includes resources about the affiliated packages.
 
 Presentations
 -------------

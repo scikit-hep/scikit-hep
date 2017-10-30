@@ -31,7 +31,6 @@ Suggesting new functionality
 
 First check that the functionality does not already exist in :ref:`the API <api>`.
 
-.. _ideas:
 
 Project ideas
 -------------
