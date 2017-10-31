@@ -43,33 +43,36 @@ class MplPlotter(object):
         majority of work.
 
         Args:
-            x (array_like, or list of array_like):  Array of data to be histogrammed.
-            bins (int or List or str, optional):  If `int`, `bins` number of equal-width bins are
+            x (array, or list of array):
+                Array of data to be histogrammed.
+
+            bins (int or List or str, optional): If `int`, `bins` number of equal-width bins are
                 generated.  The width is determined by either equal divison of the given `range`, or
                 equal division between the first and last data point if no `range` is specified.
 
                 If `List`, bin edges are taken directly from `List` (can be unequal width).
 
-                If `str`, then it must be one of
-                    'blocks' : use bayesian blocks for dynamic bin widths.
+                If `str`, then it must be one of::
 
-                    'auto' : use `auto` feature from numpy.histogram.
+                        'blocks' : use bayesian blocks for dynamic bin widths.
+
+                        'auto' : use 'auto' feature from numpy.histogram.
 
                 Defaults to 'auto'.
 
-            range (tuple or None, optional):  If specificed, data will only be considered and shown
+            range (tuple or None, optional): If specificed, data will only be considered and shown
                 for the range given.  Otherwise, `range` will be between the highest and lowest
                 datapoint.
 
                 Defaults to None.
 
-            weights (array_like or None, optional): Weights associated with each data point.  If
+            weights (array or None, optional): Weights associated with each data point.  If
                 specified, bin content will be equal to the sum of all relevant weights.
 
                 Defaults to None.
 
-            errorbars (boolean or array_like, optional):  If True, errorbars will be calculated and
-                displayed based on the `err_*` arguments. The errorbars will be appropriately
+            errorbars (boolean or array, optional): If True, errorbars will be calculated and
+                displayed based on the `err_*` arguments.  The errorbars will be appropriately
                 modified if `scale` and/or `normed` is True. If an array is specificed, those values
                 will be used (and will not be modifed by any other methods).
 
@@ -82,7 +85,7 @@ class MplPlotter(object):
 
                 Defaults to False
 
-            scale (Number or 'binwidth', optional):  If Number, all bin contents are multiplied by
+            scale (Number or 'binwidth', optional): If Number, all bin contents are multiplied by
                 the given value.  If 'binwidth', every bin content is divided by the bin width. If
                 used with `normed` option, scaling occurs after normalization ('binwidth' will be
                 ignored in this case, because it is handled automatically when normalizing).
@@ -139,24 +142,30 @@ class MplPlotter(object):
 
                     Defaults to 'False'
 
-            Other keyword arguments are described in `pylab.hist()`.
+            Note:
+                Other keyword arguments are described in `pylab.hist()`.
 
         Returns:
-            bin_content (array or list of arrays): The values of the histogram bins. See normed or
+            (bin_content, bin_edges, bin_errors (optional), patches)
+
+            bin_content (array or list of array):
+                The values of the histogram bins. See normed or
                 density and weights for a description of the possible semantics. If input x is an
                 array, then this is an array of length nbins. If input is a sequence arrays [data1,
                 data2,..], then this is a list of arrays with the values of the histograms for each
                 of the arrays in the same order.
 
-            bin_edges (array): The edges of the bins. Length nbins + 1 (nbins left edges and right
-                edge of last bin). Always a single array even when multiple data sets are passed in.
+            bin_edges (array):
+                The edges of the bins. Length nbins + 1 (nbins left edges and right edge of last
+                bin). Always a single array even when multiple data sets are passed in.
 
-            error_bars (array or list of arrays, optional): The values of the error bars
-                associated with each bin.  It is only returned if `errorbars` is `True` and
-                `err_return` is True.
+            bin_errors (array or list of arrays, optional):
+                The values of the error bars associated with each bin.  It is only returned if
+                `errorbars` is `True` and `err_return` is True.
 
-            bin_patches (list or list of lists): Silent list of individual patches used to create
-                the histogram or list of such list if multiple input datasets.
+            bin_patches (list or list of lists):
+                Silent list of individual patches used to create the histogram or list of such list
+                if multiple input datasets.
 
 
         Brian Pollack, 2017
@@ -179,7 +188,10 @@ class MplPlotter(object):
         '''Function for creating ratio plots (comparing two histograms by dividing their bin content).
         The call structure is very similar to producing two individual histograms, with additional
         arguments specifying the nature of the ratio plot.  The number of bins and ranges for both
-        histograms must be equal.'''
+        histograms must be equal.
+
+        Note:
+            Addition documentation soon.'''
 
         bin_range = range
         del range
