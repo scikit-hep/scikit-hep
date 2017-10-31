@@ -13,6 +13,8 @@ if sys.version_info < (2, 6):
 
 # General information on the project
 PROJECT_NAME = 'scikit-hep'
+AUTHOR = 'the Scikit-HEP developers'
+AUTHOR_EMAIL = 'scikit-hep-admins@googlegroups.com'
 DESCRIPTION = 'Toolset of interfaces and tools for Particle Physics.'
 URL = 'https://github.com/scikit-hep/scikit-hep/'
 LICENSE = 'new BSD'
@@ -56,6 +58,8 @@ SETUP_REQUIRES = [
 
 setup(
     name=PROJECT_NAME,
+    author=AUTHOR,
+    author_email=AUTHOR_EMAIL,
     version=VERSION,
     description=DESCRIPTION,
     long_description=read('README.rst'),
