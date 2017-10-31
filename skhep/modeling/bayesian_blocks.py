@@ -5,9 +5,9 @@ Bayesian Block implementation
 
 Dynamic programming algorithm for finding the optimal adaptive-width histogram.
 
-* Based on Scargle et al 2012 [1]
-* Initial Python Implementation [2]
-* AstroML Implementation [3]
+* Based on Scargle et al 2012 [1]_
+* Initial Python Implementation [2]_
+* AstroML Implementation [3]_
 
 References
 ----------
@@ -23,17 +23,6 @@ import pandas as pd
 
 
 class Events(object):
-    """Fitness for binned or unbinned events.
-
-    Parameters
-    ----------
-    p0 : float
-        False alarm probability, used to compute the prior on N
-        (see eq. 21 of Scargle 2012).  Default prior is for p0 = 0.05
-    gamma : float or None
-        If specified, then use this gamma to compute the general prior form,
-        p ~ gamma^N.  If gamma is specified, p0 is ignored.
-    """
     def __init__(self, p0=0.05, gamma=None):
         self.p0 = p0
         self.gamma = gamma
@@ -63,43 +52,59 @@ class Events(object):
 def bayesian_blocks(data, weights=None, p0=0.05, gamma=None):
     """Bayesian Blocks Implementation.
 
-    This is a flexible implementation of the Bayesian Blocks algorithm
-    described in Scargle 2012 [1]_.
+    This is a flexible implementation of the Bayesian Blocks algorithm described in Scargle 2012
+    [1]_.  It has been modified to natively accept weighted events, for ease of use in HEP
+    applications.
 
-    Parameters
-    ----------
-    data : array_like
-        input data values (one dimensional, length N)
-    weights : array_like (optional)
-        weights for data (otherwise assume all data points habve a weight of 1)
+    Args:
+        data (array):
+            Input data values (one dimensional, length N). Repeat values are allowed.
 
-    Returns
-    -------
-    edges : ndarray
-        array containing the (N+1) bin edges
+        weights (array_like, optional):
+            Weights for data (otherwise assume all data points have a weight of 1).  Must be same
+            length as data.
 
-    Examples
-    --------
-    Event data:
+            Defaults to None.
 
-    >>> t = np.random.normal(size=100)
-    >>> bins = bayesian_blocks(t, fitness='events', p0=0.01)
+        p0 (float, optional):
+            False-positive rate, between 0 and 1.  A lower number places a stricter penalty against
+            creating more bin edges, thus reducing the potential for false-positive bin edges.
 
-    Event data with repeats:
+            Defaults to 0.05.
 
-    >>> t = np.random.normal(size=100)
-    >>> t[80:] = t[:20]
-    >>> bins = bayesian_blocks(t, fitness='events', p0=0.01)
+        gamma (float, optional):
+            If specified, then use this gamma to compute the general prior form, p ~ gamma^N. If
+            gamma is specified, p0 is ignored.
 
-    References
-    ----------
-    .. [1] Scargle, J `et al.` (2012)
-           http://adsabs.harvard.edu/abs/2012arXiv1207.5578S
+            Defaults to None.
 
-    See Also
-    --------
-    astroML.plotting.hist : histogram plotting function which can make use
-                            of bayesian blocks.
+
+    Returns:
+        edges (ndarray):
+            Array containing the (N+1) bin edges
+
+    Examples:
+        Event data:
+
+        >>> d = np.random.normal(size=100)
+        >>> bins = bayesian_blocks(d, p0=0.01)
+
+        Event data with repeats:
+
+        >>> d = np.random.normal(size=100)
+        >>> d[80:] = d[:20]
+        >>> bins = bayesian_blocks(d, p0=0.01)
+
+        Event data with weights:
+
+        >>> d = np.random.normal(size=100)
+        >>> w = np.random.uniform(1,2, size=100)
+        >>> bins = bayesian_blocks(d, w, p0=0.01)
+
+
+    See Also:
+        skhep.visual.MplPlotter.hist:
+            Histogram plotting function which can natively make use of bayesian blocks.
     """
     # validate input data
     data = np.asarray(data, dtype=float)
