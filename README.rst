@@ -48,8 +48,9 @@ Documentation
 -------------
 
 The documentation is hosted on the `Scikit-HEP website`_, and the source code
-is in the ``doc/`` folder. `Sphinx`_ is required for building the HTML pages,
-which can be done with the command:
+is in the ``doc/`` folder. `Sphinx`_ is required for building the HTML pages.
+Also `Pandoc`_ is needed so that the Jupyter notebooks providing numerous examples
+are nicely embedded in the documentation. The documentation is built with the command:
 
 ::
 
@@ -57,6 +58,7 @@ which can be done with the command:
 
 .. _Scikit-HEP website: http://scikit-hep.org/
 .. _Sphinx: http://www.sphinx-doc.org/en/stable/
+.. _Pandoc : http://pandoc.org/
 
 Getting in touch
 ----------------
