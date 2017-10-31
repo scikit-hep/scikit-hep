@@ -1,0 +1,5 @@
+# Include the license file
+include LICENSE
+
+# Include documentation in reStructuredText format
+recursive-include doc *
