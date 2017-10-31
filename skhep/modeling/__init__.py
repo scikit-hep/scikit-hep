@@ -11,4 +11,5 @@ This module contains in particular:
 # Import statements
 #-----------------------------------------------------------------------------
 from __future__ import absolute_import
+
 from .bayesian_blocks import bayesian_blocks

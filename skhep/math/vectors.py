@@ -42,8 +42,8 @@ class Vector3D(object):
     def __init__(self, x=0., y=0., z=0.):
         """Default constructor.
 
-        Example
-        -------
+        Examples
+        --------
         >>> v1 = Vector3D()
         >>> v1
         <Vector3D (x=0.0,y=0.0,z=0.0)>
@@ -164,9 +164,10 @@ class Vector3D(object):
     def theta(self, deg=False):
         """Return the spherical coordinate theta.
 
-        Options
-        -------
-        deg : return the angle in degrees (default is radians)
+        Parameters
+        ----------
+        deg : float, optional
+            Return the angle in degrees (default is radians).
         """
         theta = acos(self.costheta())
         return theta if not deg else degrees(theta)
@@ -174,9 +175,10 @@ class Vector3D(object):
     def phi(self, deg=False):
         """Return the spherical or cylindrical coordinate phi.
 
-        Options
-        -------
-        deg : return the angle in degrees (default is radians)
+        Parameters
+        ----------
+        deg : float, optional
+            Return the angle in degrees (default is radians).
         """
         phi = atan2(self.y, self.x)
         return phi if not deg else degrees(phi)
@@ -461,11 +463,13 @@ class Vector3D(object):
 
 
     def angle(self, other, deg=False):
-        """Angle with respect to another vector.
+        """
+        Angle with respect to another vector.
 
-        Options
-        -------
-        deg : return the angle in degrees (default is radians)
+        Parameters
+        ----------
+        deg : float, optional
+            Return the angle in degrees (default is radians).
         """
         cd = self.cosdelta ( other )
         return acos(cd) if not deg else degrees(acos(cd))
@@ -610,19 +614,24 @@ class LorentzVector(object):
         return self.__vector3d.costheta()
 
     def theta(self, deg=False):
-        """Return the spherical coordinate theta.
+        """
+        Return the spherical coordinate theta.
 
-        Options:
-           deg : return the angle in degrees (default is radians)
+        Parameters
+        ----------
+        deg : float, optional
+            Return the angle in degrees (default is radians).
         """
         return self.__vector3d.theta(deg)
 
     def phi(self, deg=False):
-        """Return the spherical or cylindrical coordinate phi.
+        """
+        Return the spherical or cylindrical coordinate phi.
 
-        Options
-        -------
-        deg : return the angle in degrees (default is radians)
+        Parameters
+        ----------
+        deg : float, optional
+            Return the angle in degrees (default is radians).
         """
         return self.__vector3d.phi(deg)
 

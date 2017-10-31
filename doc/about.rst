@@ -3,11 +3,12 @@
 About
 =====
 
-The Scikit-HEP project is a community-driven and community-oriented project
+The `Scikit-HEP project` is a community-driven and community-oriented project
 with the aim of providing Particle Physics at large with a Python package
-containing core and common tools.
+containing core and common tools. The project started in Autumn 2016 and is under active development.
 
-The project started in Autumn 2016 and is presently being prepared for an initial beta release.
+For what concerns Python packages, the project can be seen as a "core package" and a set of :ref:`affiliated packages <affiliations>`.
+It is not just about providing common tools for the community. It is also about improving on discoverability of utility packages.
 
 The software package defines a set of five *pillars*, which are seen to embrace
 all major topics involved in a physicist's work. These are:
@@ -27,6 +28,7 @@ Project startup team:
   * Noel Dawe (University of Melbourne - ATLAS)
   * David Lange (Princeton University - CMS, DIANA)
   * Sasha Mazurov (University of Birmingham - LHCb)
+  * Alex Pearce (CERN - LHCb)
   * Jim Pivarski (Princeton University - CMS, DIANA)
   * Eduardo Rodrigues (University of Cincinnati - DIANA, LHCb)
 

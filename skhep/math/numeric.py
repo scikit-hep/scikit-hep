@@ -3,22 +3,24 @@
 # =============================================================================
 # Licensed under a 3-clause BSD style license, see LICENSE.
 # =============================================================================
-""" Set of utilities for comparison of  floating point numbers inspired by
+"""
+Set of utilities for comparison of floating point numbers inspired by
 - https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
 and the previous version:
 - http://www.cygnus-software.com/papers/comparingfloats/Obsolete%20comparing%20floating%20point%20numbers.htm
 """
-# =============================================================================
+
 __all__ = (
     'distance'      , ## distance in ULPs
     'isclose'       , ## close in  terms of ULPs ?
     'isequal'       , ## isequal using  ULPs and SCALE
     'next_double'   , ## get next double
     )
-# =============================================================================
+
 def distance ( a ,  b ) :
-    """Distance in ULPS between two (floating point) numbers
-    - it is assumed here that  size(long)==size(double) for underlying C-library!
+    """
+    Distance in ULPS between two (floating point) numbers.
+    It is assumed here that  size(long)==size(double) for underlying C-library!
 
     Example
     -------
@@ -32,7 +34,7 @@ def distance ( a ,  b ) :
     elif a <  0 :
         return distance ( 0 , -a ) + distance ( 0 , b )
 
-    ## here a and b has same sign
+    ## here a and b have same sign
 
     import ctypes
 
@@ -46,13 +48,14 @@ def distance ( a ,  b ) :
 
     return bl - al
 
-# =============================================================================
-def next_double ( a , ulps = 1 ) :
-    """ Get the ``next-double'' by certain ULPs distance
-    - it is assumed here that  size(long)==size(double) for underlying C-library!
 
-    Example
-    -------
+def next_double ( a , ulps = 1 ) :
+    """
+    Get the ``next-double'' by certain ULPs distance.
+    It is assumed here that size(long)==size(double) for underlying C-library!
+
+    Examples
+    --------
     >>> a = next_double ( 1 , 1 )
     >>> print a , a - sys.float_info.epsilon
     """
@@ -76,28 +79,29 @@ def next_double ( a , ulps = 1 ) :
     return aa
 
 
-# =============================================================================
 def isclose ( a  , b , ulps = 1000 ) :
-    """Are two floating point numbers close enough (in units is ULPs)?
+    """
+    Are two floating point numbers close enough (in units is ULPs)?
 
-    Example
-    -------
+    Examples
+    --------
     >>> a = ...
     >>> b = ...
     >>> print isclose ( a , b , 1000 )
     """
     return ( a == b ) or ulps >= abs ( distance ( a , b ) )
 
-# =============================================================================
+
 def isequal ( a , b , scale = 1.0 , absdiff = 0.0 , ulps = 1000 ) :
-    """Are  two numbers ``a'' and ``b''  close enough ?
-    Numbers are considered to be  equal is :
+    """
+    Are  two numbers ``a'' and ``b''  close enough ?
+    Numbers are considered to be equal is :
     - (for absdiff >0) the absolute difference is smaller than absdiff
     - *OR* they are close enough in ULPs
     - *OR* (for scale != 0) the difference is small enough compared to the scale
 
-    Example
-    -------
+    Examples
+    --------
     >>> isequal(1,1+sys.float_info.epsilon)
     True
     >>> isequal(1,1+sys.float_info.epsilon, ulps = 0 )

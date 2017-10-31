@@ -5,10 +5,9 @@ Bayesian Block implementation
 
 Dynamic programming algorithm for finding the optimal adaptive-width histogram.
 
-Based on Scargle et al 2012 [1]
-Initial Python Implementation [2]
-AstroML Implementation [3]
-
+* Based on Scargle et al 2012 [1]
+* Initial Python Implementation [2]
+* AstroML Implementation [3]
 
 References
 ----------
@@ -24,7 +23,7 @@ import pandas as pd
 
 
 class Events(object):
-    """Fitness for binned or unbinned events
+    """Fitness for binned or unbinned events.
 
     Parameters
     ----------
@@ -62,10 +61,10 @@ class Events(object):
 
 
 def bayesian_blocks(data, weights=None, p0=0.05, gamma=None):
-    """Bayesian Blocks Implementation
+    """Bayesian Blocks Implementation.
 
     This is a flexible implementation of the Bayesian Blocks algorithm
-    described in Scargle 2012 [1]_
+    described in Scargle 2012 [1]_.
 
     Parameters
     ----------

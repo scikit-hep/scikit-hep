@@ -20,7 +20,7 @@ def Kallen_function(x, y, z):
 
     Definition
     ----------
-    
+
     .. math::
 
       \\begin{eqnarray}
@@ -41,8 +41,8 @@ def Kallen_function(x, y, z):
         >>> print p / GeV   # print the CMS momentum in GeV
         2.61453580221
 
-    Reference
-    ---------
+    References
+    ----------
     .. [Kallen] https://en.wikipedia.org/wiki/K%C3%A4ll%C3%A9n_function
     """
     return (x - y - z) ** 2 - 4 * y * z  # faster to evaluate condensed form used
