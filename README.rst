@@ -1,3 +1,6 @@
+.. image:: https://zenodo.org/badge/73710584.svg
+   :target: https://zenodo.org/badge/latestdoi/73710584
+
 ==========
 Scikit-HEP
 ==========
