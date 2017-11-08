@@ -65,7 +65,7 @@ setup(
     long_description=read('README.rst'),
     url=URL,
     license=LICENSE,
-    packages=find_packages(exclude=['tests']),
+    packages=find_packages(),
     package_data={'skhep': ['data/*.*']},
     py_modules=['setuputils'],
     install_requires=INSTALL_REQUIRES,
