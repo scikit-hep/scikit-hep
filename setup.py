@@ -49,7 +49,8 @@ INSTALL_REQUIRES = [
 ]
 
 TEST_REQUIRES = [
-    'pytest>=3.0'
+    'pytest<3.3;python_version<"2.7"',
+    'pytest>3.0;python_version>="2.7"'
 ]
 
 SETUP_REQUIRES = [
