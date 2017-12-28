@@ -3,13 +3,14 @@
 Documentation
 =============
 
-This is the main page documenting the *skhep* module, example usage, and the user API.
+This is the main page documenting the *scikit-hep* package, example usage, and the user API.
+Please refer to the links on the page about :ref:`affiliated packages <affiliations>` for their documentation.
 
 .. toctree::
     :maxdepth: 2
 
-    examples/examples.rst
     api/api.rst
+    examples/examples.rst
     faq.rst
     resources.rst
 

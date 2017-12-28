@@ -63,11 +63,13 @@ class ObjectOrigin(Origin):
     Declares that the dataset came from some Python object.
     Its history prior to that is unknown.
 
-    :Parameters:
+    Parameters
+    ----------
     detail: str
         String providing detailed information about the object origin.
 
-    :Examples:
+    Examples
+    --------
     >>> from skhep.utils import ObjectOrigin
     >>> from array import array
     >>> data = array('i',[1,2,3])
@@ -99,11 +101,13 @@ class FileOrigin(Origin):
     """
     Declares that the dataset came from a file or a set of files.
 
-    :Parameters:
+    Parameters
+    ----------
     files: str or iterable of str or file objects
         File name(s) or object(s).
 
-    :Examples:
+    Examples
+    --------
     >>> from skhep.utils import FileOrigin
     >>> prov = FileOrigin(['file1.root', 'file2.root','file3.root'])
     >>> prov
@@ -127,7 +131,7 @@ class FileOrigin(Origin):
 
     @property
     def detail(self):
-        return ", ".join(json.dumps(x) for x in self.files)
+        return ",".join(json.dumps(x) for x in self.files)
 
     def __repr__(self):
         return "<FileOrigin ({0} file{1})>".format(len(self.files),'s' if len(self.files)>1 else '')
@@ -137,13 +141,15 @@ class Transformation(Provenance):
     """
     Declares that the dataset was transformed by some mathematical operation.
 
-    :Parameters:
+    Parameters
+    ----------
     name: str
         String detailing how the dataset got transformed.
     args: iterable, optional
         Optional set of arguments given extra detail on the transformation.
 
-    :Examples:
+    Examples
+    --------
     >>> from skhep.utils import Transformation
     >>> transf = Transformation('all elms * 2')
     >>> transf
@@ -157,7 +163,7 @@ class Transformation(Provenance):
     @property
     def detail(self):
         return "{0} ({1})".format(self.name,
-                                 ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
+                                 ",".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
 
     def __repr__(self):
         return "<Transformation({0})>".format(self.name)
@@ -175,4 +181,4 @@ class Formatting(Provenance):
     @property
     def detail(self):
         return "{0}({1})".format(self.format,
-                                 ", ".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
+                                 ",".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))

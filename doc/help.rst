@@ -17,4 +17,4 @@ On GitHub
 ----------
 
 You can also get help via the
-`GitHub pages <https://github.com/scikit-hep/scikit-hep/>`_, e.g. filing an issue.
+`GitHub pages <https://github.com/scikit-hep/scikit-hep/>`_, e.g. filing `an issue <https://github.com/scikit-hep/scikit-hep/issues>`_.

@@ -8,6 +8,9 @@ An affiliated package is a Python package that is not part of the scikit-hep cor
 and seen as part of, the Scikit-HEP project and community.
 
 Affiliated packages are being identified and the community is most welcome to get in touch.
+A full list of the presently affiliated packages follows, together with a very short description of their goals.
+In most cases, the affiliated packages have to do with bridging between different technologies and/or popular packages
+from the Python scientific software stack.
 
 List of affiliated packages
 ---------------------------

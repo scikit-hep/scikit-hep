@@ -1,0 +1,14 @@
+# Include the license file
+include LICENSE
+
+# Include the MANIFEST itself
+include MANIFEST.in
+
+# Include the data files
+recursive-include skhep/data/ *
+
+# Include directory with test suite
+recursive-include tests *
+
+# Include documentation in reStructuredText format
+recursive-include doc *

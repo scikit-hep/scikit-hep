@@ -7,9 +7,23 @@ import os
 from setuptools import setup, find_packages
 from setuputils import read, find_version
 
+# Check the Python version
+if sys.version_info < (2, 6):
+    sys.exit('scikit-hep only supports Python 2.6 and above!')
+
+# General information on the project
+PROJECT_NAME = 'scikit-hep'
+AUTHOR = 'the Scikit-HEP developers'
+AUTHOR_EMAIL = 'scikit-hep-admins@googlegroups.com'
+DESCRIPTION = 'Toolset of interfaces and tools for Particle Physics.'
+URL = 'https://github.com/scikit-hep/scikit-hep/'
+LICENSE = 'new BSD'
+VERSION = find_version('skhep/__init__.py')
 
 # Specification of minimal versions of required dependencies
-PYPDT_MIN_VERSION = '0.7.3'
+PYTHON_REQUIRES = '>=2.6, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4'
+PYPDT_MIN_VERSION = '0.7.4'
+NUMPY_MIN_VERSION = '1.11.0'
 
 # Prevent setup from trying to create hard links
 # which are not allowed on AFS between directories.
@@ -24,30 +38,40 @@ LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 os.chdir(LOCAL_PATH)
 sys.path.insert(0, LOCAL_PATH)
 
-install_requires = [
-    'PyPDT>={0}'.format(PYPDT_MIN_VERSION)
+INSTALL_REQUIRES = [
+    'PyPDT>={0}'.format(PYPDT_MIN_VERSION),
+    'numpy>=1.11.0,<1.12.0;python_version<"2.7"',
+    'numpy>={0};python_version>="2.7"'.format(NUMPY_MIN_VERSION),
+    'pandas==0.16.2;python_version<"2.7"',
+    'pandas;python_version>="2.7"',
+    'matplotlib<1.5;python_version<"2.7"',
+    'matplotlib>2.0.0,<2.1;python_version>="2.7"',
 ]
 
-test_requires = [
-    'pytest>=3.0'
+TEST_REQUIRES = [
+    'pytest<3.3;python_version<"2.7"',
+    'pytest>3.0;python_version>="2.7"'
 ]
 
-setup_requires = [
+SETUP_REQUIRES = [
     'pytest-runner'
 ]
 
 setup(
-    name='scikit-hep',
-    version=find_version('skhep/__init__.py'),
-    description='Particle Physics python package',
+    name=PROJECT_NAME,
+    author=AUTHOR,
+    author_email=AUTHOR_EMAIL,
+    version=VERSION,
+    description=DESCRIPTION,
     long_description=read('README.rst'),
-    license='new BSD',
-    packages=find_packages(exclude=['tests']),
+    url=URL,
+    license=LICENSE,
+    packages=find_packages(),
     package_data={'skhep': ['data/*.*']},
     py_modules=['setuputils'],
-    install_requires=install_requires,
-    test_requires=test_requires,
-    setup_requires=setup_requires,
+    install_requires=INSTALL_REQUIRES,
+    test_requires=TEST_REQUIRES,
+    setup_requires=SETUP_REQUIRES,
     classifiers=[
         'Intended Audience :: Science/Research',
         'Intended Audience :: Developers',
@@ -60,6 +84,7 @@ setup(
         'License :: OSI Approved',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
@@ -68,6 +93,6 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: C++',
         'Programming Language :: Cython',
-        'Development Status :: 1 - Planning',
+        'Development Status :: 4 - Beta',
     ]
 )

@@ -386,8 +386,6 @@ _add_names(Vector2D)
 _add_names(Vector3D)
 _add_names(LorentzVector)
 
-
-
 @overload(Vector2D)
 def Vector2D_t(*args, **kargs):
     return np.array

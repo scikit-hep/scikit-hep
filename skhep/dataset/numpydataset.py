@@ -19,13 +19,15 @@ Note: usage of course requires that NumPy is installed.
 # -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
+import sys
 from types import MethodType
 
-from .defs import *
 from ..utils.py23 import *
 from ..utils.decorators import inheritdoc
 from ..utils.dependencies import softimport
 from ..utils.provenance import FileOrigin, ObjectOrigin, Transformation, Formatting
+
+from .defs import *
 
 numpy = softimport("numpy")
 root_numpy = softimport("root_numpy")
@@ -35,6 +37,22 @@ root_numpy = softimport("root_numpy")
 # NumpyDataset
 # -----------------------------------------------------------------------------
 class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
+    def __init__(self, data, provenance=None, **options):
+        """Default constructor for NumpyDataset.
+
+        Parameters
+        ----------
+        data: a dictionary of equal-length, one-dimensional Numpy arrays or, equivalently, a Numpy record array.
+        provenance: history of the data before being wrapped as a NumpyDataset.
+        options: none.
+        """
+        assert self.isrecarray(data) or self.isdictof1d(data)
+        self._data = data
+
+        if provenance is None:
+            provenance = ObjectOrigin(repr(data))
+        self._provenance = provenance
+
     @staticmethod
     def isrecarray(data):
         is_valid_recarray = isinstance(data, numpy.recarray)
@@ -52,44 +70,32 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         columns_have_valid_shape = all(column.shape == head(data.values()).shape for column in data.values())
         return is_dict and is_non_empty and has_only_valid_columns and columns_have_valid_shape
 
-    def __init__(self, data, provenance=None, **options):
-        """Default constructor for NumpyDataset.
-
-        data: a dictionary of equal-length, one-dimensional Numpy arrays or, equivalently, a Numpy record array
-        provenance: history of the data before being wrapped as a NumpyDataset
-        options: none
-        """
-
-        assert self.isrecarray(data) or self.isdictof1d(data)
-        self.__data = data
-
-        if provenance is None:
-            provenance = ObjectOrigin(repr(data))
-        self.__provenance = provenance
-
+    @property
     @inheritdoc(Dataset)
     def datashape(self):
         raise NotImplementedError  # TODO!
 
+    @property
     @inheritdoc(Dataset)
     def immutable(self):
         return False
 
+    @property
     @inheritdoc(Dataset)
     def persistent(self):
         return False
 
     @staticmethod
-    def fromFiles(files, **options):
-        """Load a Dataset from a file or collection of files.
+    def from_file(files, **options):
+        """
+        Load a dataset from a file or collection of files.
 
         Recognizes zipped Numpy (.npz) format.
 
         files: a string file name (glob pattern), iterable of string file names, or an iterable of files open for reading (binary).
         options:
-            columns: a set of columns to select from the files
+            columns: a set of columns to select from the files.
         """
-
         requested_columns = options.get("columns")
 
         columns = None
@@ -124,9 +130,8 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         return NumpyDataset(data, FileOrigin(files))
 
     @inheritdoc(ToFiles, gap="\n")
-    def toFiles(self, base, **options):
+    def to_file(self, base, **options):
         """options: none"""
-
         # always write column-wise: collection of 1d arrays in a zip file (.npz)
         # (not too different from what ROOT is, actually)
         if self.isrecarray(self.data):
@@ -134,30 +139,35 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
                         for name in self.data.dtype.names)
         else:
             data = self.data
-
         numpy.savez(NumpyDataset._openSingleFile(base), **data)
 
-    @inheritdoc(NewROOT)
-    def newROOT(self, file_name, **options):
+    @inheritdoc(NewROOT, gap='')
+    def to_tree(self, treename, **options):
         """
-        file_name: string name of ROOT file
-        options: none    # but consider file update vs recreate, etc.
+        Parameters
+        ----------
+        treename: str
+            Name of ROOT TTree to be created.
+        options: none
+
+        Returns
+        -------
+        ROOTDataset holding new ROOT TTree.
         """
 
         if self.isrecarray(self.data):
             data = self.data
         elif self.isdictof1d(self.data):
-            data = numpy.empty(head(self.__data.values()).shape,
+            data = numpy.empty(head(self._data.values()).shape,
                                dtype=[(name, self.data[name].dtype) for name in self.data])
             for name in self.data:
                 data[name] = self.data[name]
         else:
             assert False, "data must be a Numpy record array or a Python dictionary of 1d Numpy arrays."
 
-        root_numpy.array2root(data, file_name, mode="recreate")
-
+        tree = root_numpy.array2tree(self.data, treeename)
         from .rootdataset import ROOTDataset
-        return ROOTDataset(file_name, self.__provenance + (Formatting("ROOTDataset", file_name),))
+        return ROOTDataset(tree, self._provenance+(Formatting('ROOTDataset', treename),))
 
     def __getitem__(self, name):
         return self.data[name]
@@ -172,15 +182,15 @@ def addNumpyMethod(method):
 
     fn.__name__ = method.__name__
     fn.__doc__ = method.__doc__
-    setattr(NumpyDataset, method.__name__, MethodType(fn, None, NumpyDataset))
-
+    if sys.version_info[0]==2:  # ugly but works! TODO: find nicer way
+        setattr(NumpyDataset, method.__name__, MethodType(fn, None, NumpyDataset))
+    else:
+        setattr(NumpyDataset, method.__name__, MethodType(fn, NumpyDataset))
 
 try:
     addNumpyMethod(numpy.ndarray.__add__)
     addNumpyMethod(numpy.ndarray.__mul__)
     addNumpyMethod(numpy.ndarray.sum)
     addNumpyMethod(numpy.ndarray.mean)
-    # ...
-
 except ImportError:
     pass

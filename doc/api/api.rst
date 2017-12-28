@@ -11,6 +11,9 @@ API
    constants.rst
    dataset.rst
    math.rst
+   modeling.rst
+   pdg.rst
    simulation.rst
    units.rst
    utils.rst
+   visual.rst

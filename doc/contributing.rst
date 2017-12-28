@@ -5,7 +5,9 @@ Contributing
 
 If you already have an idea for a feature you'd like to see in *scikit-hep*,
 you can start by seeing how to :ref:`contribute code <contributing_code>`.
-If not, we have :ref:`plenty of ideas <ideas>` we'd love to see!
+If not, we have :ref:`plenty of ideas <ideas>` we'd love to see materialising!
+
+BTW, check also the :ref:`affiliated packages <affiliations>` as your must-have feature could already exist there ...
 
 .. _contributing_code:
 
@@ -29,7 +31,6 @@ Suggesting new functionality
 
 First check that the functionality does not already exist in :ref:`the API <api>`.
 
-.. _ideas:
 
 Project ideas
 -------------
@@ -41,4 +42,4 @@ Feedback and bug reporting
 --------------------------
 
 For now please provide feedback and/or report bugs via the
-`Scikit-HEP GitHub Issues <https://github.com/scikit-hep/scikit-hep/issues>`_ page.
+`GitHub Issues <https://github.com/scikit-hep/scikit-hep/issues>`_ page.
