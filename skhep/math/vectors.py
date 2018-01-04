@@ -380,7 +380,7 @@ class LorentzVector(Vector3D):
             self.t *= gamma
         else:
             v = self.vect + gamma2*bp*vector3 + gamma*vector3*self.t
-            return self.__class__(*v, gamma*(self.t+bp))
+            return self.__class__(v[0], v[1], v[2], gamma*(self.t+bp))
 
 _add_names(Vector2D)
 _add_names(Vector3D)

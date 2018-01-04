@@ -19,26 +19,38 @@ from math import pi, sqrt
 # -----------------------------------------------------------------------------
 # Actual tests
 # -----------------------------------------------------------------------------
-def test_vectors_more():
+# From iterable removed (Use python * syntax instead)
+
+def test_from_iterable():
+    iterable = [1,2,3]
+    vec = Vector3D(*iterable)
+    assert np.all(vec == Vector3D(1,2,3))
+
     with pytest.raises(TypeError):
-        Vector3D.fromiterable(1.)
+        iterable = [1, 2, 3, 4]
+        Vector3D(*iterable)
+
+def test_default_const_iterable():
+    several_vec = Vector3D(1,2,[3,4,5])
+    assert several_vec.shape == (3,3)
+
+    several_vec = Vector3D([1,2,3],[2,3,4],[3,4,5])
+    assert several_vec.shape == (3,3)
+
     with pytest.raises(ValueError):
-        Vector3D.fromiterable([1.])
-    with pytest.raises(ValueError):
-        Vector3D.fromiterable(['str1','str2','str3'])
-    #
+        Vector3D([1, 2, 3], [2, 3], [3, 4, 5])
 
 def test_vectors_constructors():
     v1 = Vector3D()
-    assert str(v1) == str((0., 0., 0.))
-    assert repr(v1) == "<Vector3D (x=0.0,y=0.0,z=0.0)>"
+    assert str(v1) == str(np.array([0.,0.,0.]))
+    assert repr(v1) == "Vector3D([ 0.,  0.,  0.])"
     assert str(v1) == str(Vector3D.origin())
     v2 = Vector3D(1.,1.,1.)
-    assert str(v2) == str((1., 1., 1.))
+    assert str(v2) == str(np.array([1.,1.,1.]))
     v3 = Vector3D.fromvector(v1)
-    assert str(v3) == str((0., 0., 0.))
-    v4 = Vector3D.fromiterable([1.0, 1.0, 1.0])
-    assert str(v4) == str((1., 1., 1.))
+    assert str(v3) == str(np.array([0.,0.,0.]))
+    v4 = Vector3D(*[1.0, 1.0, 1.0])
+    assert str(v4) == str(np.array([1.,1.,1.]))
     v5 = Vector3D.fromcylindricalcoords(1., 0., 1.)
     assert v5 == Vector3D(1., 0., 1.)
     assert v5.rho == 1.
@@ -53,7 +65,7 @@ def test_vectors_constructors():
     v9 = Vector3D.fromsphericalcoords(2.0, pi/2, pi/4)
     assert v9 == Vector3D(sqrt(2), sqrt(2), 0.)
     v10 = Vector3D.frompoint( 2., 2., 2.)
-    assert str(v10) == str((2., 2., 2.))
+    assert str(v10) == str(np.array([2.,2.,2.]))
     #
     with pytest.raises(TypeError):
         LorentzVector.fromiterable(1)
@@ -82,15 +94,15 @@ def test_containers_properties():
     #
     v1 = Vector3D()
     v1.x = 5.; v1.y = -5.; v1.z = 10
-    assert v1 == Vector3D(5., -5.,  10.)
-    v1.set(-5., 5., 10.)
-    assert v1 == Vector3D(-5., 5.,  10.)
+    assert np.all(v1 == Vector3D(5., -5.,  10.))
+    v1[:] = (-5., 5., 10.)
+    assert np.all(v1 == Vector3D(-5., 5.,  10.))
     v1[0] = 1.
-    assert v1 == Vector3D(1., 5.,  10.)
+    assert np.all(v1 == Vector3D(1., 5.,  10.))
     v1[1] = 1.
-    assert v1 == Vector3D(1., 1.,  10.)
+    assert np.all(v1 == Vector3D(1., 1.,  10.))
     v1[2] = 1.
-    assert v1 == Vector3D(1., 1.,  1.)
+    assert np.all(v1 == Vector3D(1., 1.,  1.))
     assert v1[0] == 1.
     assert v1[1] == 1.
     assert v1[2] == 1.
@@ -106,38 +118,36 @@ def test_containers_properties():
     #
     lv1 = LorentzVector()
     lv1.x = 5.; lv1.y = -5.; lv1.z = 10; lv1.t = 2.
-    assert lv1 == LorentzVector(5., -5., 10.,  2.)
-    lv1.px = 5.; lv1.py = 5.; lv1.pz = -10; lv1.e = 2.
-    assert lv1 == LorentzVector(5., 5., -10.,  2.)
-    lv1.set(-5., 5., 10., -2.)
-    assert lv1 == LorentzVector(-5., 5., 10.,  -2.)
+    assert np.all(lv1 == LorentzVector(5., -5., 10.,  2.))
+    lv1.x = 5.; lv1.y = 5.; lv1.z = -10; lv1.t = 2.
+    assert np.all(lv1 == LorentzVector(5., 5., -10.,  2.))
+    lv1[:] = (-5., 5., 10., -2.)
+    assert np.all(lv1 == LorentzVector(-5., 5., 10.,  -2.))
     lv1[0] = 1.
-    assert lv1 == LorentzVector(1., 5., 10.,  -2.)
+    assert np.all(lv1 == LorentzVector(1., 5., 10.,  -2.))
     lv1[1] = 1.
-    assert lv1 == LorentzVector(1., 1., 10.,  -2.)
+    assert np.all(lv1 == LorentzVector(1., 1., 10.,  -2.))
     lv1[2] = 1.
-    assert lv1 == LorentzVector(1., 1., 1.,  -2.)
+    assert np.all(lv1 == LorentzVector(1., 1., 1.,  -2.))
     lv1[3] = 1.
-    assert lv1 == LorentzVector(1., 1., 1.,  1.)
+    assert np.all(lv1 == LorentzVector(1., 1., 1.,  1.))
     assert lv1[0] == 1.
     assert lv1[1] == 1.
     assert lv1[2] == 1.
     assert lv1[3] == 1.
     assert len(lv1) == 4.
-    assert lv1.tolist() == [1., 1., 1.,  1.]
     assert list(lv1) == [1., 1., 1.,  1.]
-    assert [v for v in lv1] == [1., 1., 1.,  1.]
 
 def test_vectors_operators():
-    with pytest.raises(InvalidOperationError):
+    with pytest.raises(TypeError):
         Vector3D.__iadd__(Vector3D(), "a")
-    with pytest.raises(InvalidOperationError):
+    with pytest.raises(TypeError):
         Vector3D.__isub__(Vector3D(), "a")
-    with pytest.raises(InvalidOperationError):
-        Vector3D.__imul__(Vector3D(), Vector3D())
+    #with pytest.raises(TypeError):
+    Vector3D.__imul__(Vector3D(), Vector3D())
     with pytest.raises(ZeroDivisionError):
         Vector3D.__div__(Vector3D(), 0.0)
-    with pytest.raises(InvalidOperationError):
+    with pytest.raises(TypeError):
         Vector3D.__idiv__(Vector3D(), Vector3D())
     with pytest.raises(ZeroDivisionError):
         Vector3D.__idiv__(Vector3D(), 0.0)
@@ -234,13 +244,12 @@ def test_vectors_operators():
     assert not lv1 == 1
 
 def test_vectors_rotations():
-    with pytest.raises(TypeError):
-        Vector3D.rotate(Vector3D(), pi, 1)
-    with pytest.raises(TypeError):
+    Vector3D.rotate(Vector3D(), pi, 1)
+    with pytest.raises(ValueError):
         Vector3D.rotate(Vector3D(), pi, [1,2])
     with pytest.raises(TypeError):
         Vector3D.rotate(Vector3D(), pi, 1, 2, 3, 4)
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         Vector3D.rotate(Vector3D(), pi, 0, 1, 'a')
     with pytest.raises(ValueError):
         Vector3D.rotate(Vector3D(), pi, ['a','b',3])
@@ -303,50 +312,51 @@ def test_3Dvectors_properties():
     v1, v2 = Vector3D(1., 1., 1.), Vector3D(2., 2., 2.)
     v3, v4 = Vector3D(-1., -1., -1.), Vector3D(-2., -2., -2.)
     v5, v6 = Vector3D(1., 1., 0.), Vector3D(0., 0., 2.)
-    assert not v0
-    assert v1
-    assert v1.mag2 == 3.
-    assert v1.mag == sqrt(3.)
-    assert v2.mag2 == 12.
-    assert v2.mag == sqrt(12.)
-    assert v1.unit().mag == 1.
+    assert np.all(v0 == [0,0,0])
+    assert np.all(v1 == [1,1,1])
+    assert v1.mag2() == 3.
+    assert v1.mag() == sqrt(3.)
+    assert v2.mag2() == 12.
+    assert v2.mag() == sqrt(12.)
+    assert v1.unit().mag() == 1.
     v7 = v1.unit()
-    assert v1.unit() == v7.unit()
-    assert v1.isparallel(v2) == True
-    assert v2.isparallel(v1) == True
-    assert v1.isantiparallel(v2) == False
-    assert v2.isantiparallel(v1) == False
-    assert v1.isantiparallel(v3) == True
-    assert v2.isantiparallel(v4) == True
-    assert v1.isparallel(v3) == False
-    assert v2.isparallel(v4) == False
-    assert v1.isopposite(v3) == True
-    assert v1.isopposite(v4) == False
-    assert v2.isopposite(v4) == True
-    assert v2.isopposite(v3) == False
-    assert v1.isperpendicular(v2) == False
-    assert v2.isperpendicular(v1) == False
-    assert v5.isperpendicular(v6) == True
-    assert v6.isperpendicular(v5) == True
+    assert np.all(v1.unit() == v7.unit())
+
+    # assert v1.isparallel(v2) == True
+    # assert v2.isparallel(v1) == True
+    # assert v1.isantiparallel(v2) == False
+    # assert v2.isantiparallel(v1) == False
+    # assert v1.isantiparallel(v3) == True
+    # assert v2.isantiparallel(v4) == True
+    # assert v1.isparallel(v3) == False
+    # assert v2.isparallel(v4) == False
+    # assert v1.isopposite(v3) == True
+    # assert v1.isopposite(v4) == False
+    # assert v2.isopposite(v4) == True
+    # assert v2.isopposite(v3) == False
+    # assert v1.isperpendicular(v2) == False
+    # assert v2.isperpendicular(v1) == False
+    # assert v5.isperpendicular(v6) == True
+    # assert v6.isperpendicular(v5) == True
 
 def test_lorentz_vectors_errors():
-    with pytest.raises(TypeError):
+    with pytest.raises(AttributeError):
         LorentzVector.boost(LorentzVector(), 1)
-    with pytest.raises(TypeError):
+    with pytest.raises(AttributeError):
         LorentzVector.boost(LorentzVector(), [1,2])
     with pytest.raises(TypeError):
         LorentzVector.boost(LorentzVector(), 1, 2, 3, 4)
-    with pytest.raises(ValueError):
+    with pytest.raises(AttributeError):
         LorentzVector.boost(LorentzVector(), 0, 1, 'a')
-    with pytest.raises(ValueError):
+    with pytest.raises(AttributeError):
         LorentzVector.boost(LorentzVector(), ['a','b',3])
 
 def test_lorentz_vectors_properties():
     lv0 = LorentzVector()
     lv1, lv2 = LorentzVector(1., 1., 1., 1.), LorentzVector(1., 1., 1., 2.)
-    assert lv1.boostvector == Vector3D(1., 1.,  1.)
+    assert np.all(lv1.boost_vector() == Vector3D(1., 1.,  1.))
     assert lv1.beta == sqrt(3.)
-    assert lv2.boostvector == Vector3D(0.5, 0.5,  0.5)
+    assert lv2.boost_vector() == Vector3D(0.5, 0.5,  0.5)
     lv3 = LorentzVector(0., 0., 1., 0.)
     beta = 0.05
     gamma = 1/sqrt(1 - beta**2)
@@ -378,15 +388,13 @@ def test_lorentz_vectors_properties():
     assert lv7.islightlike() == True
 
 def test_lorentz_vectors_properties_again():
-    p1 = LorentzVector()
-    p1.setpxpypzm(5.,5.,10.,5)
-    assert p1.px == 5.
-    assert p1.py == 5.
-    assert p1.pz == 10.
-    assert p1.m == 5.
-    assert p1.mass == 5.
-    assert p1.m2 == 25.
-    assert p1.mass2 == 25.
+    p1 = LorentzVector(5.,5.,10.,5)
+    assert p1.x == 5.
+    assert p1.y == 5.
+    assert p1.z == 10.
+    assert p1.t == 5.
+    assert p1.mag() == 5.
+    assert p1.mag2() == 25.
     assert p1.pt == sqrt(p1.px**2 + p1.py**2)
     assert p1.p == sqrt(p1.px**2 + p1.py**2 + p1.pz**2)
     assert p1.p == sqrt(p1.pt**2 + p1.pz**2)

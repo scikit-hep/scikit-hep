@@ -6,6 +6,7 @@ from __future__ import division, print_function, absolute_import
 try:
     from numba import float32, float64, int32, int64, bool_, jit, vectorize, types, guvectorize
     from numba.extending import overload_method, overload
+
 except ImportError:
     float32 = []
     float64 = []
@@ -15,6 +16,7 @@ except ImportError:
         return copyf
     vectorize = jit
     overload_method = jit
+    overload = jit
     class types:
         Array = None
 
