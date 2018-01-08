@@ -155,11 +155,11 @@ class Vector3D(object):
         return self.mag
 
     def costheta(self):
-        """Return the cosinus of the spherical coordinate theta."""
-        if self.x == 0. and self.y == 0.:
+        """Return the cosine of the spherical coordinate theta."""
+        if self.mag == 0.:
             return 1.
-        costheta = self.z / self.mag
-        return costheta
+        else:
+            return self.z / self.mag
 
     def theta(self, deg=False):
         """Return the spherical coordinate theta.
