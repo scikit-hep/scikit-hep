@@ -68,7 +68,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         
     def copy(self) :
         """Get a copy of the NumpyDataset."""
-        return NumpyDataset( self._data, self._provenance )
+        return NumpyDataset( self.data, self._provenance )
         
     def select(self, selection = None):
         """
@@ -89,7 +89,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
             if isinstance(selection, str):
                 selection = Selection(selection)
                 
-            data = self._data[ selection.numpyselection(self) ]
+            data = self.data[ selection.numpyselection(self) ]
             provenance = self._provenance + Transformation("Selection, {}, applied".format(selection))
             return NumpyDataset(data, provenance)
         else:
@@ -114,13 +114,13 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         
     def dicttoarray(self):
         """Convert a dictionnary into a structured array."""
-        if self.isdictof1d(self._data) and not self.isrecarray(self._data):
-            dtypes = {'names': self._data.keys(), 'formats': [numpy.dtype(self._data[k].dtype) for k in self._data.keys()]}
-            shape  = (len(self._data.values()[0]),)
+        if self.isdictof1d(self.data ) and not self.isrecarray(self.data ):
+            dtypes = {'names': self.data .keys(), 'formats': [numpy.dtype(self.data [k].dtype) for k in self.data .keys()]}
+            shape  = (len(self.data .values()[0]),)
             array  = numpy.zeros(shape,dtypes)
             
-            for k in self._data.keys():
-                array[k] = self._data[k]
+            for k in self.data .keys():
+                array[k] = self.data [k]
                 
             self._data = array
             
@@ -188,11 +188,11 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         """options: none"""
         # always write column-wise: collection of 1d arrays in a zip file (.npz)
         # (not too different from what ROOT is, actually)
-        if self.isrecarray(self._data):
-            data = dict((name, self._data[name])
-                        for name in self._data.dtype.names)
+        if self.isrecarray(self.data):
+            data = dict((name, self.data[name])
+                        for name in self.data.dtype.names)
         else:
-            data = self._data
+            data = self.data
         numpy.savez(NumpyDataset._openSingleFile(base), **data)
 
     @inheritdoc(NewROOT, gap='')
@@ -209,19 +209,19 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         ROOTDataset holding new ROOT TTree.
         """
 
-        if self.isrecarray(self._data):
-            data = self._data
-        elif self.isdictof1d(self._data):
-            data = numpy.empty(head(self._data.values()).shape,
-                               dtype=[(name, self._data[name].dtype) for name in self._data])
-            for name in self._data:
-                data[name] = self._data[name]
+        if self.isrecarray(self.data):
+            data = self.data
+        elif self.isdictof1d(self.data):
+            data = numpy.empty(head(self.data.values()).shape,
+                               dtype=[(name, self.data[name].dtype) for name in self.data])
+            for name in self.data:
+                data[name] = self.data[name]
         else:
             assert False, "data must be a Numpy record array or a Python dictionary of 1d Numpy arrays."
 
-        tree = root_numpy.array2tree(self._data, treename)
+        tree = root_numpy.array2tree(self.data, treename)
         from .rootdataset import ROOTDataset
-        return ROOTDataset(tree, self._provenance+Formatting('ROOTDataset', treename))
+        return ROOTDataset(tree, self.provenance+Formatting('ROOTDataset', treename))
 
     def __getitem__(self, object):
         
@@ -232,8 +232,8 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
             return array.copy()
             # return a copy in order to avoid unrecorded operation due to ndarray mutability
         elif isinstance(object, SkhepNumpyArray) and object.dtype == bool:
-            data = self._data[ object ]
-            provenance = self._provenance + Transformation("Subsetting dataset: {}".format(object.name), object.name)
+            data = self.data[ object ]
+            provenance = self.provenance + Transformation("Subsetting dataset: {}".format(object.name), object.name)
             return NumpyDataset(data, provenance)
         else:
             return self.data[object]
@@ -242,13 +242,13 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         listofattributes = self.__dict__.keys()
         
         if isinstance(value, numpy.ndarray) and name != "_data" and name not in listofattributes :
-            if value.shape != self._data.shape:
+            if value.shape != self.data .shape:
                 raise ValueError('Arrays should have the same dimensions')
             else:
                 from numpy.lib import recfunctions
                 detail = getattr(value, 'provenance', None)
-                data = recfunctions.append_fields(self._data, name, value, usemask=False)
-                self._data = data
+                data = recfunctions.append_fields(self.data , name, value, usemask=False)
+                self._data  = data
                 self._provenance += Transformation("Array {} has been created".format(name), detail)
                 self.__add_var(name)
         else:
