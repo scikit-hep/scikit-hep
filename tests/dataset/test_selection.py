@@ -37,6 +37,7 @@ def test_methods():
 	assert s2.parsed.rhs == "2"
 	s3 = s1 | s2
 	assert s3.__repr__() == "x > 1 | y^2 < 2"
+	s1 & s3
 	assert s3.parsed[0].asList() == s1.parsed.asList()
 	assert s3.parsed[1] == "|"
 	assert s3.parsed[2].asList() == s2.parsed.asList()
@@ -48,8 +49,10 @@ def test_methods():
 	assert s5.parsed.lhs == "z"
 	assert s5.parsed.operator == "<="
 	assert s5.parsed.rhs == "x"
+	s6 = s4 | s5
 	s6 = s5 | s4
 	assert s6.__repr__() == "z <= x | (x > 1 & y^2 < 2)"
 	s7 = s5 & s4
 	assert s7.__repr__() == "z <= x & x > 1 & y^2 < 2"
+	
 	

@@ -115,11 +115,11 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
     def dicttoarray(self):
         """Convert a dictionnary into a structured array."""
         if self.isdictof1d(self.data ) and not self.isrecarray(self.data ):
-            dtypes = {'names': self.data .keys(), 'formats': [numpy.dtype(self.data [k].dtype) for k in self.data .keys()]}
-            shape  = (len(self.data .values()[0]),)
+            dtypes = {'names': list(self.data.keys()), 'formats': [numpy.dtype(self.data [k].dtype) for k in self.data .keys()]}
+            shape  = (len(list(self.data .values())[0]),)
             array  = numpy.zeros(shape,dtypes)
             
-            for k in self.data .keys():
+            for k in self.data.keys():
                 array[k] = self.data [k]
                 
             self._data = array
@@ -188,11 +188,9 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         """options: none"""
         # always write column-wise: collection of 1d arrays in a zip file (.npz)
         # (not too different from what ROOT is, actually)
-        if self.isrecarray(self.data):
-            data = dict((name, self.data[name])
-                        for name in self.data.dtype.names)
-        else:
-            data = self.data
+        data = dict((name, self.data[name])
+                    for name in self.data.dtype.names)
+                    
         numpy.savez(NumpyDataset._openSingleFile(base), **data)
 
     @inheritdoc(NewROOT, gap='')
@@ -209,15 +207,15 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         ROOTDataset holding new ROOT TTree.
         """
 
-        if self.isrecarray(self.data):
-            data = self.data
-        elif self.isdictof1d(self.data):
-            data = numpy.empty(head(self.data.values()).shape,
-                               dtype=[(name, self.data[name].dtype) for name in self.data])
-            for name in self.data:
-                data[name] = self.data[name]
-        else:
-            assert False, "data must be a Numpy record array or a Python dictionary of 1d Numpy arrays."
+#        if self.isrecarray(self.data):
+        data = self.data
+#        elif self.isdictof1d(self.data):
+#            data = numpy.empty(head(self.data.values()).shape,
+#                               dtype=[(name, self.data[name].dtype) for name in self.data])
+#            for name in self.data:
+#                data[name] = self.data[name]
+#        else:
+#            assert False, "data must be a Numpy record array or a Python dictionary of 1d Numpy arrays."
 
         tree = root_numpy.array2tree(self.data, treename)
         from .rootdataset import ROOTDataset
@@ -302,6 +300,9 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
 # -----------------------------------------------------------------------------
             
 class SkhepNumpyArray(numpy.ndarray):
+    
+    __array_priority__ = 100000
+    
     def __new__(cls, inputarray, name=None, provenance=None):
         """Default constructor for SkhepNumpyArray.
 
@@ -327,11 +328,10 @@ class SkhepNumpyArray(numpy.ndarray):
         return instance
      
     @inheritdoc(numpy.ndarray)    
-    def __array_finalize__(self, obj):        
+    def __array_finalize__(self, obj): 
         if obj is None: return
         self._name = getattr(obj, 'name', None)
         self._provenance = getattr(obj, 'provenance', MultiProvenance(ObjectOrigin(repr(obj))))
-                
         
     def copy(self):
         """Get a copy of the SkhepNumpyArray."""
@@ -364,7 +364,7 @@ class SkhepNumpyArray(numpy.ndarray):
      
     @inheritdoc(numpy.ndarray)   
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-               
+                       
         args = []
         names_input = []
         for _input in inputs:
@@ -372,15 +372,21 @@ class SkhepNumpyArray(numpy.ndarray):
                 names_input.append(_input.name)
             else:
                 names_input.append(repr(_input))
-            args.append(numpy.asarray(_input))
-                
-        outputs = kwargs.pop('out', None)
-        if outputs:
+            array_input =  numpy.asarray(_input)   
+            if ufunc == numpy.divide:
+                array_input = array_input.astype(float)
+            args.append(array_input)
+         
+        outputs = kwargs.pop('out', None)       
+        if outputs is not None:
             out_args = []
             for o in outputs:
-                out_args.append(numpy.asarray(o))
+                array_out = numpy.asarray(o)
+                if ufunc == numpy.divide:
+                    array_out = array_out.astype(float)
+                out_args.append(array_out)
             kwargs['out'] = tuple(out_args)
-            
+                    
         name       = self.name
         provenance = self.provenance
         result = getattr(ufunc, method)(*args, **kwargs)
@@ -420,8 +426,8 @@ class SkhepNumpyArray(numpy.ndarray):
                 provenance = ObjectOrigin(name)
                 
             #arithmetic operators
-            arithmetic_operators = {"<ufunc 'add'>": "+", "<ufunc 'subtract'>": "-", "<ufunc 'multiply'>": "*", "<ufunc 'divide'>": "/",
-                        "<ufunc 'power'>": "^"}
+            arithmetic_operators = {"<ufunc 'add'>": "+", "<ufunc 'subtract'>": "-", "<ufunc 'multiply'>": "*",
+                                    "<ufunc 'divide'>": "/", "<ufunc 'true_divide'>": "/", "<ufunc 'power'>": "^"}
             
             if ufunc == numpy.square:
                 name = "{0}^2".format(names_input[0])
@@ -453,7 +459,7 @@ class SkhepNumpyArray(numpy.ndarray):
             if isinstance(result, SkhepNumpyArray):
                 result.name       = name
                 result.provenance = provenance
-            
+
         return result
 # -----------------------------------------------------------------------------
 # Add Numpy methods to NumpyDataset in bulk.

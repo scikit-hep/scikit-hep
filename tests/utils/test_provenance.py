@@ -11,6 +11,7 @@ import pytest
 
 from skhep.utils import *
 from skhep.utils.provenance import Provenance, Origin, MultiProvenance  # these are not imported automatically
+from skhep.utils.exceptions import *
 
 
 # -----------------------------------------------------------------------------
@@ -22,6 +23,8 @@ def test_base_classes():
         Provenance.__init__()
     with pytest.raises(TypeError):
         Origin.__init__()
+    with pytest.raises(SkhepTypeError):
+        Provenance()
 
 def test_ObjectOrigin():
     with pytest.raises(TypeError):
@@ -64,6 +67,10 @@ def test_Formatting():
 def test_MultiProvenance():
     with pytest.raises(TypeError):
         MultiProvenance.__init__()
+    with pytest.raises(ValueError):
+        MultiProvenance("provenance")
+    with pytest.raises(ValueError):
+        MultiProvenance.__iadd__(MultiProvenance(),"provenance")
         
     prov1 = FileOrigin('file.root')
     multip = MultiProvenance(prov1)

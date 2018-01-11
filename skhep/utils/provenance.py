@@ -131,19 +131,9 @@ class FileOrigin(Origin):
     def detail(self):
         return ",".join(json.dumps(x) for x in self.files)
 
-    @property
-    def history(self):
-        return []
-
     def __repr__(self):
         return "<FileOrigin ({0} file{1})>".format(len(self.files),'s' if len(self.files)>1 else '')
         
-    def __add__(self, other):
-        if not isinstance ( other ,  FileOrigin ) : 
-            return NotImplemented
-        else:
-            return FileOrigin(self.detail + other.detail)
-            
 class Transformation(Provenance):
     """
     Declares that the dataset was transformed by some mathematical operation.
@@ -219,7 +209,7 @@ class MultiProvenance(object):
     """
 
     def __init__(self, *args):
-        if not all([isinstance(arg, (Provenance, MultiProvenance )) for arg in args]):
+        if not all(isinstance(arg, (Provenance, MultiProvenance )) for arg in args):
             raise ValueError("Inputs must be Provenance types!")
         if len(args) == 1 and isinstance(args[0], MultiProvenance):
             args = args[0]
