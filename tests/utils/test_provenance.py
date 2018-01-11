@@ -10,7 +10,7 @@ Tests for the skhep.utils.provenance module.
 import pytest
 
 from skhep.utils import *
-from skhep.utils.provenance import Provenance, Origin  # these are not imported automatically
+from skhep.utils.provenance import Provenance, Origin, MultiProvenance  # these are not imported automatically
 
 
 # -----------------------------------------------------------------------------
@@ -52,8 +52,29 @@ def test_Transformation():
         Transformation.__init__()
     transf = Transformation('all elms * 2')
     assert transf.__repr__() == '<Transformation(all elms * 2)>'
-    assert transf.detail == 'all elms * 2 (,)'
+    assert transf.detail == 'all elms * 2'
 
 def test_Formatting():
     with pytest.raises(TypeError):
         Formatting.__init__()
+    forma = Formatting('ROOTDataset', 'DecayTree')
+    assert forma.__repr__() == '<Formatting to ROOTDataset(DecayTree)>'
+    assert forma.detail == 'ROOTDataset(DecayTree)'
+    
+def test_MultiProvenance():
+    with pytest.raises(TypeError):
+        MultiProvenance.__init__()
+        
+    prov1 = FileOrigin('file.root')
+    multip = MultiProvenance(prov1)
+    assert multip[0].__repr__() == '<FileOrigin (1 file)>'
+    assert multip[0].detail == '"file.root"'
+    transf = Transformation('all elms * 2')
+    multip += transf
+    assert multip[1].__repr__() == '<Transformation(all elms * 2)>'
+    assert multip[1].detail == 'all elms * 2'
+    forma = Formatting('ROOTDataset', 'DecayTree')
+    multip1 = multip.copy() + MultiProvenance(forma)
+    assert multip1[2].__repr__() == '<Formatting to ROOTDataset(DecayTree)>'
+    assert multip1[2].detail == 'ROOTDataset(DecayTree)'
+    assert multip1.__repr__() == "0: {0} \n1: {1} \n2: {2}".format(prov1, transf, forma)
