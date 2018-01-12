@@ -46,13 +46,11 @@ class Selection(object):
         Group              = pyparsing.Group
         opAssoc            = pyparsing.opAssoc
         operatorPrecedence = pyparsing.operatorPrecedence
-        ParseResults       = pyparsing.ParseResults
 
         openpar    = Literal("(")
         closepar   = Literal(")")
         comma      = Literal(",")
         expop      = Literal('^')
-#        signop     = oneOf('+ -')
         signop     = Literal('-')
         multop     = oneOf('* /')
         plusop     = oneOf('+ -')
@@ -189,6 +187,14 @@ class Selection(object):
             return self.evaluateselection(numpydataset, operators, _min, _max)
             
         return selection
+        
+    @property    
+    def pandasselection(self):
+        """
+        Return the selection readable for possible PandasDataset
+        """
+        
+        raise NotImplementedError
     
     @property    
     def rootselection(self):

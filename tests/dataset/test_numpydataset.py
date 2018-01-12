@@ -63,6 +63,7 @@ def test_methods():
     assert ds1.w.tolist() == [0,0,0]
     with pytest.raises(ValueError):
         ds1.__setitem__('h',np.ones((4,)))
+    with pytest.raises(ValueError):
         ds1.__setitem__('k',"array")
     ds1.z = ds1.w
     assert ds1.provenance[-1].__repr__() =="<Transformation(Array z as been replaced by w)>"
@@ -72,7 +73,6 @@ def test_methods():
 def test_transformations():
 
     ds1 = NumpyDataset(ar)
-    ds1.r = (ds1.x**2 + ds1.y**2)**0.5
     ds1.x += 1
     assert repr(ds1.provenance[-1]) == "<Transformation(1 as been added to x)>"
     ds1.x *= 2
@@ -81,6 +81,7 @@ def test_transformations():
     assert repr(ds1.provenance[-1]) == "<Transformation(3 as been subtracted to x)>"
     ds1.x /= 4
     assert repr(ds1.provenance[-1]) == "<Transformation(x as been divided by 4)>"
+    ds1.r = (ds1.x**2 + ds1.y**2)**0.5
     
 def test_selections():
     ds1 = NumpyDataset(ar)
@@ -88,8 +89,6 @@ def test_selections():
     ds2 = ds1.select(sel)
     ds2.provenance[-1] == "<Transformation(Selection, (x > 1), applied)>"
     assert ds2.__str__() == ds1.select("x > 1").__str__()
-    with pytest.raises(ValueError):
-        ds1.select(ds1.x)
     ds3 = ds1[ds1.x > 1]
     assert repr(ds3.provenance[-1]) == "<Transformation(Subsetting dataset: x > 1)>"
     ds4 = ds1.select(ds1.x > 1)
@@ -97,5 +96,9 @@ def test_selections():
     ds5 = ds1.select("(x > 1) & (y > 1)")
     ds6 = ds1.select("min(x,y) > 1")
     ds7 = ds1.select("max(x,y) > 1")
+    ds8 = ds1.select("( x * y ) > 1")
+    with pytest.raises(ValueError):
+        ds9 = ds1.copy()
+        ds9.select(ds8.x)
 #    dst = ds1.to_tree("DecayTree")
 #    assert repr(dst.provenance[-1]) == "<Formatting to ROOTDataset(DecayTree)>"

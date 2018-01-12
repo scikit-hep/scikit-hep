@@ -164,12 +164,12 @@ class Transformation(Provenance):
             subdetail = ""
             for x in self.args:
                 if isinstance(x, Provenance):
-                    subdetail += ", {}".format(x.detail)
+                    subdetail += ", {0}".format(x.detail)
                 else:
-                    subdetail += ", {}".format(x)
+                    subdetail += ", {0}".format(x)
                 if x == self.args[0]:
                     subdetail = subdetail.replace(", ","")
-            detail += " ({})".format(subdetail)
+            detail += " ({0})".format(subdetail)
         return detail
             
     def __repr__(self):
@@ -191,12 +191,12 @@ class Formatting(Provenance):
             subdetail = ""
             for x in self.args:
                 if isinstance(x, Provenance):
-                    subdetail += ", {}".format(x.detail)
+                    subdetail += ", {0}".format(x.detail)
                 else:
-                    subdetail += ", {}".format(x)
+                    subdetail += ", {0}".format(x)
                 if x == self.args[0]:
                     subdetail = subdetail.replace(", ","")
-            detail += "({})".format(subdetail)
+            detail += "({0})".format(subdetail)
         return detail
     
     def __repr__(self):
@@ -231,7 +231,7 @@ class MultiProvenance(object):
         
     def __iadd__(self, object):
         if not isinstance( object, ( Provenance , MultiProvenance )):
-            raise ValueError("Cannot add a {} to MultiProvenance!".format(type(object)))
+            raise ValueError("Cannot add a {0} to MultiProvenance!".format(type(object)))
         elif isinstance( object, MultiProvenance):
             self._provenances += object._provenances
         else:

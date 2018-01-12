@@ -90,7 +90,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
                 selection = Selection(selection)
                 
             data = self.data[ selection.numpyselection(self) ]
-            provenance = self._provenance + Transformation("Selection, {}, applied".format(selection))
+            provenance = self._provenance + Transformation("Selection, {0}, applied".format(selection))
             return NumpyDataset(data, provenance)
         else:
             raise ValueError("selection input must be of type 'str', 'Selection', or an Array of booleans not {0}".format(type(selection)))
@@ -208,7 +208,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         """
 
 #        if self.isrecarray(self.data):
-        data = self.data
+#        data = self.data
 #        elif self.isdictof1d(self.data):
 #            data = numpy.empty(head(self.data.values()).shape,
 #                               dtype=[(name, self.data[name].dtype) for name in self.data])
@@ -231,7 +231,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
             # return a copy in order to avoid unrecorded operation due to ndarray mutability
         elif isinstance(object, SkhepNumpyArray) and object.dtype == bool:
             data = self.data[ object ]
-            provenance = self.provenance + Transformation("Subsetting dataset: {}".format(object.name), object.name)
+            provenance = self.provenance + Transformation("Subsetting dataset: {0}".format(object.name), object.name)
             return NumpyDataset(data, provenance)
         else:
             return self.data[object]
@@ -247,7 +247,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
                 detail = getattr(value, 'provenance', None)
                 data = recfunctions.append_fields(self.data , name, value, usemask=False)
                 self._data  = data
-                self._provenance += Transformation("Array {} has been created".format(name), detail)
+                self._provenance += Transformation("Array {0} has been created".format(name), detail)
                 self.__add_var(name)
         else:
             dict.__setattr__(self, name, value)
@@ -355,7 +355,7 @@ class SkhepNumpyArray(numpy.ndarray):
         elif isinstance(provenance, Provenance):
             self._provenance = MultiProvenance(provenance)
         else:
-            raise NotImplementedError
+            raise ValueError("Inputs must be Provenance types!")
         
     @name.setter
     def name(self, name):
@@ -403,9 +403,9 @@ class SkhepNumpyArray(numpy.ndarray):
                 
                 for ni in names_input:
                     if ni == names_input[-1]:
-                        name += " {} )".format(ni)
+                        name += " {0} )".format(ni)
                     else:
-                        name += " {},".format(ni)
+                        name += " {0},".format(ni)
 
                 provenance = ObjectOrigin(name) 
                 
