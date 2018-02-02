@@ -238,7 +238,7 @@ class Vector2D(Vector):
         return np.arctan2(self.y, self.x).view(np.ndarray)
 
     def rho(self):
-        return self[:2].mag().view(np.ndarray)
+        return self[:2].view(Vector2D).mag().view(np.ndarray)
 
     def angle(self, other):
         'Angle between two vectors'
