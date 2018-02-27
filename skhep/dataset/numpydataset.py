@@ -33,7 +33,7 @@ from .defs import *
 numpy = softimport("numpy")
 root_numpy = softimport("root_numpy")
 
-
+    
 # -----------------------------------------------------------------------------
 # NumpyDataset
 # -----------------------------------------------------------------------------
@@ -207,16 +207,6 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         ROOTDataset holding new ROOT TTree.
         """
 
-#        if self.isrecarray(self.data):
-#        data = self.data
-#        elif self.isdictof1d(self.data):
-#            data = numpy.empty(head(self.data.values()).shape,
-#                               dtype=[(name, self.data[name].dtype) for name in self.data])
-#            for name in self.data:
-#                data[name] = self.data[name]
-#        else:
-#            assert False, "data must be a Numpy record array or a Python dictionary of 1d Numpy arrays."
-
         tree = root_numpy.array2tree(self.data, treename)
         from .rootdataset import ROOTDataset
         return ROOTDataset(tree, self.provenance+Formatting('ROOTDataset', treename))
@@ -251,8 +241,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
                 self.__add_var(name)
         else:
             dict.__setattr__(self, name, value)
-        
-        
+                
     def __setitem__(self, name, array):
         listofattributes = self.__dict__.keys()
         
@@ -270,7 +259,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
                     if array_name is None: array_name = repr(array)
                     detail = getattr(array, 'provenance', None)
                     self._data[name] = array
-                    self._provenance += Transformation("Array {0} as been replaced by {1}".format(name, array_name), detail)
+                    self._provenance += Transformation("Array {0} has been replaced by {1}".format(name, array_name), detail)
         else:
             raise ValueError('Not an array!')
                             
@@ -293,16 +282,23 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
     def __str__(self):
         """Simple class representation."""
         return str(self.data)
+ 
+
+def can_override_ufunc ( ):
+    # check whether or not __array_ufunc__ can be overidden
+    # possible for numpy version > 1.13
     
+    version = numpy.__version__
+    version = version.split(".")
+    version = [int(v) for v in version]
+    return version[0] >= 1. and version[1] >= 13.   
         
 # -----------------------------------------------------------------------------
 # SkhepNumpyArray
 # -----------------------------------------------------------------------------
             
 class SkhepNumpyArray(numpy.ndarray):
-    
-    __array_priority__ = 100000
-    
+        
     def __new__(cls, inputarray, name=None, provenance=None):
         """Default constructor for SkhepNumpyArray.
 
@@ -324,7 +320,7 @@ class SkhepNumpyArray(numpy.ndarray):
             if not isinstance(provenance, ( list, tuple ) ):
                 provenance = [provenance]
             instance._provenance = MultiProvenance(*provenance)
-            
+                        
         return instance
      
     @inheritdoc(numpy.ndarray)    
@@ -361,17 +357,17 @@ class SkhepNumpyArray(numpy.ndarray):
     def name(self, name):
         """Sets the name of the variable inside the SkhepNumpyArray."""
         self._name = name
-     
+        
+        
     @inheritdoc(numpy.ndarray)   
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
-                       
         args = []
-        names_input = []
+        names_inputs = []
         for _input in inputs:
             if hasattr(_input, "name"):
-                names_input.append(_input.name)
+                names_inputs.append(_input.name)
             else:
-                names_input.append(repr(_input))
+                names_inputs.append(repr(_input))
             array_input =  numpy.asarray(_input)   
             if ufunc == numpy.divide:
                 array_input = array_input.astype(float)
@@ -388,97 +384,203 @@ class SkhepNumpyArray(numpy.ndarray):
             kwargs['out'] = tuple(out_args)
                     
         name       = self.name
-        provenance = self.provenance
-        result = getattr(ufunc, method)(*args, **kwargs)
+        provenance = self.provenance.copy()
+        result     = getattr(ufunc, method)(*args, **kwargs)
     
+        result = result.view(SkhepNumpyArray)
+        result = self.__format_ufunc_result( provenance, result, ufunc, names_inputs, outputs)
+                        
+        return result
+        
+    def __format_ufunc_result(self, provenance, result, ufunc, names_inputs, outputs = None):
+        
+        #comparisaton_operators    
+        comparisaton_operators = {"<ufunc 'greater'>": ">", "<ufunc 'less'>": "<", 
+                                  "<ufunc 'greater_equal'>": ">=", "<ufunc 'less_equal'>": "<=",
+                                  "<ufunc 'equal'>": "==", "<ufunc 'not_equal'>": "!=", 
+                                  "<ufunc 'bitwise_and'>": "&", "<ufunc 'bitwise_or'>": "|"}
+            
+        #arithmetic operators                              
+        arithmetic_operators =   {"<ufunc 'add'>": "+", "<ufunc 'subtract'>": "-", 
+                                  "<ufunc 'multiply'>": "*", "<ufunc 'divide'>": "/", 
+                                  "<ufunc 'true_divide'>": "/", "<ufunc 'power'>": "^"}
+                                   
         if ufunc != numpy.logical_and and ufunc != numpy.logical_or:
-            result = result.view(SkhepNumpyArray)
             
             #min max
-            if ufunc == numpy.maximum or ufunc == numpy.minimum:
-                if ufunc == numpy.maximum:
-                    name = "max("
-                if ufunc == numpy.maximum:
-                    name = "min("
+            if   ufunc == numpy.maximum:
+                name, provenance = self.__max_ufunc( provenance, names_inputs)
+            elif ufunc == numpy.minimum:
+                name, provenance = self.__min_ufunc( provenance, names_inputs)
                 
-                for ni in names_input:
-                    if ni == names_input[-1]:
-                        name += " {0} )".format(ni)
-                    else:
-                        name += " {0},".format(ni)
-
-                provenance = ObjectOrigin(name) 
-                
-            #comparison operators
-            comparisaton_operators = {"<ufunc 'greater'>": ">", "<ufunc 'less'>": "<", "<ufunc 'greater_equal'>": ">=", "<ufunc 'less_equal'>": "<=",
-                    "<ufunc 'equal'>": "==", "<ufunc 'not_equal'>": "!=", "<ufunc 'bitwise_and'>": "&", "<ufunc 'bitwise_or'>": "|"}
-            
-            if str(ufunc) in comparisaton_operators.keys():
-                op = comparisaton_operators[str(ufunc)]
-                lhs = names_input[0]
-                rhs = names_input[1]
-                
-                if op == "&" or op == "|":
-                    lhs = "("+lhs+")"
-                    rhs = "("+rhs+")"
-                
-                name = "{0} {1} {2}".format(lhs, op, rhs)
-                provenance = ObjectOrigin(name)
-                
-            #arithmetic operators
-            arithmetic_operators = {"<ufunc 'add'>": "+", "<ufunc 'subtract'>": "-", "<ufunc 'multiply'>": "*",
-                                    "<ufunc 'divide'>": "/", "<ufunc 'true_divide'>": "/", "<ufunc 'power'>": "^"}
-            
+            #comparisaton_operators
+            elif str(ufunc) in comparisaton_operators.keys():
+                name, provenance = self.__comparison_ufunc( comparisaton_operators[str(ufunc)], provenance, names_inputs)
+             
+             #comparisaton_operators   
             if ufunc == numpy.square:
-                name = "{0}^2".format(names_input[0])
-                provenance = ObjectOrigin(name)
+                name, provenance = self.__square_ufunc( provenance, outputs)
                 
-            if str(ufunc) in arithmetic_operators.keys():
-                op = arithmetic_operators[str(ufunc)]
-                lhs = names_input[0]
-                rhs = names_input[1]
-                
-                # __add__
-                if op == "+":
-                    provenance += Transformation("{1} as been added to {0}".format(lhs, rhs))
-                # __sub__
-                elif op == "-":
-                    provenance += Transformation("{1} as been subtracted to {0}".format(lhs, rhs))
-                # __mul__
-                elif op == "*":
-                    provenance += Transformation("{0} as been multiplied by {1}".format(lhs, rhs))
-                # __mul__
-                elif op == "/":
-                    provenance += Transformation("{0} as been divided by {1}".format(lhs, rhs))
-                    
-                if outputs is None:
-                                            
-                    name = "({0}) {1} ({2})".format(lhs, op, rhs)
-                
-                            
+            #comparisaton_operators
+            elif str(ufunc) in arithmetic_operators.keys():
+                name, provenance = self.__arithmetic_ufunc( arithmetic_operators[str(ufunc)], provenance, names_inputs, outputs)
+                   
             if isinstance(result, SkhepNumpyArray):
                 result.name       = name
                 result.provenance = provenance
 
         return result
-# -----------------------------------------------------------------------------
-# Add Numpy methods to NumpyDataset in bulk.
-# -----------------------------------------------------------------------------
-#def addNumpyMethod(method):
-#    def fn(self, name, *args, **kwds):
-#        return method.__call__(self.data, *args, **kwds)
-#
-#    fn.__name__ = method.__name__
-#    fn.__doc__ = method.__doc__
-#    if sys.version_info[0]==2:  # ugly but works! TODO: find nicer way
-#        setattr(NumpyDataset, method.__name__, MethodType(fn, None, NumpyDataset))
-#    else:
-#        setattr(NumpyDataset, method.__name__, MethodType(fn, NumpyDataset))
-#
-#try:
-#    addNumpyMethod(numpy.ndarray.__add__)
-#    addNumpyMethod(numpy.ndarray.__mul__)
-#    addNumpyMethod(numpy.ndarray.sum)
-#    addNumpyMethod(numpy.ndarray.mean)
-#except ImportError:
-#    pass
+        
+        
+    def __min_ufunc( self, provenance, names_inputs):
+        name = "min("
+            
+        for ni in names_inputs:
+            if ni == names_inputs[-1]:
+                name += " {0} )".format(ni)
+            else:
+                name += " {0},".format(ni)
+
+        provenance = ObjectOrigin(name) 
+        return name, provenance
+        
+    def __max_ufunc( self, provenance, names_inputs ):
+        name = "max("
+             
+        for ni in names_inputs:
+            if ni == names_inputs[-1]:
+                name += " {0} )".format(ni)
+            else:
+                name += " {0},".format(ni)
+
+        provenance = ObjectOrigin(name) 
+        return name, provenance
+        
+    def __comparison_ufunc( self, operator, provenance, names_inputs ):
+        lhs = names_inputs[0]
+        rhs = names_inputs[1]
+
+        if operator == "|":
+            lhs = "("+lhs+")"
+            rhs = "("+rhs+")"
+        
+        name = "{0} {1} {2}".format(lhs, operator, rhs)
+        provenance = ObjectOrigin(name)
+        return name, provenance
+        
+    def __format_operand( self, operand, operator):
+        if operator == "*"   and any( _op in operand for _op in ["+","-","/"]):
+            operand = "({0})".format( operand )
+        elif operator == "/" and any( _op in operand for _op in ["+","-","*"]):
+            operand = "({0})".format( operand )
+        elif operator == "^" and any( _op in operand for _op in ["+","-","*","/"]):
+            operand = "({0})".format( operand )
+
+        return operand
+        
+    def __square_ufunc( self, provenance, outputs = None):
+        
+        name_input = self.name
+        
+        provenance += Transformation("{0} has been squared".format(name_input))
+        
+        if outputs is None:
+            name_input = self.__format_operand( name_input, "^")
+            name = "{0}^2".format(name_input)
+        else:
+            name = self.name
+            
+        return name, provenance
+        
+    def __arithmetic_ufunc( self, operator, provenance, names_inputs, outputs = None):
+        lhs = names_inputs[0]
+        rhs = names_inputs[1]
+        
+        # __add__
+        if operator == "+":
+            provenance += Transformation("{1} has been added to {0}".format(lhs, rhs))
+        # __sub__
+        elif operator == "-":
+            provenance += Transformation("{1} has been subtracted to {0}".format(lhs, rhs))
+        # __mul__
+        elif operator == "*":
+            provenance += Transformation("{0} has been multiplied by {1}".format(lhs, rhs))
+        # __mul__
+        elif operator == "/":
+            provenance += Transformation("{0} has been divided by {1}".format(lhs, rhs))
+        # power
+        elif operator == "^":
+            provenance += Transformation("{0} has been raised to the power of {1}".format(lhs, rhs))
+        
+        if outputs is None:
+            lhs = self.__format_operand(lhs, operator)
+            rhs = self.__format_operand(rhs, operator)
+            if operator == "^":
+                name = "{0}{1}{2}".format(lhs, operator, rhs)
+            else:
+                name = "{0} {1} {2}".format(lhs, operator, rhs)
+        else:
+            name = self.name
+                    
+        return name, provenance
+        
+    ### overloading operators in case numpy version < 1.13, will 
+      
+    if not can_override_ufunc():
+        
+        __array_priority__ = 2.0
+                
+        @inheritdoc(numpy.ndarray) 
+        def __array_wrap__(self, array, context=None):
+            
+            if context:
+                _context = list(context)
+                ufunc  = _context[0]
+                inputs = _context[1]
+                
+                names_inputs = []
+                for i in inputs:
+                    names_inputs.append( getattr(i, 'name', repr(i)) )
+                
+                provenance = self.provenance.copy()
+                array.view(SkhepNumpyArray)
+                
+                array = self.__format_ufunc_result( provenance, array, ufunc, names_inputs)
+                
+            return array
+                    
+        def __iadd__(self, other):
+            return self.__array_ufunc__(numpy.add, "__call__", self, other, out=(self,))
+ 
+        def __isub__(self, other):
+            return self.__array_ufunc__(numpy.subtract, "__call__", self, other, out=(self,))
+            
+        def __imul__(self, other):
+            return self.__array_ufunc__(numpy.multiply, "__call__", self, other, out=(self,))
+      
+        def __idiv__(self, other):
+            return self.__array_ufunc__(numpy.divide, "__call__", self, other, out=(self,))
+            
+        def __itruediv__(self, other):
+            return self.__array_ufunc__(numpy.true_divide, "__call__", self, other, out=(self,))
+            
+        def __pow__(self, other):
+            print other
+            print type(other)
+            if isinstance(other, (int, float)) and other == 2.0:
+                return self.__array_ufunc__(numpy.square, "__call__", self)
+            else:
+                return self.__array_ufunc__(numpy.power, "__call__", self, other)
+                
+        def __ipow__(self, other):
+            print other
+            print type(other)
+            if isinstance(other, (int, float)) and other == 2.0:
+                return self.__array_ufunc__(numpy.square, "__call__", self, out=(self,))
+            else:
+                ufunc = numpy.power
+                return self.__array_ufunc__(numpy.power, "__call__", self, other, out=(self,))
+            
+        
+        
+    

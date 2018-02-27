@@ -66,21 +66,21 @@ def test_methods():
     with pytest.raises(ValueError):
         ds1.__setitem__('k',"array")
     ds1.z = ds1.w
-    assert ds1.provenance[-1].__repr__() =="<Transformation(Array z as been replaced by w)>"
+    assert ds1.provenance[-1].__repr__() =="<Transformation(Array z has been replaced by w)>"
     ds1.w = np.array([6,7,8])
-    assert ds1.provenance[-1].__repr__() =="<Transformation(Array w as been replaced by array([6, 7, 8]))>"
+    assert ds1.provenance[-1].__repr__() =="<Transformation(Array w has been replaced by array([6, 7, 8]))>"
     
 def test_transformations():
 
     ds1 = NumpyDataset(ar)
     ds1.x += 1
-    assert repr(ds1.provenance[-1]) == "<Transformation(1 as been added to x)>"
+    assert repr(ds1.provenance[-1]) == "<Transformation(1 has been added to x)>"
     ds1.x *= 2
-    assert repr(ds1.provenance[-1]) == "<Transformation(x as been multiplied by 2)>"
+    assert repr(ds1.provenance[-1]) == "<Transformation(x has been multiplied by 2)>"
     ds1.x -= 3
-    assert repr(ds1.provenance[-1]) == "<Transformation(3 as been subtracted to x)>"
+    assert repr(ds1.provenance[-1]) == "<Transformation(3 has been subtracted to x)>"
     ds1.x /= 4
-    assert repr(ds1.provenance[-1]) == "<Transformation(x as been divided by 4)>"
+    assert repr(ds1.provenance[-1]) == "<Transformation(x has been divided by 4)>"
     ds1.r = (ds1.x**2 + ds1.y**2)**0.5
     
 def test_selections():
