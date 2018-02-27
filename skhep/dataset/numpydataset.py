@@ -565,16 +565,12 @@ class SkhepNumpyArray(numpy.ndarray):
             return self.__array_ufunc__(numpy.true_divide, "__call__", self, other, out=(self,))
             
         def __pow__(self, other):
-            print other
-            print type(other)
             if isinstance(other, (int, float)) and other == 2.0:
                 return self.__array_ufunc__(numpy.square, "__call__", self)
             else:
                 return self.__array_ufunc__(numpy.power, "__call__", self, other)
                 
         def __ipow__(self, other):
-            print other
-            print type(other)
             if isinstance(other, (int, float)) and other == 2.0:
                 return self.__array_ufunc__(numpy.square, "__call__", self, out=(self,))
             else:
