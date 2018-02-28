@@ -222,12 +222,27 @@ class MultiProvenance(object):
         return self._provenances[i]
         
     def __repr__(self):
-        rep = ""
-        for i,provenance in enumerate(self._provenances):
-            rep += "{0}: {1}".format(i, provenance)
-            if provenance != self._provenances[-1]:
-                rep += " \n"
-        return rep
+        if len(self._provenances) == 1:
+            return repr(self._provenances[0])
+        else:
+            rep = ""
+            for i,provenance in enumerate(self._provenances):
+                rep += "{0}: {1}".format(i, provenance)
+                if provenance != self._provenances[-1]:
+                    rep += " \n"
+            return rep
+            
+    @property
+    def detail(self):
+        if len(self._provenances) == 1:
+            return getattr( self._provenances[0], "detail", "")
+        else:
+            rep = ""
+            for i,provenance in enumerate(self._provenances):
+                rep += "{0}: {1}".format(i, provenance.detail)
+                if provenance != self._provenances[-1]:
+                    rep += " \n"
+            return rep
         
     def __iadd__(self, object):
         if not isinstance( object, ( Provenance , MultiProvenance )):

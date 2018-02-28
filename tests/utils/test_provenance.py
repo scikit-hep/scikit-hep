@@ -81,6 +81,7 @@ def test_MultiProvenance():
     multip = MultiProvenance(prov1)
     assert multip[0].__repr__() == '<FileOrigin (1 file)>'
     assert multip[0].detail == '"file.root"'
+    assert multip.detail == '"file.root"'
     transf = Transformation('all elms * 2')
     multip += transf
     assert multip[1].__repr__() == '<Transformation(all elms * 2)>'

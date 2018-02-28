@@ -31,6 +31,7 @@ def test_properties():
     ds = NumpyDataset(ar, ObjectOrigin('simple_array'))
     assert type(ds.data) == np.ndarray
     assert ds.provenance[0].__repr__() == '<ObjectOrigin>'
+    assert ds.provenance.__repr__() == '<ObjectOrigin>'
     assert ds.mutable == True
     assert ds.immutable == False
     assert ds.transient == True
@@ -85,6 +86,7 @@ def test_transformations():
     
 def test_selections():
     ds1 = NumpyDataset(ar)
+    ds1.z = (ds1.x**2 + ds1.y**2)**0.5
     sel = Selection("x > 1")
     ds2 = ds1.select(sel)
     ds2.provenance[-1] == "<Transformation(Selection, (x > 1), applied)>"
@@ -97,8 +99,9 @@ def test_selections():
     ds6 = ds1.select("min(x,y) > 1")
     ds7 = ds1.select("max(x,y) > 1")
     ds8 = ds1.select("( x * y ) > 1")
+    ds9 = ds1.select("max(x,y,z) > 1")
     with pytest.raises(ValueError):
-        ds9 = ds1.copy()
-        ds9.select(ds8.x)
+        ds10 = ds1.copy()
+        ds10.select(ds8.x)
 #    dst = ds1.to_tree("DecayTree")
 #    assert repr(dst.provenance[-1]) == "<Formatting to ROOTDataset(DecayTree)>"
