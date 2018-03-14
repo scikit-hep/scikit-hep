@@ -576,6 +576,31 @@ class SkhepNumpyArray(numpy.ndarray):
             else:
                 ufunc = numpy.power
                 return self.__array_ufunc__(numpy.power, "__call__", self, other, out=(self,))
+
+
+# -----------------------------------------------------------------------------
+# Add Numpy methods to NumpyDataset in bulk.
+# SkhepNumpyArray
+# -----------------------------------------------------------------------------                
+                
+#def addNumpyMethod(method):
+#    def fn(self, name, *args, **kwds):
+#        return method.__call__(self.data, *args, **kwds)
+#
+#    fn.__name__ = method.__name__
+#    fn.__doc__ = method.__doc__
+#    if sys.version_info[0]==2:  # ugly but works! TODO: find nicer way
+#        setattr(NumpyDataset, method.__name__, MethodType(fn, None, NumpyDataset))
+#    else:
+#        setattr(NumpyDataset, method.__name__, MethodType(fn, NumpyDataset))
+#
+#  try:
+#     addNumpyMethod(numpy.ndarray.__add__)
+#     addNumpyMethod(numpy.ndarray.__mul__)
+#     addNumpyMethod(numpy.ndarray.sum)
+#     addNumpyMethod(numpy.ndarray.mean)
+#  except ImportError:
+#    pass
             
         
         
