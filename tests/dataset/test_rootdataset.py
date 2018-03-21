@@ -18,6 +18,7 @@ ROOT = pytest.importorskip('ROOT')
 from ROOT import gROOT, TTree, TChain, TFile, AddressOf
 
 from skhep.dataset.rootdataset import *
+from skhep.dataset.selection import Selection
 
 # -----------------------------------------------------------------------------
 # Actual tests
@@ -108,6 +109,17 @@ def test_methods():
     del ds4, ds5, ds6
     os.remove('new_tree.root')
     os.remove('new_chain.root')
+    
+def test_selections():
+    tree = create_simple_tree(200)
+    sel1 = Selection("x > 1")
+    sel2 = Selection("y > 1")
+    sel3 = sel1 | sel2
+    sel4 = sel1 & sel2
+    tree_sel = tree.CopyTree(sel3.rootselection)
+    assert tree_sel.GetEntries() < tree.GetEntries()
+    tree_sel = tree.CopyTree(sel4.rootselection)
+    assert tree_sel.GetEntries() < tree.GetEntries()
 
 os.remove('tree1.root')
 os.remove('tree2.root')

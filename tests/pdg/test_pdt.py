@@ -12,7 +12,7 @@ from pytest import approx
 # Actual tests
 #-----------------------------------------------------------------------------
 def test_pdt():
-    tbl = ParticleDataTable('skhep/data/mass_width_2016.mcd')
+    tbl = ParticleDataTable('skhep/data/mass_width_2017.mcd')
     assert tbl('f(0)(500)0').name == tbl[9000221].name
     assert tbl('f(0)(500)0').id == 9000221
     assert tbl('nonexistentparticlename') == None

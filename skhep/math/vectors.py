@@ -81,7 +81,6 @@ class Vector(np.ndarray):
         """Copy constructor."""
         return cls(*other)
 
-
     # Not including fromiterable because it is available directly as Vector(*iterable)
 
     def dot(self, other):
