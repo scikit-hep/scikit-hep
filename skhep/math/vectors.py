@@ -72,12 +72,12 @@ class Vector(np.ndarray):
         return cls()
 
     @classmethod
-    def frompandas(cls, pd_dataframe):
+    def from_pandas(cls, pd_dataframe):
         items = (pd_dataframe[n] for n in cls.NAMES)
         return cls(*items)
 
     @classmethod
-    def fromvector(cls, other):
+    def from_vector(cls, other):
         """Copy constructor."""
         return cls(*other)
 
@@ -118,7 +118,7 @@ class Vector(np.ndarray):
         array([ 3.74165739,  4.69041576,  5.91607978])
         '''
 
-        return np.sqrt(self.mag2()).view(np.ndarray)
+        return np.sqrt(np.abs(self.mag2()).view(np.ndarray))*np.sign(self.mag2())
 
     def mag2(self):
         '''
@@ -243,6 +243,14 @@ class Vector2D(Vector):
         'Angle between two vectors'
         return super(Vector2D, self).angle(other)
 
+    def pt2(self):
+        'Tranverse compenent squared'
+        return self[:2].view(Vector2D).mag2().view(np.ndarray)
+
+    def pt(self):
+        'Tranverse compenent'
+        return self.rho()
+
 class Vector3D(Vector2D):
     __slots__ = ()
     NAMES = ('x', 'y', 'z')
@@ -259,6 +267,9 @@ class Vector3D(Vector2D):
         prep = np.sqrt(self.x*self.x + self.y*self.y)
         return np.arctan2(prep,self.z).view(np.ndarray)
 
+    def r(self):
+        return self[:3].view(Vector3D).mag().view(np.ndarray)
+
 
     def in_basis(self, xhat, yhat, zhat):
         '''Must be unit vectors, should be orthogonal'''
@@ -268,7 +279,23 @@ class Vector3D(Vector2D):
 
     angle = Vector.angle
 
-    def rotate(self, phi=0, theta=0, psi=0):
+    def rotate_axis(self, axis, angle):
+        """Rotate vector by a given angle (in radians) around a given axis."""
+        u = axis.unit()
+
+        c, s = np.cos(angle), np.sin(angle)
+        c1 = 1. - c
+
+        return self.__class__(
+            (c + u.x ** 2 * c1) * self.x + (u.x * u.y * c1 - u.z * s) * self.y \
+             + (u.x * u.z * c1 + u.y * s) * self.z,
+            (u.x * u.y * c1 + u.z * s) * self.x + (c + u.y ** 2 * c1) * self.y \
+             + (u.y * u.z * c1 - u.x * s) * self.z,
+            (u.x * u.z * c1 - u.y * s) * self.x + (u.y * u.z * c1 + u.x * s) * self.y \
+             + (c + u.z ** 2 * c1) * self.z
+        )
+
+    def rotate_euler(self, phi=0, theta=0, psi=0):
         # Rotate Z (phi)
         c1 = np.cos(phi)
         s1 = np.sin(phi)
@@ -288,11 +315,36 @@ class Vector3D(Vector2D):
         fyy3 =-s3*c2*s1 + c3*c1
         fyz3 = s3*s2
         # Transform v
-        out = self.copy()
-        out.x = fxx3*self.x + fxy3*self.y + fxz3*self.z
-        out.y = fyx3*self.x + fyy3*self.y + fyz3*self.z
-        out.z = fzx2*self.x + fzy2*self.y + fzz2*self.z
-        return out
+        return self.__class__(
+            fxx3*self.x + fxy3*self.y + fxz3*self.z,
+            fyx3*self.x + fyy3*self.y + fyz3*self.z,
+            fzx2*self.x + fzy2*self.y + fzz2*self.z)
+
+
+    @classmethod
+    def from_spherical_coords(cls, r, theta, phi):
+        """Constructor from a space point specified in spherical coordinates.
+        Parameters
+        ----------
+        r     : radius, the radial distance from the origin (r > 0)
+        theta : inclination in radians (theta in [0, pi] rad)
+        phi   : azimuthal angle in radians (phi in [0, 2pi) rad)
+        """
+
+        return cls(r * np.sin(theta) * np.cos(phi), r * np.sin(theta) * np.sin(phi), r * np.cos(theta))
+
+    @classmethod
+    def from_cylindrical_coords(cls, rho, phi, z):
+        """Constructor from a space point specified in cylindrical coordinates.
+        Parameters
+        ----------
+        rho : radial distance from the z-axis (rho > 0)
+        phi : azimuthal angle in radians (phi in [-pi, pi) rad)
+        z   : height
+        """
+
+        return cls(np.cos(phi) * rho, np.sin(phi) * rho, z)
+
 
 class LorentzVector(Vector3D):
     NAMES = ('x', 'y', 'z', 't')
@@ -309,21 +361,21 @@ class LorentzVector(Vector3D):
     def vect(self, obj):
         self[:3] = obj
 
-    def P(self):
+    def p(self):
         '''
         >>> v = LorentzVector(1,2,3,.5)
-        >>> v.P()
+        >>> v.p()
         array([ 3.74165739])
         '''
         return np.sqrt(self.vect.mag2())
 
-    def E(self):
+    def e(self):
         '''
         >>> v = LorentzVector(1,2,3,.5)
-        >>> v.E()
+        >>> v.e()
         array([ 5.26782688])
         '''
-        return np.sqrt(self.vect.mag2() - self.mag2())
+        return self.t
 
     def gamma(self):
         '''
@@ -340,7 +392,7 @@ class LorentzVector(Vector3D):
         >>> v.beta()
         array([ 0.71028481])
         '''
-        return self.P() / self.E()
+        return self.p() / self.e()
 
     def boost_vector(self):
         '''
