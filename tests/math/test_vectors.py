@@ -9,6 +9,9 @@ Tests for the skhep.math.vectors module.
 # -----------------------------------------------------------------------------
 import pytest
 from pytest import approx
+from functools import partial
+import numpy as np
+assert_allclose = partial(np.testing.assert_allclose, atol=.0000001)
 
 from skhep.math.vectors import *
 from skhep.utils.py23 import *
@@ -60,7 +63,7 @@ def test_vectors_3D_constructors():
     assert v5.rho() == 1.
 
     v6 = Vector3D.from_cylindrical_coords(0.5, pi / 2, 0.)
-    np.testing.assert_allclose(v6, Vector3D(0., 0.5, 0.), atol=.000001)
+    assert_allclose(v6, Vector3D(0., 0.5, 0.))
 
     v7 = Vector3D.from_spherical_coords(1.0, 0., 0.)
     assert np.all(v7 == Vector3D(0., 0., 1.))
@@ -68,10 +71,10 @@ def test_vectors_3D_constructors():
     assert v7.theta() == 0.
 
     v8 = Vector3D.from_spherical_coords(1.0, 0., pi / 2)
-    np.testing.assert_allclose(v8, Vector3D(0., 0., 1.), atol=.000001)
+    assert_allclose(v8, Vector3D(0., 0., 1.))
 
     v9 = Vector3D.from_spherical_coords(2.0, pi / 2, pi / 4)
-    np.testing.assert_allclose(v9, Vector3D(sqrt(2), sqrt(2), 0.), atol=.000001)
+    assert_allclose(v9, Vector3D(sqrt(2), sqrt(2), 0.))
 
 def test_vectors_Lorentz_constructors():
     with pytest.raises(ValueError):
@@ -145,20 +148,20 @@ def test_vectors_3D_operators():
     v5 = Vector3D(1., 2., 3.)
 
     assert np.all(v1 == 0.)
-    np.testing.assert_allclose(v1 + v2, Vector3D(1., 1., 1.), atol=.0000001)
-    np.testing.assert_allclose(v1 - v2, Vector3D(-1., -1., -1.), atol=.0000001)
-    np.testing.assert_allclose(v1 - v2, -1.*Vector3D(1., 1., 1.), atol=.0000001)
-    np.testing.assert_allclose(v1 * 2., Vector3D(0., 0., 0.), atol=.0000001)
-    np.testing.assert_allclose(v2 * 2., Vector3D(2., 2., 2.), atol=.0000001)
-    np.testing.assert_allclose(2. * v1, Vector3D(0., 0.,  0.), atol=.0000001)
-    np.testing.assert_allclose(2. * v2, Vector3D(2., 2., 2.), atol=.0000001)
+    assert_allclose(v1 + v2, Vector3D(1., 1., 1.))
+    assert_allclose(v1 - v2, Vector3D(-1., -1., -1.))
+    assert_allclose(v1 - v2, -1.*Vector3D(1., 1., 1.))
+    assert_allclose(v1 * 2., Vector3D(0., 0., 0.))
+    assert_allclose(v2 * 2., Vector3D(2., 2., 2.))
+    assert_allclose(2. * v1, Vector3D(0., 0.,  0.))
+    assert_allclose(2. * v2, Vector3D(2., 2., 2.))
 
     assert v1.dot(v2) == 0.
     assert v2.dot(v1) == 0.
     assert v4.dot(v3) == v3.dot(v4)
     assert v3.dot(v4) == 18.
-    np.testing.assert_allclose( v3 / 2. , v2, atol=.0000001)
-    np.testing.assert_allclose( v4 / 3. , v2, atol=.0000001)
+    assert_allclose( v3 / 2. , v2)
+    assert_allclose( v4 / 3. , v2)
     v1 *= 2.
     v2 *= 2.
     assert np.all(v1 == Vector3D(0., 0., 0.))
@@ -171,11 +174,11 @@ def test_vectors_3D_operators():
     assert (v2 - v1).dot(v3) == 6., "Check operations combination"
     assert v3.dot((v1 - v2)) == -6., "Check operations combination"
     assert 18. / (v3.dot(v4)) == 1., "Check operations combination"
-    np.testing.assert_allclose(v4 / (v3.dot(v2)) , Vector3D(0.5, 0.5, 0.5), atol=.0000001)
-    np.testing.assert_allclose( v2.cross(v2), Vector3D(0., 0., 0.), atol=.0000001)
-    np.testing.assert_allclose( v2.cross(v5), Vector3D(1., -2., 1.), atol=.0000001)
-    np.testing.assert_allclose( v5.cross(v2), -1 * v2.cross(v5), atol=.0000001)
-    np.testing.assert_allclose( v2, v2, atol=.0000001)
+    assert_allclose(v4 / (v3.dot(v2)) , Vector3D(0.5, 0.5, 0.5))
+    assert_allclose( v2.cross(v2), Vector3D(0., 0., 0.))
+    assert_allclose( v2.cross(v5), Vector3D(1., -2., 1.))
+    assert_allclose( v5.cross(v2), -1 * v2.cross(v5))
+    assert_allclose( v2, v2)
 
 def test_vectors_Lorentz_operators():
     with pytest.raises(TypeError):
@@ -188,61 +191,62 @@ def test_vectors_Lorentz_operators():
     lv3 = LorentzVector(2., 2., 2., 1.)
     lv4 = LorentzVector(3., 3., 3., 1.)
     lv5 = LorentzVector(1., 1., 1., 6.)
-    assert lv1 == 0.
-    assert lv1 + lv2 == LorentzVector(1., 1., 1.,  0.)
-    assert lv1 - lv2 == LorentzVector(-1., -1., -1.,  0.)
-    assert lv1 * 2. == LorentzVector(0., 0., 0.,  0.)
-    assert lv2 * 2. == LorentzVector(2., 2., 2.,  0.)
-    assert 2. * lv1 == LorentzVector(0., 0., 0.,  0.)
-    assert 2. * lv2 == LorentzVector(2., 2., 2.,  0.)
-    assert lv2 * lv1 == 0.
-    assert lv1 * lv2 == 0.
-    assert lv3 * lv4 == lv3.dot(lv4)
-    assert lv3 * lv4 == lv4.dot(lv3)
-    assert lv4 * lv3 == lv3.dot(lv4)
-    assert lv4 * lv3 == lv4.dot(lv3)
-    assert lv3 * lv4 == -17.
-    assert lv3 / 2. == LorentzVector(1., 1., 1.,  0.5)
-    assert lv4 / 3. == LorentzVector(1., 1., 1.,  1./3)
-    assert lv3 * lv5 == 0.0
+    assert np.all(lv1 == 0.)
+    assert_allclose( lv1 + lv2 , LorentzVector(1., 1., 1.,  0.))
+    assert_allclose( lv1 - lv2 , LorentzVector(-1., -1., -1.,  0.))
+    assert_allclose( lv1 * 2. , LorentzVector(0., 0., 0.,  0.))
+    assert_allclose( lv2 * 2. , LorentzVector(2., 2., 2.,  0.))
+    assert_allclose( 2. * lv1 , LorentzVector(0., 0., 0.,  0.))
+    assert_allclose( 2. * lv2 , LorentzVector(2., 2., 2.,  0.))
+    assert lv2.dot(lv1) == 0.
+    assert lv1.dot(lv2) == 0.
+    assert lv3.dot(lv4) == lv4.dot(lv3)
+    assert lv3.dot(lv4) == -17.
+    assert_allclose( lv3 / 2. , LorentzVector(1., 1., 1.,  0.5))
+    assert_allclose( lv4 / 3. , LorentzVector(1., 1., 1.,  1./3))
+    assert lv3.dot(lv5) == 0.0
     lv1 *= 2.
     lv2 *= 2.
-    assert lv1 == LorentzVector(0., 0., 0.,  0.)
-    assert lv2 == LorentzVector(2., 2., 2.,  0.)
+    assert_allclose( lv1 , LorentzVector(0., 0., 0.,  0.))
+    assert_allclose( lv2 , LorentzVector(2., 2., 2.,  0.))
     lv1 /= 2.
     lv2 /= 2.
-    assert lv1 == LorentzVector(0., 0., 0.,  0.)
-    assert lv2 == LorentzVector(1., 1., 1.,  0.)
-    assert lv2 == lv2
-    assert lv2 != lv1
-    assert not lv2 != lv2
-    assert not lv2 == lv1
-    assert not lv1 == "a"
-    assert not lv1 == 1
 
-def test_vectors_rotations():
+    assert_allclose( lv1 , LorentzVector(0., 0., 0.,  0.))
+    assert_allclose( lv2 , LorentzVector(1., 1., 1.,  0.))
+    assert_allclose( lv2 , lv2)
+
+
+def test_vectors_3D_rotations():
     v1 = Vector3D.from_cylindrical_coords(1., 0., 0.)
     assert v1.phi() == 0.0
     assert v1.rotate_axis(Vector3D.Z, pi/2).phi() == pi/2
-    np.testing.assert_allclose(v1.rotate_axis(Vector3D.Z, pi/2), Vector3D(0., 1.,  0.), atol = .0000001)
+    assert_allclose(v1.rotate_axis(Vector3D.Z, pi/2), Vector3D(0., 1.,  0.), atol = .0000001)
     assert v1.rotate_axis(Vector3D.Y, pi).phi() == pi
     assert v1.rotate_axis(Vector3D.Y, -pi).phi() == pi
-    np.testing.assert_allclose( v1.rotate_axis(Vector3D.Y, pi) , Vector3D(-1., 0.,  0.), atol = .0000001)
-    np.testing.assert_allclose( v1.rotate_axis(Vector3D.Y, -pi) , Vector3D(-1., 0.,  0.), atol = .0000001)
+    assert_allclose( v1.rotate_axis(Vector3D.Y, pi) , Vector3D(-1., 0.,  0.), atol = .0000001)
+    assert_allclose( v1.rotate_axis(Vector3D.Y, -pi) , Vector3D(-1., 0.,  0.), atol = .0000001)
     assert v1.rotate_axis(Vector3D.X, pi).phi() == 0.
-    np.testing.assert_allclose(v1.rotate_axis(Vector3D.X, pi) , Vector3D(1., 0.,  0.), atol = .0000001)
+    assert_allclose(v1.rotate_axis(Vector3D.X, pi) , Vector3D(1., 0.,  0.), atol = .0000001)
     v2 = Vector3D.from_spherical_coords(1.0, pi / 2, pi / 2)
     assert v2.phi() == pi/2
     assert v2.theta() == pi/2
     assert v2.rotate_axis(Vector3D.X, pi).phi() == -pi/2
     assert v2.rotate_axis(Vector3D.X, pi).theta() == pi/2
-    np.testing.assert_allclose(v2.rotate_axis(Vector3D.X, pi), Vector3D(0., -1.,  0.), atol = .0000001)
+    assert_allclose(v2.rotate_axis(Vector3D.X, pi), Vector3D(0., -1.,  0.), atol = .0000001)
     v3 = Vector3D.from_spherical_coords(1.0, pi / 4, pi / 4)
     angle = v2.angle(v3)
     axis = v2.cross(v3)
-    np.testing.assert_allclose( v2.rotate_axis(axis, angle) ,  v3, atol = .0000001)
-    np.testing.assert_allclose( v2.rotate_axis(-1.*axis, -angle) ,  v3, atol = .0000001)
-    #
+    assert_allclose( v2.rotate_axis(axis, angle) ,  v3, atol = .0000001)
+    assert_allclose( v2.rotate_axis(-1.*axis, -angle) ,  v3, atol = .0000001)
+
+def test_vectors_Lorentz_rotations():
+    v1 = Vector3D.from_cylindrical_coords(1., 0., 0.)
+    v2 = Vector3D.from_spherical_coords(1.0, pi / 2, pi / 2)
+    v3 = Vector3D.from_spherical_coords(1.0, pi / 4, pi / 4)
+    angle = v2.angle(v3)
+    axis = v2.cross(v3)
+
     with pytest.raises(AttributeError):
         LorentzVector.rotate_axis(LorentzVector(), pi, 1)
     with pytest.raises(AttributeError):
@@ -257,22 +261,22 @@ def test_vectors_rotations():
     lv1 = LorentzVector(*v1, 1.)
     assert lv1.phi() == 0.
     assert lv1.rotate_axis(Vector3D.Z, pi/2).phi() == pi/2
-    assert lv1.rotate_axis(Vector3D.Z,pi/2) == LorentzVector(0., 1., 0.,  1.)
+    assert_allclose( lv1.rotate_axis(Vector3D.Z,pi/2) , LorentzVector(0., 1., 0.,  1.))
     assert lv1.rotate_axis(Vector3D.Y,pi).phi() == pi
     assert lv1.rotate_axis(Vector3D.Y,-pi).phi() == pi
-    assert lv1.rotate_axis(Vector3D.Y,pi) == LorentzVector(-1., 0., 0.,  1.)
-    assert lv1.rotate_axis(Vector3D.Y,-pi) == LorentzVector(-1., 0., 0.,  1.)
+    assert_allclose( lv1.rotate_axis(Vector3D.Y,pi) , LorentzVector(-1., 0., 0.,  1.))
+    assert_allclose( lv1.rotate_axis(Vector3D.Y,-pi) , LorentzVector(-1., 0., 0.,  1.))
     assert lv1.rotate_axis(Vector3D.X,pi).phi() == 0.
-    assert lv1.rotate_axis(Vector3D.X,pi) == LorentzVector(1., 0., 0.,  1.)
+    assert_allclose( lv1.rotate_axis(Vector3D.X,pi) , LorentzVector(1., 0., 0.,  1.))
     lv2 = LorentzVector(*v2, 2.0)
     assert lv2.phi() == pi/2
     assert lv2.theta() == pi/2
     assert lv2.rotate_axis(Vector3D.X,pi).phi() == -pi/2
     assert lv2.rotate_axis(Vector3D.X,pi).theta() == pi/2
-    assert lv2.rotate_axis(Vector3D.X,pi)  == LorentzVector(0., -1., 0.,  2.0)
+    assert_allclose( lv2.rotate_axis(Vector3D.X,pi) , LorentzVector(0., -1., 0.,  2.0))
     lv3 = LorentzVector(*v3, 2.0)
-    np.testing.assert_allclose( lv2.rotate(angle, axis) ,  lv3, atol = .0000001)
-    np.testing.assert_allclose( lv2.rotate(-angle, -1.*axis) , lv3, atol = .0000001)
+    assert_allclose( lv2.rotate_axis(axis, angle) ,  lv3, atol = .0000001)
+    assert_allclose( lv2.rotate_axis(-1.*axis, -angle) , lv3, atol = .0000001)
 
 def test_3Dvectors_properties():
     v0 = Vector3D()
@@ -334,18 +338,18 @@ def test_lorentz_vectors_properties():
     assert lv4.z == lv3.z * gamma,  "Check length contraction"
     assert lv4.x == lv3.x
     assert lv4.y == lv3.x
-    assert lv4.t == gamma * (lv3.t - beta * lv3.z)
-    assert lv4 == LorentzVector(lv3.x, lv3.y, lv3.z * gamma,  gamma * (lv3.t - beta * lv3.z))
+    assert lv4.t == - gamma * (lv3.t - beta * lv3.z) # Added -
+    assert_allclose(lv4, LorentzVector(lv3.x, lv3.y, lv3.z * gamma, -gamma * (lv3.t - beta * lv3.z))) # Added -
     lv5 = LorentzVector(0., 0., 0., 1.)
-    assert lv5.beta == 0.
-    assert lv5.gamma == 1.
-    assert lv5.boost(0,0,0) == lv5
+    assert lv5.beta() == 0.
+    assert lv5.gamma() == 1.
+    assert_allclose(lv5.boost(Vector3D(0,0,0)), lv5)
     lv6 = lv5.boost([0,beta,0])
     assert lv6.x == lv5.x
     assert lv6.z == lv5.z
     assert lv6.t == lv5.t * gamma,  "Check time dilation"
     assert lv6.y == gamma * (lv5.y - beta*lv5.t)
-    assert lv6 == LorentzVector(lv5.x, gamma * (lv5.y - beta*lv5.t), lv5.z,  lv5.t * gamma)
+    assert_allclose(lv6 , LorentzVector(lv5.x, gamma * (lv5.y - beta*lv5.t), lv5.z,  lv5.t * gamma))
     assert lv1.isspacelike() == True
     assert lv1.istimelike() == False
     assert lv1.islightlike() == False

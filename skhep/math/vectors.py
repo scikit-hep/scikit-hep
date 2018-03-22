@@ -286,14 +286,15 @@ class Vector3D(Vector2D):
         c, s = np.cos(angle), np.sin(angle)
         c1 = 1. - c
 
-        return self.__class__(
-            (c + u.x ** 2 * c1) * self.x + (u.x * u.y * c1 - u.z * s) * self.y \
-             + (u.x * u.z * c1 + u.y * s) * self.z,
-            (u.x * u.y * c1 + u.z * s) * self.x + (c + u.y ** 2 * c1) * self.y \
-             + (u.y * u.z * c1 - u.x * s) * self.z,
-            (u.x * u.z * c1 - u.y * s) * self.x + (u.y * u.z * c1 + u.x * s) * self.y \
+        output = self.copy()
+        output.x = (c + u.x ** 2 * c1) * self.x + (u.x * u.y * c1 - u.z * s) * self.y \
+             + (u.x * u.z * c1 + u.y * s) * self.z
+        output.y = (u.x * u.y * c1 + u.z * s) * self.x + (c + u.y ** 2 * c1) * self.y \
+             + (u.y * u.z * c1 - u.x * s) * self.z
+        output.z = (u.x * u.z * c1 - u.y * s) * self.x + (u.y * u.z * c1 + u.x * s) * self.y \
              + (c + u.z ** 2 * c1) * self.z
-        )
+        return output
+
 
     def rotate_euler(self, phi=0, theta=0, psi=0):
         # Rotate Z (phi)
@@ -315,10 +316,11 @@ class Vector3D(Vector2D):
         fyy3 =-s3*c2*s1 + c3*c1
         fyz3 = s3*s2
         # Transform v
-        return self.__class__(
-            fxx3*self.x + fxy3*self.y + fxz3*self.z,
-            fyx3*self.x + fyy3*self.y + fyz3*self.z,
-            fzx2*self.x + fzy2*self.y + fzz2*self.z)
+        output = self.copy()
+        output.x = fxx3*self.x + fxy3*self.y + fxz3*self.z
+        output.y = fyx3*self.x + fyy3*self.y + fyz3*self.z
+        output.z = fzx2*self.x + fzy2*self.y + fzz2*self.z
+        return output
 
 
     @classmethod

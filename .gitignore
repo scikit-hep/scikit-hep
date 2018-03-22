@@ -99,3 +99,6 @@ Pipfile.lock
 
 # PyCharm
 .idea/*
+
+# PyTest
+.pytest_cache
