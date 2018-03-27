@@ -348,6 +348,7 @@ class Vector3D(Vector2D):
         return cls(np.cos(phi) * rho, np.sin(phi) * rho, z)
 
 
+
 class LorentzVector(Vector3D):
     NAMES = ('x', 'y', 'z', 't')
     METRIC = np.array([-1,-1,-1,1])
@@ -355,6 +356,24 @@ class LorentzVector(Vector3D):
 
     def __new__(cls, x=0, y=0, z=0, t=0, dtype=np.double):
         return Vector.__new__(cls, x, y, z, t, dtype=dtype)
+
+    @classmethod
+    def from_pt_eta_phi(cls, pt, eta, phi, t):
+        """Set the transverse momentum, eta, and phi value. The remaining parameter on LorentzVector is untouched
+        :param pt: Transverse momentum
+        :param eta: Pseudorapidity
+        :param phi: Phi
+        :param t: t or enegry of LorentzVector
+        :return: New instance
+        """
+        return cls(pt * np.cos(phi), pt * np.sin(phi), pt * np.sinh(eta), t)
+
+    @classmethod
+    def from_pt_eta_phi_m(cls, pt, eta, phi, m):
+        """ Set the listed properties, plus the mass"""
+        self = cls.from_pt_eta_phi(pt, eta, phi, 0)
+        self.t = np.sqrt(self.x**2 + self.y**2 + self.z**2 + np.sign(m)*m**2)
+        return self
 
     @property
     def vect(self):
@@ -379,6 +398,10 @@ class LorentzVector(Vector3D):
         '''
         return self.t
 
+    def eta(self):
+        "The Psuedorapitiy"
+        return -0.5 * np.log((1. - np.cos(self.theta())) / (1. + np.cos(self.theta())))
+
     def gamma(self):
         '''
         >>> v = LorentzVector(1,2,3,.5)
@@ -386,7 +409,7 @@ class LorentzVector(Vector3D):
         array([ 2.01818182])
         '''
 
-        return 1/(1 - self.beta()**2)
+        return 1/np.sqrt(1 - self.beta()**2)
 
     def beta(self):
         '''
@@ -434,6 +457,21 @@ class LorentzVector(Vector3D):
         else:
             v = self.vect + gamma2*bp*vector3 + gamma*vector3*self.t
             return self.__class__(v[0], v[1], v[2], gamma*(self.t+bp))
+
+    def delta_r(self, other):
+        """Return :math:`\\Delta R` the distance in (eta,phi) space with another Lorentz vector, defined as:
+        :math:`\\Delta R = \\sqrt{(\\Delta \\eta)^2 + (\\Delta \\phi)^2}`
+        """
+        delta_phi = np.mod(self.phi() - other.phi() + np.pi, np.pi*2) - np.pi
+        return np.sqrt((self.eta() - other.eta())**2 + delta_phi**2)
+
+    def pseudorapidity(self):
+        """"Return the pseudorapidity. Alternative to eta() method."""
+        return self.eta()
+
+    def rapidity(self):
+        """Return the rapidity."""
+        return 0.5 * np.log( (self.e() + self.z)/(self.e() - self.z) )
 
 _add_names(Vector2D)
 _add_names(Vector3D)

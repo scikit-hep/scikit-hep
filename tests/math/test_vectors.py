@@ -350,16 +350,7 @@ def test_lorentz_vectors_properties():
     assert lv6.t == lv5.t * gamma,  "Check time dilation"
     assert lv6.y == gamma * (lv5.y - beta*lv5.t)
     assert_allclose(lv6 , LorentzVector(lv5.x, gamma * (lv5.y - beta*lv5.t), lv5.z,  lv5.t * gamma))
-    assert lv1.isspacelike() == True
-    assert lv1.istimelike() == False
-    assert lv1.islightlike() == False
-    assert lv2.isspacelike() == False
-    assert lv2.istimelike() == True
-    assert lv2.islightlike() == False
-    lv7 = LorentzVector(1., 1., 1., sqrt(3.))
-    assert lv7.isspacelike() == False
-    assert lv7.istimelike() == False
-    assert lv7.islightlike() == True
+
 
 def test_lorentz_vectors_properties_again():
     p1 = LorentzVector(5.,5.,10.,5)
@@ -372,55 +363,48 @@ def test_lorentz_vectors_properties_again():
     assert p1.pt() == sqrt(p1.x**2 + p1.y**2)
     assert p1.p() == sqrt(p1.x**2 + p1.y**2 + p1.z**2)
     assert p1.p() == sqrt(p1.pt()**2 + p1.z**2)
-    assert p1.e() == sqrt(p1.mag()**2 + p1.p()**2)
+    assert p1.e() == sqrt(p1.mag2() + p1.p()**2)
     assert p1.beta() == p1.p() / p1.e()
-    p2 = p1.boost(p1.x/p1.e(), p1.y/p1.e(), p1.z/p1.e())
-    assert p2  == p1.boost(p1.boostvector)
-    assert p2.p == 0.
-    assert p2.m == approx(5.)
-    p3 = LorentzVector()
-    p3.setpxpypze(5.,5.,10.,20)
-    assert p3.px == 5.
-    assert p3.py == 5.
-    assert p3.pz == 10.
-    assert p3.e == 20.
-    assert p3.m == sqrt(p3.e**2 - p3.p**2)
-    assert p3.beta == p3.p / p3.e
-    p4 = LorentzVector()
-    p4.setptetaphim(10.,3.5,pi/3,5.)
-    assert p4.pt == approx(10.)
-    assert p4.eta == approx(3.5)
+
+def test_lorentz_vectors_boosting():
+    p3 = LorentzVector(5.,5.,10.,20)
+    assert p3.x == 5.
+    assert p3.y == 5.
+    assert p3.z == 10.
+    assert p3.e() == 20.
+    assert p3.mag() == sqrt(p3.e()**2 - p3.p()**2)
+    assert p3.beta() == p3.p() / p3.e()
+
+    p4 = LorentzVector.from_pt_eta_phi_m(10., 3.5, pi/3, 5.)
+    assert p4.pt() == approx(10.)
+    assert p4.eta() == approx(3.5)
     assert p4.phi() == approx(pi/3)
-    assert p4.m == approx(5.)
-    p5 = LorentzVector()
-    p5.setptetaphie(10.,3.9,-2*(pi/3),20.)
-    assert p5.pt == approx(10.)
-    assert p5.eta == approx(3.9)
-    assert p5.pseudorapidity == approx(3.9)
+    assert p4.mag() == approx(5.)
+
+    p5 = LorentzVector.from_pt_eta_phi(10., 3.9, -2*(pi/3), 20.)
+    assert p5.pt() == approx(10.)
+    assert p5.eta() == approx(3.9)
     assert p5.phi() == approx(-2*(pi/3))
-    assert p5.e == approx(20.)
-    assert p5.deltaeta(p4) == approx(0.4)
-    assert p4.deltaeta(p5) == approx(-0.4)
-    assert p5.deltaphi(p4) == approx(-pi)
-    assert p4.deltaphi(p5) == approx(pi)
-    assert p5.deltar(p4) == approx(sqrt(0.4**2 + pi**2))
-    assert p4.deltar(p5) == approx(sqrt(0.4**2 + pi**2))
-    p6 = LorentzVector()
-    p6.setptetaphie(10.,3.9,-pi,20.)
-    assert p6.deltaphi(p4) == approx(2*(pi/3))
-    assert p4.deltaphi(p6) == approx(-2*(pi/3))
-    p7 = LorentzVector()
-    p7.setpxpypzm(5.,5.,5.,0.)
-    assert p7.beta == 1.
-    assert p7.gamma == 10E10,  "Gamma of the photons is +inf"
-    assert p7.p == p7.e,  "Momentum = Energy for photons"
-    assert p7.pseudorapidity == p7.rapidity
-    assert p7.pt == p7.et,  "Transverse Momentum = Transverse Energy for photons"
-    assert p7.pt == approx(p7.mt), "Transverse Momentum = Transverse Mass for photons"
-    assert p7.perp2 == approx(p7.mt2)
-    assert p7.islightlike() == True
+    assert p5.e() == approx(20.)
+    assert p5.eta() - p4.eta() == approx(0.4)
+    assert p5.phi() - p4.phi() == approx(-pi)
+    assert p5.delta_r(p4) == approx(sqrt(0.4**2 + pi**2))
+
+    p6 = LorentzVector.from_pt_eta_phi(10.,3.9,-pi,20.)
+    assert np.mod(p6.phi() - p4.phi() + np.pi, np.pi*2) - np.pi == approx(2*(pi/3))
+    assert np.mod(p4.phi() - p6.phi() + np.pi, np.pi*2) - np.pi == approx(-2*(pi/3))
+
+    p7 = LorentzVector(5.,5.,5.,0.)
+    assert p7.beta() == np.inf
+    assert np.isnan(p7.gamma()),  "Gamma of the photons is +inf"
+    # assert p7.p() == p7.e(),  "Momentum = Energy for photons"
+    assert p7.pseudorapidity() == p7.rapidity()
+    assert p7.pt() == p7.et(),  "Transverse Momentum = Transverse Energy for photons"
+    assert p7.pt() == approx(p7.mt()), "Transverse Momentum = Transverse Mass for photons"
+    assert p7.perp2() == approx(p7.mt2())
+
     p8 = p1 + p7
-    p9, p10 = p1.boost(p8.boostvector), p7.boost(p8.boostvector)
+    p9, p10 = p1.boost(p8.boost_vector()), p7.boost(p8.boost_vector())
     assert p9.p == approx(p10.p), "Check boost to the C.O.M frame"
     p3_9, p3_10 = p9.vector, p10.vector
     assert p3_9.isopposite(p3_10)
@@ -428,3 +412,5 @@ def test_lorentz_vectors_properties_again():
     p8.setptetaphie(10.,2E2,-2*(pi/3),20.) #sinh(eta) diverge quickly
     assert p8.theta() == 0.0
     assert p8.eta == 10E10
+
+
