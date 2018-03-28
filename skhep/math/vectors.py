@@ -448,7 +448,8 @@ class LorentzVector(Vector3D):
 
         b2 = vector3.mag2()
         gamma = 1.0 / np.sqrt(1-b2)
-        gamma2 = (gamma - 1) / b2
+        gamma2 = (gamma - 1) / b2 if b2!= 0 else 0
+
         bp = self.vect.dot(vector3)
         if inplace:
             self.vect += gamma2*bp*vector3 + gamma*vector3*self.t
