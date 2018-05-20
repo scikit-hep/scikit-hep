@@ -59,6 +59,10 @@ class MplPlotter(object):
 
                         'auto' : use 'auto' feature from numpy.histogram.
 
+                        'fd', 'doane', 'scott', 'rice', 'sturges', 'sqrt' : see numpy.histogram for
+                            details.
+                            (https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram.html)
+
                 Defaults to 'auto'.
 
             range (tuple or None, optional): If specificed, data will only be considered and shown

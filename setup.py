@@ -43,6 +43,7 @@ INSTALL_REQUIRES = [
     'numpy>=1.11.0,<1.12.0;python_version<"2.7"',
     'numpy>={0};python_version>="2.7"'.format(NUMPY_MIN_VERSION),
     'pandas==0.16.2;python_version<"2.7"',
+    'pandas<0.21;python_version=="3.4.*"',
     'pandas;python_version>="2.7"',
     'matplotlib<1.5;python_version<"2.7"',
     'matplotlib>2.0.0;python_version>="2.7"',
@@ -54,7 +55,8 @@ TEST_REQUIRES = [
 ]
 
 SETUP_REQUIRES = [
-    'pytest-runner'
+    'pytest-runner<3.0;python_version<"2.7"',
+    'pytest-runner;python_version>="2.7"'
 ]
 
 setup(
