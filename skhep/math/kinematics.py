@@ -50,6 +50,7 @@ def Kallen_function(x, y, z):
     """
     return (x - y - z) ** 2 - 4 * y * z  # faster to evaluate condensed form used
 
+
 def Armenteros_Podolanski_variables(pplus_3Dvec, pminus_3Dvec):
     """
     Calculate the Armenteros Podolanski [APPaper]_ variables :math:`(\\alpha,q_T)` for a 2-body decay.
@@ -97,8 +98,8 @@ def Armenteros_Podolanski_variables(pplus_3Dvec, pminus_3Dvec):
     """
 
     mother_mag = (pplus_3Dvec+pminus_3Dvec).mag
-    if isequal (mother_mag, 0.0):
-        raise ValueError( 'Total momentum has zero magnitude!')
+    if isequal(mother_mag, 0.0):
+        raise ValueError('Total momentum has zero magnitude!')
 
     # Longitudinal momentum asymmetry, i.e. imbalance
     alpha = (pplus_3Dvec.mag2-pminus_3Dvec.mag2)/mother_mag**2
