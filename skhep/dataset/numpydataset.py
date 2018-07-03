@@ -133,6 +133,12 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         """Convert a dictionnary into a structured array."""
         if self.isdictof1d(self.data ) and not self.isrecarray(self.data ):
             if sys.version_info[0] > 2 and any(isinstance(k, bytes) for k in self.data.keys()):
+              data = {}
+              for k in list(self.data.keys()):
+                if isinstance(k, bytes):
+                  data[k.decode()] = self.data[k]
+                else:
+                  data[k] = self.data[k]
               data = { key.decode(): val for key, val in self.data.items() }
             else:
               data = self.data
