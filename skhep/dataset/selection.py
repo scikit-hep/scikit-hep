@@ -207,7 +207,7 @@ class Selection(object):
     @property    
     def pandasselection(self):
         """
-        Return the selection readable for possible PandasDataset
+        Return the selection readable for possible PandasDataset.
         """
         
         raise NotImplementedError
@@ -215,7 +215,10 @@ class Selection(object):
     @property    
     def rootselection(self):
         """
-        Return the selection readable for RootDataset
+        Return the selection readable for RootDataset.
+        
+        The use the formulate package is consideed in the future
+        for better conversion between numexpr and ROOT expression styles.
         """
         
         selection = self._selection.replace(" & "," && ")
