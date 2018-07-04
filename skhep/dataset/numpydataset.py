@@ -66,7 +66,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
             
             self._provenance = MultiProvenance(*provenance)
         
-    def copy(self) :
+    def copy(self):
         """Get a copy of the NumpyDataset."""
         return NumpyDataset( self.data, self._provenance )
         
@@ -94,6 +94,24 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
             return NumpyDataset(data, provenance)
         else:
             raise ValueError("selection input must be of type 'str', 'Selection', or an Array of booleans not {0}".format(type(selection)))
+    
+    @property        
+    def nevents(self):
+        """Get the number of events in the NumpyDataset."""
+        return self.__len__()
+     
+    @property   
+    def nentries(self):
+        """Get the number of entries in the NumpyDataset. Same as 'nevents'"""
+        return self.__len__()
+        
+    @property        
+    def variables(self):
+      """
+      Get the list of variables in the NumpyDataset, i.e. the content of 'numpy.dtype.names'
+      of the stored NumPy array.
+      """
+      return [var for var in self.data.dtype.names]
                               
     @staticmethod
     def isrecarray(data):
@@ -113,14 +131,26 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         return is_dict and is_non_empty and has_only_valid_columns and columns_have_valid_shape
         
     def dicttoarray(self):
-        """Convert a dictionnary into a structured array."""
+        """Convert a dictionnary into a structured array. If using Python3, byte keys are
+        decoded into string.
+        """
         if self.isdictof1d(self.data ) and not self.isrecarray(self.data ):
-            dtypes = {'names': list(self.data.keys()), 'formats': [numpy.dtype(self.data [k].dtype) for k in self.data .keys()]}
+            if sys.version_info[0] > 2 and any(isinstance(k, bytes) for k in self.data.keys()):
+              data = {}
+              for k in list(self.data.keys()):
+                if isinstance(k, bytes):
+                  data[k.decode()] = self.data[k]
+                else:
+                  data[k] = self.data[k]
+            else:
+              data = self.data
+          
+            dtypes = {'names': list(data.keys()), 'formats': [numpy.dtype(self.data [k].dtype) for k in self.data .keys()]}
             shape  = (len(list(self.data .values())[0]),)
             array  = numpy.zeros(shape,dtypes)
             
-            for k in self.data.keys():
-                array[k] = self.data [k]
+            for k in data.keys():
+                array[k] = data[k]
                 
             self._data = array
             
@@ -282,6 +312,9 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
     def __str__(self):
         """Simple class representation."""
         return str(self.data)
+        
+    def __len__(self):
+        return len(self.data)
  
 
 def can_override_ufunc ( ):
@@ -393,7 +426,7 @@ class SkhepNumpyArray(numpy.ndarray):
         return result
         
     def __format_ufunc_result(self, provenance, result, ufunc, names_inputs, outputs = None):
-        
+
         #comparisaton_operators    
         comparisaton_operators = {"<ufunc 'greater'>": ">", "<ufunc 'less'>": "<", 
                                   "<ufunc 'greater_equal'>": ">=", "<ufunc 'less_equal'>": "<=",
@@ -404,58 +437,60 @@ class SkhepNumpyArray(numpy.ndarray):
         arithmetic_operators =   {"<ufunc 'add'>": "+", "<ufunc 'subtract'>": "-", 
                                   "<ufunc 'multiply'>": "*", "<ufunc 'divide'>": "/", 
                                   "<ufunc 'true_divide'>": "/", "<ufunc 'power'>": "^"}
+                    
+        functions = {"<ufunc 'mininum'>": "min", "<ufunc 'maximum'>": "max", "<ufunc 'sin'>": "sin", 
+                     "<ufunc 'sin'>": "cos", "<ufunc 'tan'>": "tan", "<ufunc 'arcsin'>": "arcsin", 
+                     "<ufunc 'arccos'>": "arccos", "<ufunc 'arctan'>": "arctan",
+                     "<ufunc 'arctan2'>": "arctan2", "<ufunc 'sinh'>": "sinh", "<ufunc 'cosh'>": "cosh",
+                     "<ufunc 'tanh'>": "tanh", "<ufunc 'arcsinh'>": "arcsinh",
+                     "<ufunc 'arccosh'>": "arcosh", "<ufunc 'log'>": "log", "<ufunc 'log10'>": "log10",
+                     "<ufunc 'log1p'>": "log1p", "<ufunc 'exp'>": "exp", "<ufunc 'expm1'>": "expm1", 
+                     "<ufunc 'absolute'>": "abs"}
                                    
         if ufunc != numpy.logical_and and ufunc != numpy.logical_or:
+                            
+            #comparisaton_operators
+            if str(ufunc) in comparisaton_operators.keys():
+              name, provenance = self.__comparison_ufunc( comparisaton_operators[str(ufunc)], provenance, names_inputs)
+                
+            #functions
+            elif str(ufunc) in functions.keys():
+              name, provenance = self.__function_ufunc( functions[str(ufunc)], provenance, names_inputs)
+                                               
+            #arithemtic_operators
+            elif ufunc == numpy.square:
+              name, provenance = self.__square_ufunc( provenance, outputs)
+              
+            elif ufunc == numpy.sqrt:
+              name, provenance = self.__sqrt_ufunc( provenance, outputs)
             
-            #min max
-            if   ufunc == numpy.maximum:
-                name, provenance = self.__max_ufunc( provenance, names_inputs)
-            elif ufunc == numpy.minimum:
-                name, provenance = self.__min_ufunc( provenance, names_inputs)
-                
-            #comparisaton_operators
-            elif str(ufunc) in comparisaton_operators.keys():
-                name, provenance = self.__comparison_ufunc( comparisaton_operators[str(ufunc)], provenance, names_inputs)
-             
-             #comparisaton_operators   
-            if ufunc == numpy.square:
-                name, provenance = self.__square_ufunc( provenance, outputs)
-                
-            #comparisaton_operators
             elif str(ufunc) in arithmetic_operators.keys():
-                name, provenance = self.__arithmetic_ufunc( arithmetic_operators[str(ufunc)], provenance, names_inputs, outputs)
+              name, provenance = self.__arithmetic_ufunc( arithmetic_operators[str(ufunc)], provenance, names_inputs, outputs)
+                
+            else:
+                
+                name, provenance = self.name, self.provenance
                    
             if isinstance(result, SkhepNumpyArray):
                 result.name       = name
                 result.provenance = provenance
-
+                
         return result
         
-        
-    def __min_ufunc( self, provenance, names_inputs):
-        name = "min("
-            
-        for ni in names_inputs:
-            if ni == names_inputs[-1]:
-                name += " {0} )".format(ni)
-            else:
-                name += " {0},".format(ni)
+    def __function_ufunc( self, function, provenance, names_inputs):
+      
+      name = function + "("
+      
+      for ni in names_inputs:
+        if ni == names_inputs[-1]:
+          name += " {0} )".format(ni)
+        else:
+          name += " {0},".format(ni)
+          
+      provenance += Transformation(name)
 
-        provenance = ObjectOrigin(name) 
-        return name, provenance
-        
-    def __max_ufunc( self, provenance, names_inputs ):
-        name = "max("
-             
-        for ni in names_inputs:
-            if ni == names_inputs[-1]:
-                name += " {0} )".format(ni)
-            else:
-                name += " {0},".format(ni)
-
-        provenance = ObjectOrigin(name) 
-        return name, provenance
-        
+      return name, provenance
+      
     def __comparison_ufunc( self, operator, provenance, names_inputs ):
         lhs = names_inputs[0]
         rhs = names_inputs[1]
@@ -486,10 +521,24 @@ class SkhepNumpyArray(numpy.ndarray):
         
         if outputs is None:
             name_input = self.__format_operand( name_input, "^")
-            name = "{0}^2".format(name_input)
+            name = "{0}**2".format(name_input)
         else:
             name = self.name
             
+        return name, provenance
+        
+    def __sqrt_ufunc( self, provenance, outputs = None):
+      
+        name_input = self.name
+        
+        provenance += Transformation("{0} has been raised to the power of 0.5".format(name_input))
+        
+        if outputs is None:
+          name_input = self.__format_operand( name_input, "^")
+          name = "{0}**0.5".format(name_input)
+        else:
+          name = self.name
+          
         return name, provenance
         
     def __arithmetic_ufunc( self, operator, provenance, names_inputs, outputs = None):
@@ -523,7 +572,7 @@ class SkhepNumpyArray(numpy.ndarray):
             name = self.name
                     
         return name, provenance
-        
+                
     ### overloading operators in case numpy version < 1.13, will 
       
     if not can_override_ufunc():
@@ -576,6 +625,8 @@ class SkhepNumpyArray(numpy.ndarray):
             else:
                 ufunc = numpy.power
                 return self.__array_ufunc__(numpy.power, "__call__", self, other, out=(self,))
+                
+
 
 
 # -----------------------------------------------------------------------------

@@ -83,6 +83,8 @@ def test_transformations():
     ds1.x /= 4
     assert repr(ds1.provenance[-1]) == "<Transformation(x has been divided by 4)>"
     ds1.r = (ds1.x**2 + ds1.y**2)**0.5
+    ds1.expx = np.exp(ds1.x)
+
     
 def test_selections():
     ds1 = NumpyDataset(ar)
@@ -92,6 +94,8 @@ def test_selections():
     ds2.provenance[-1] == "<Transformation(Selection, (x > 1), applied)>"
     assert ds2.__str__() == ds1.select("x > 1").__str__()
     ds3 = ds1[ds1.x > 1]
+    a = ds1.x > 1
+    print(ds3.provenance[-1])
     assert repr(ds3.provenance[-1]) == "<Transformation(Subsetting dataset: x > 1)>"
     ds4 = ds1.select(ds1.x > 1)
     assert repr(ds4.provenance[-1]) == "<Transformation(Subsetting dataset: x > 1)>"
