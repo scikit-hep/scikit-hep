@@ -102,13 +102,14 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
      
     @property   
     def nentries(self):
-        """Get the number of entries in the NumpyDataset."""
+        """Get the number of entries in the NumpyDataset. Same as 'nevents'"""
         return self.__len__()
         
     @property        
     def variables(self):
       """
-      List of variable names
+      Get the list of variables in the NumpyDataset, i.e. the content of 'numpy.dtype.names'
+      of the stored NumPy array.
       """
       return [var for var in self.data.dtype.names]
                               
@@ -130,7 +131,9 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         return is_dict and is_non_empty and has_only_valid_columns and columns_have_valid_shape
         
     def dicttoarray(self):
-        """Convert a dictionnary into a structured array."""
+        """Convert a dictionnary into a structured array. If using Python3, byte keys are
+        decoded into string.
+        """
         if self.isdictof1d(self.data ) and not self.isrecarray(self.data ):
             if sys.version_info[0] > 2 and any(isinstance(k, bytes) for k in self.data.keys()):
               data = {}
@@ -139,7 +142,6 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
                   data[k.decode()] = self.data[k]
                 else:
                   data[k] = self.data[k]
-              data = { key.decode(): val for key, val in self.data.items() }
             else:
               data = self.data
           
