@@ -409,7 +409,6 @@ class SkhepNumpyArray(numpy.ndarray):
         """Sets the name of the variable inside the SkhepNumpyArray."""
         self._name = name
         
-        
     @inheritdoc(numpy.ndarray)   
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
         args = []
