@@ -84,16 +84,28 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         """
   
         if isinstance(selection, numpy.ndarray) and selection.dtype == bool:
-            return self.__getitem__(selection)
+          return self.__getitem__(selection)
         elif isinstance(selection, Selection) or isinstance(selection, str):
-            if isinstance(selection, str):
-                selection = Selection(selection)
-                
-            data = self.data[ selection.numpyselection(self) ]
-            provenance = self._provenance + Transformation("Selection, {0}, applied".format(selection))
-            return NumpyDataset(data, provenance)
+          if isinstance(selection, str):
+            selection = Selection(selection)
+            
+          data = self.data[ selection.numpyselection(self) ]
+          
+          nbefore    = self.nevents 
+          nafter     = len(data)
+          efficiency = float( nafter / nbefore )
+          error      = (( efficiency * ( 1. - efficiency ) ) / nbefore ) ** 0.5
+          
+          tr_name    = "Selection, {0}, applied".format(selection)
+          tr_detail1 = "#events before = {0}".format(nbefore)
+          tr_detail2 = "#events after = {0}".format(nafter)
+          tr_detail3 = "Efficiency = {0:.4f} +/- {1:.4f} %".format(efficiency * 100, error * 100)
+          
+          provenance = self._provenance + Transformation(tr_name, tr_detail1, tr_detail2, tr_detail3)
+          return NumpyDataset(data, provenance)
+          
         else:
-            raise ValueError("selection input must be of type 'str', 'Selection', or an Array of booleans not {0}".format(type(selection)))
+          raise ValueError("selection input must be of type 'str', 'Selection', or an Array of booleans not {0}".format(type(selection)))
     
     @property        
     def nevents(self):
@@ -360,7 +372,7 @@ class SkhepNumpyArray(numpy.ndarray):
     def __array_finalize__(self, obj): 
         if obj is None: return
         self._name = getattr(obj, 'name', None)
-        self._provenance = getattr(obj, 'provenance', MultiProvenance(ObjectOrigin(repr(obj))))
+        self._provenance = getattr(obj, 'provenance', MultiProvenance(ObjectOrigin("")))
         
     def copy(self):
         """Get a copy of the SkhepNumpyArray."""
@@ -420,10 +432,10 @@ class SkhepNumpyArray(numpy.ndarray):
         provenance = self.provenance.copy()
         result     = getattr(ufunc, method)(*args, **kwargs)
     
-        result = result.view(SkhepNumpyArray)
-        result = self.__format_ufunc_result( provenance, result, ufunc, names_inputs, outputs)
-                        
-        return result
+        if method != "at":
+          result = result.view(SkhepNumpyArray)
+          result = self.__format_ufunc_result( provenance, result, ufunc, names_inputs, outputs)
+          return result
         
     def __format_ufunc_result(self, provenance, result, ufunc, names_inputs, outputs = None):
 
