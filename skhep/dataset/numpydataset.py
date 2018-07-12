@@ -17,7 +17,7 @@ Note: usage of course requires that NumPy is installed.
 # -----------------------------------------------------------------------------
 # Import statements
 # -----------------------------------------------------------------------------
-from __future__ import absolute_import
+from __future__ import absolute_import, division
 
 import sys
 from types import MethodType
@@ -93,7 +93,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
           
           nbefore    = self.nevents 
           nafter     = len(data)
-          efficiency = float( nafter / nbefore )
+          efficiency = nafter / nbefore
           error      = (( efficiency * ( 1. - efficiency ) ) / nbefore ) ** 0.5
           
           tr_name    = "Selection, {0}, applied".format(selection)
