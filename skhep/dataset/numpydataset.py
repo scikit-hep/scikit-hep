@@ -124,6 +124,12 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
       of the stored NumPy array.
       """
       return [var for var in self.data.dtype.names]
+      
+    def keys(self):
+      """
+      Get the list of keys in the NumpyDataset, same as 'variables'
+      """
+      return [var for var in self.data.dtype.names]
                               
     @staticmethod
     def isrecarray(data):
