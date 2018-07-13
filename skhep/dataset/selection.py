@@ -86,6 +86,7 @@ class Selection(object):
         """
                 
         def operation(lhs=None , operator=None, rhs=None):
+            
             if lhs is None and operator == "-":
                 return -rhs
             else:
@@ -149,8 +150,7 @@ class Selection(object):
                     bitwiseoperators.append(s)
                     
             while len(bitwiseoperators) > 0:
-                index = bitwiseoperators.index(bitwiseoperators[-1])
-                loopedselection = operation( suboperations[index], bitwiseoperators[-1], suboperations[index+1] )
+                loopedselection = operation( suboperations[-2], bitwiseoperators[-1], suboperations[-1] )
                 bitwiseoperators.pop(); suboperations.pop(); suboperations.pop()
                 suboperations.append(loopedselection)
 
@@ -174,7 +174,7 @@ class Selection(object):
         """
         
         operators = {">": numpy.greater, "<": numpy.less, ">=": numpy.greater_equal, "<=": numpy.less_equal,
-                     "==": numpy.equal, "!=": numpy.not_equal, "&": numpy.bitwise_and, "|": numpy.bitwise_and,
+                     "==": numpy.equal, "!=": numpy.not_equal, "&": numpy.bitwise_and, "|": numpy.bitwise_or,
                      "+": numpy.add, "-": numpy.subtract, "/": numpy.divide, "*": numpy.multiply,
                      "^": numpy.power, "**": numpy.power}
                     
