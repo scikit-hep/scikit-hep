@@ -30,9 +30,9 @@ class Selection(object):
         selection: a string.
         """
         
-        sel = selection.replace("&&","&")
-        sel = selection.replace("||","|")
-        self._selection = sel
+        selection = selection.replace("&&","&")
+        selection = selection.replace("||","|")
+        self._selection = selection
 
 
     @property  
