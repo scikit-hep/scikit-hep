@@ -54,7 +54,8 @@ TEST_REQUIRES = [
 ]
 
 SETUP_REQUIRES = [
-    'pytest-runner'
+    'pytest-runner<3.0;python_version<"2.7"',
+    'pytest-runner>=3.0;python_version>="2.7"'
 ]
 
 setup(
