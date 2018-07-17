@@ -17,7 +17,7 @@ __all__ = ['banner',
 # -----------------------------------------------------------------------------
 # Project and package info
 # -----------------------------------------------------------------------------
-__version__ = '0.2.0'
+__version__ = '0.3.0'
 
 project_url = 'http://scikit-hep.org'
 project_url_GitHub = 'https://github.com/scikit-hep/scikit-hep'

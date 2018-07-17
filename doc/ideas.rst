@@ -66,15 +66,6 @@ Simulation
   Contact `Eduardo` if you want to get involved. |Simulation_ongoing|
 
 
-ROOT-Pandas
------------
-
-* Include the `root_pandas <https://github.com/ibab/root_pandas>`_ project into Scikit-HEP and see how it fits together with the rest of the framework.
-  It is an excellent candidate for an affiliated package. |AffiliatedPackages_done|
-* Define which parts are still missing and find developers for this part of the project. |AffiliatedPackages_ongoing|
-* See if users of this project may want to use scikit-hep as their starting point instead of installing `root_pandas`, to increase the awareness of this project. |AffiliatedPackages_ongoing|
-
-
 Analysis Development
 --------------------
 
