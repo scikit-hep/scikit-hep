@@ -412,12 +412,6 @@ class HistContainer(object):
 
         self.err_dict['err_color'] = kwargs.pop('err_color', 'auto')
 
-        # err_color='auto' is not currently supported in python 2.6 due to matplotlib
-        # incompatibilities.  If an error bar color is not defined, then it will be set to black by
-        # default.
-        if sys.version_info < (2, 7):
-            self.err_dict['err_color'] = 'k'
-
         self.err_dict['suppress_zero'] = kwargs.pop('suppress_zero', False)
 
         if self.has_weights:
@@ -634,19 +628,7 @@ class HistContainer(object):
             elif self.err_dict['err_type'] == 'sumW2':
                 bin_err_tmp = []
                 if self.stacked:
-                    # bug in pd.concat for py26 with categorical objects (which are created by
-                    # pd.cut, for instance).  This bug is fixed in pandas 0.17.0, but that py26
-                    # support was dropped in that version (and subsequent versions).  Solution is
-                    # to concatinate the dataframes without the 'bins' column, and then recalculate
-                    if sys.version_info < (2, 7):
-                        df_list_tmp = [self.df_list[0].drop('bins', axis=1)]
-                        for df in self.df_list[1:]:
-                            df_list_tmp.append(df.drop('bins', axis=1))
-                        df_list_tmp = [pd.concat(df_list_tmp, ignore_index=True)]
-                        df_bins = pd.cut(df_list_tmp[0].data, self.bin_edges, include_lowest=True)
-                        df_list_tmp[0]['bins'] = df_bins
-                    else:
-                        df_list_tmp = [pd.concat(self.df_list, ignore_index=True)]
+                    df_list_tmp = [pd.concat(self.df_list, ignore_index=True)]
                 else:
                     df_list_tmp = self.df_list
 

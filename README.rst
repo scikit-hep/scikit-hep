@@ -23,9 +23,6 @@ The development is occurring at the
 
 Python versions supported:
 
-.. image:: https://img.shields.io/badge/python-2.6-blue.svg
-   :target: https://badge.fury.io/py/scikit-hep
-
 .. image:: https://img.shields.io/badge/python-2.7-blue.svg
    :target: https://badge.fury.io/py/scikit-hep
 

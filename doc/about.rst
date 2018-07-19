@@ -7,7 +7,7 @@ The `Scikit-HEP project` is a community-driven and community-oriented project
 with the aim of providing Particle Physics at large with a Python package
 containing core and common tools. The project started in Autumn 2016 and is under active development.
 
-For what concerns Python packages, the project can be seen as a "core package" and a set of :ref:`affiliated packages <affiliations>`.
+For what concerns Python packages, the project should be seen as a *toolset* rather than a *toolkit*.
 It is not just about providing common tools for the community. It is also about improving on discoverability of utility packages.
 
 The software package defines a set of five *pillars*, which are seen to embrace
