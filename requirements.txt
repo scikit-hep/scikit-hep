@@ -1,0 +1,6 @@
+PyPDT>=0.7.4
+numpy>=1.11.0
+pandas<0.21; python_version=="3.4.*"
+pandas;python_version>="2.7"
+matplotlib>2.0.0
+
