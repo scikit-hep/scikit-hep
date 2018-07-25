@@ -12,6 +12,7 @@ import colorsys
 
 import numpy as np
 
+import matplotlib as mpl
 from matplotlib import pyplot as plt
 from matplotlib import colors, gridspec
 import matplotlib.cbook as cbook
@@ -57,6 +58,10 @@ class MplPlotter(object):
                         'blocks' : use bayesian blocks for dynamic bin widths.
 
                         'auto' : use 'auto' feature from numpy.histogram.
+
+                        'fd', 'doane', 'scott', 'rice', 'sturges', 'sqrt' : see numpy.histogram for
+                            details.
+                            (https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram.html)
 
                 Defaults to 'auto'.
 
@@ -204,7 +209,7 @@ class MplPlotter(object):
         gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1])
         ax1 = fig.add_subplot(gs[0])
         if logx:
-            ax1.set_xscale("log", nonposy='clip')
+            ax1.set_xscale("log", nonposx='clip')
         ax2 = fig.add_subplot(gs[1], sharex=ax1)
         # ax1.grid(True)
         # ax2.grid(True)
@@ -351,14 +356,19 @@ class HistContainer(object):
         # Massage 'x' for processing.
         if input_empty:
             x = np.array([[]])
-        else:
+        elif mpl.__version__ < '2.1.0':
             x = cbook._reshape_2D(x)
+        else:
+            x = cbook._reshape_2D(x, 'x')
 
         self.n_data_sets = len(x)  # number of datasets
 
         # We need to do to 'weights' what was done to 'x'
         if w is not None:
-            w = cbook._reshape_2D(w)
+            if mpl.__version__ < '2.1.0':
+                w = cbook._reshape_2D(w)
+            else:
+                w = cbook._reshape_2D(w, 'w')
 
         if w is not None and len(w) != self.n_data_sets:
             raise ValueError('weights should have the same shape as x')

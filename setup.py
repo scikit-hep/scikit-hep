@@ -41,8 +41,9 @@ sys.path.insert(0, LOCAL_PATH)
 INSTALL_REQUIRES = [
     'PyPDT>={0}'.format(PYPDT_MIN_VERSION),
     'numpy>={0};python_version>="2.7"'.format(NUMPY_MIN_VERSION),
+    'pandas<0.21;python_version=="3.4.*"',
     'pandas;python_version>="2.7"',
-    'matplotlib>2.0.0,<2.1;python_version>="2.7"',
+    'matplotlib>2.0.0;python_version>="2.7"',
 ]
 
 TEST_REQUIRES = [
