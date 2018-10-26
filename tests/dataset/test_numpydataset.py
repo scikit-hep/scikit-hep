@@ -120,17 +120,23 @@ def test_concatenate():
     ds1 = NumpyDataset(ar1)
     ds2 = NumpyDataset(ar2)
     ds3 = NumpyDataset(ar3)
+    
+    with pytest.raises(TypeError):
+        ds = concatenate(ds1)
+    with pytest.raises(TypeError):
+        ds = concatenate([ds1,"a"])
+    
     ds = concatenate([ds1, ds2, ds3])
     
     assert ds.nentries == ds1.nentries + ds2.nentries + ds3.nentries
     assert ds[-1][0] == 1 
     assert ds[-1][1] == 1
     
-#    assert repr(ds.provenance) == "<ObjectOrigin>"
-#    details  = "0: {0} \n".format(ds1.provenance.detail)
-#    details += "1: {0} \n".format(ds2.provenance.detail)
-#    details += "2: {0}".format(ds3.provenance.detail)
-#    assert ds.provenance.detail == details
+    assert repr(ds.provenance) == "<ObjectOrigin>"
+    details  = "0: {0} \n".format(ds1.provenance.detail)
+    details += "1: {0} \n".format(ds2.provenance.detail)
+    details += "2: {0}".format(ds3.provenance.detail)
+    assert ds.provenance.detail == details
     
     ds1_ = ds1.select("x > 1")
     ds2_ = ds2.select("x > 1")
@@ -139,17 +145,16 @@ def test_concatenate():
     
     assert ds_.nentries == ds.select("x > 1").nentries
     
-#    assert repr(ds_.provenance) == "<ObjectOrigin>"
-#    details  = "0: 0: {0}  \n".format(ds1_.provenance[0].detail)
-#    details += "   1: {0} \n".format(ds1_.provenance[1].detail)
-#    details += "1: 0: {0}  \n".format(ds2_.provenance[0].detail)
-#    details += "   1: {0} \n".format(ds2_.provenance[1].detail)
-#    details += "2: 0: {0}  \n".format(ds3_.provenance[0].detail)
-#    details += "   1: {0}".format(ds3_.provenance[1].detail)
-#    
-#    assert ds_.provenance.detail == details
-
+    assert repr(ds_.provenance) == "<ObjectOrigin>"
+    details  = "0: 0: {0}  \n".format(ds1_.provenance[0].detail)
+    details += "   1: {0} \n".format(ds1_.provenance[1].detail)
+    details += "1: 0: {0}  \n".format(ds2_.provenance[0].detail)
+    details += "   1: {0} \n".format(ds2_.provenance[1].detail)
+    details += "2: 0: {0}  \n".format(ds3_.provenance[0].detail)
+    details += "   1: {0}".format(ds3_.provenance[1].detail)
     
+    assert ds_.provenance.detail == details
+
 def test_selections():
     
     ar = np.array([(1,1),(2,2),(3,3)],dtype=[('x',int), ('y',int)])
