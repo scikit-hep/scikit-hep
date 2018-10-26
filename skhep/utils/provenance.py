@@ -228,7 +228,7 @@ class MultiProvenance(object):
             rep = ""
             for i,provenance in enumerate(self._provenances):
                 rep += "{0}: {1}".format(i, provenance)
-                rep += " \n" if provenance != self._provenances[-1] else ""
+                rep += "\n" if provenance != self._provenances[-1] else ""
             return rep
             
     @property
@@ -242,14 +242,14 @@ class MultiProvenance(object):
                     details = provenance.detail.split("\n")
                     for j, d in enumerate(details):
                         if j == 0:
-                            rep += "{0}: {1} \n".format(i, d)
+                            rep += "{0}: {1}\n".format(i, d)
                         else:
                             rep += "   {0}".format(d)
-                            rep += " \n" if d != details[-1] else ""
+                            rep += "\n" if d != details[-1] else ""
                 else:
                     rep += "{0}: {1}".format(i, provenance.detail)
                     
-                rep += " \n" if provenance != self._provenances[-1] else ""
+                rep += "\n" if provenance != self._provenances[-1] else ""
                     
             return rep
         
