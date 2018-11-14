@@ -691,7 +691,11 @@ class HistContainer(object):
         for i in range(n_data_sets_eff):
             if self.err_dict['err_color'] == 'auto' and not self.stacked:
                 if self.histtype == 'marker':
-                    err_color = colors.to_rgba(vis_object[i]._get_rgba_face())
+                    # print (vis_object[i])
+                    # return vis_object[i]
+                    # err_color = colors.to_rgba(vis_object[i]._get_rgba_face())
+                    err_color = colors.to_rgba(vis_object[i].get_markerfacecolor(),
+                                               vis_object[i]._alpha)
                 elif self.histtype in ['stepfilled', 'bar']:
                     err_color = colors.to_rgba(vis_object[i][0].get_facecolor())
                 elif self.histtype == 'step':
