@@ -239,8 +239,9 @@ class MplPlotter(object):
         berr1 = getattr(hist_con1, 'bin_err', np.zeros(len(bc1)))
         berr2 = getattr(hist_con2, 'bin_err', np.zeros(len(bc2)))
 
-        ratio = bc1/bc2
-        ratio_err = ratio*np.sqrt((berr1/bc1)**2+(berr2/bc2)**2)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            ratio = bc1/bc2
+            ratio_err = ratio*np.sqrt((berr1/bc1)**2+(berr2/bc2)**2)
         ratio_err_hi = ratio + ratio_err
         ratio_err_low = ratio - ratio_err
 
@@ -691,8 +692,6 @@ class HistContainer(object):
         for i in range(n_data_sets_eff):
             if self.err_dict['err_color'] == 'auto' and not self.stacked:
                 if self.histtype == 'marker':
-                    # print (vis_object[i])
-                    # return vis_object[i]
                     # err_color = colors.to_rgba(vis_object[i]._get_rgba_face())
                     err_color = colors.to_rgba(vis_object[i].get_markerfacecolor(),
                                                vis_object[i]._alpha)
@@ -741,7 +740,8 @@ class HistContainer(object):
                                                   zorder=0))
 
     def redraw(self):
-        self.bc_scales = np.divide(self.bin_content, self.bin_content_orig)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            self.bc_scales = np.divide(self.bin_content, self.bin_content_orig)
         self.bc_scales[-1] = np.nan_to_num(self.bc_scales[-1])
         self.do_redraw = False
         if self.n_data_sets == 1:
@@ -791,7 +791,10 @@ class HistContainer(object):
         self.ax.set_yscale('log', nonposy='clip')
         logbase = self.ax.yaxis._scale.base
         ymin = np.min(self.bin_content[np.nonzero(self.bin_content)])
-        self.ax.set_ylim(ymin=min(self.ax.get_ylim()[0], ymin/logbase))
+        try:
+            self.ax.set_ylim(bottom=min(self.ax.get_ylim()[0], ymin/logbase))
+        except TypeError:
+            self.ax.set_ylim(ymin=min(self.ax.get_ylim()[0], ymin/logbase))
 
 
 def poisson_error(bin_content, suppress_zero=False):
