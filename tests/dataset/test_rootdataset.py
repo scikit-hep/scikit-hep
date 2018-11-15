@@ -109,7 +109,7 @@ def test_methods():
     del ds4, ds5, ds6
     os.remove('new_tree.root')
     os.remove('new_chain.root')
-    
+
 def test_selections():
     tree = create_simple_tree(200)
     sel1 = Selection("x > 1")
