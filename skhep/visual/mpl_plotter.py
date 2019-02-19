@@ -468,12 +468,26 @@ class HistContainer(object):
         '''Do an initial binning to get bin edges, total hist range, and break each set of data and
         weights into a dataframe (easier to handle errorbar calculation moving forward)'''
 
+        # If a range is given, mask data using that range to allow smart binning algos to
+        # bin data properly.  This will impact a predetermined bin-edge input.
+
+        if self.bin_range is not None:
+            for d in range(self.n_data_sets):
+                range_mask = (data[d]>=self.bin_range[0])&(data[d]<=self.bin_range[-1])
+                data[d] = data[d][range_mask]
+            if weights is not None:
+                weights[d] = weights[d][range_mask]
+
         # If bin edges are already determined, than skip initial histogramming
         self.bin_edges = None
         if isinstance(self.bins, Iterable) and not isinstance(self.bins, str):
             self.bin_edges = self.bins
             if self.bin_range is None:
                 self.bin_range = (self.bin_edges[0], self.bin_edges[-1])
+            else:
+                # If range is given, it gets priority over self-defined bins
+                range_mask = (self.bin_edges>=self.bin_range[0])&(self.bin_edges<=self.bin_range[-1])
+                self.bin_edges = self.bin_edges[range_mask]
 
         # If bin edges need to be determined, there's a few different cases to consider
         else:
