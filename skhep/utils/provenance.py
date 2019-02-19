@@ -228,8 +228,7 @@ class MultiProvenance(object):
             rep = ""
             for i,provenance in enumerate(self._provenances):
                 rep += "{0}: {1}".format(i, provenance)
-                if provenance != self._provenances[-1]:
-                    rep += " \n"
+                rep += "\n" if provenance != self._provenances[-1] else ""
             return rep
             
     @property
@@ -239,9 +238,19 @@ class MultiProvenance(object):
         else:
             rep = ""
             for i,provenance in enumerate(self._provenances):
-                rep += "{0}: {1}".format(i, provenance.detail)
-                if provenance != self._provenances[-1]:
-                    rep += " \n"
+                if "\n" in provenance.detail:
+                    details = provenance.detail.split("\n")
+                    for j, d in enumerate(details):
+                        if j == 0:
+                            rep += "{0}: {1}\n".format(i, d)
+                        else:
+                            rep += "   {0}".format(d)
+                            rep += "\n" if d != details[-1] else ""
+                else:
+                    rep += "{0}: {1}".format(i, provenance.detail)
+                    
+                rep += "\n" if provenance != self._provenances[-1] else ""
+                    
             return rep
         
     def __iadd__(self, object):

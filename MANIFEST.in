@@ -5,7 +5,7 @@ include LICENSE
 include MANIFEST.in
 
 # Include the data files
-recursive-include skhep/data/ *
+recursive-include skhep/data *
 
 # Include directory with test suite
 recursive-include tests *

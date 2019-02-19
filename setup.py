@@ -46,7 +46,7 @@ INSTALL_REQUIRES = [
     'matplotlib>2.0.0;python_version>="2.7"',
 ]
 
-TEST_REQUIRES = [
+TESTS_REQUIRE = [
     'pytest>3.0;python_version>="2.7"'
 ]
 
@@ -67,7 +67,7 @@ setup(
     package_data={'skhep': ['data/*.*']},
     py_modules=['setuputils'],
     install_requires=INSTALL_REQUIRES,
-    test_requires=TEST_REQUIRES,
+    tests_require=TESTS_REQUIRE,
     setup_requires=SETUP_REQUIRES,
     classifiers=[
         'Intended Audience :: Science/Research',

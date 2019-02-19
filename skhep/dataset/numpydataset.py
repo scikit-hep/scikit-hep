@@ -50,10 +50,11 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
 
         assert self.isrecarray(data) or self.isdictof1d(data)
         self._data = data
+        
         if isinstance(data, dict):
             self.dicttoarray()
 
-        for var in self.data.dtype.names:
+        for var in self.variables:
             self.__add_var(var)
 
         if isinstance(provenance, MultiProvenance):
@@ -243,7 +244,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
         # always write column-wise: collection of 1d arrays in a zip file (.npz)
         # (not too different from what ROOT is, actually)
         data = dict((name, self.data[name])
-                    for name in self.data.dtype.names)
+                    for name in self.variables)
 
         numpy.savez(NumpyDataset._openSingleFile(base), **data)
 
@@ -350,6 +351,23 @@ def can_override_ufunc ( ):
     version = version.split(".")
     version = [int(v) for v in version]
     return version[0] >= 1. and version[1] >= 13.
+    
+def concatenate(NumpyDatasets):
+  
+    if isinstance(NumpyDatasets, (tuple, list)):
+        if all(isinstance(nd, NumpyDataset) for nd in NumpyDatasets):
+          
+          data_concatenated = numpy.concatenate([nd.data for nd in NumpyDatasets])
+          provenance = MultiProvenance(*[nd.provenance for nd in NumpyDatasets])
+          provenance = MultiProvenance(ObjectOrigin(provenance.detail))
+          
+          return NumpyDataset( data_concatenated, provenance )
+            
+        else:
+            raise TypeError("Can only concatenate a list/tuple of NumpyDatasets")
+    else:
+        raise TypeError("Can only concatenate a list/tuple of NumpyDatasets")
+      
 
 # -----------------------------------------------------------------------------
 # SkhepNumpyArray

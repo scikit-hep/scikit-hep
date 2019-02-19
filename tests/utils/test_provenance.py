@@ -90,5 +90,5 @@ def test_MultiProvenance():
     multip1 = multip.copy() + MultiProvenance(forma)
     assert multip1[2].__repr__() == '<Formatting to ROOTDataset(DecayTree)>'
     assert multip1[2].detail == 'ROOTDataset(DecayTree)'
-    assert multip1.__repr__() == "0: {0} \n1: {1} \n2: {2}".format(prov1, transf, forma)
+    assert multip1.__repr__() == "0: {0}\n1: {1}\n2: {2}".format(prov1, transf, forma)
     multip2 = MultiProvenance(multip1)
