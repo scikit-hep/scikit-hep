@@ -257,7 +257,7 @@ class MplPlotter(object):
 
         if unity_line:
             ax2.axhline(1, linewidth=3, color=unity_line, zorder=0)
-        ax2.yaxis.set_major_locator(MaxNLocator(nbins=4, prune='upper'))
+        ax2.yaxis.set_major_locator(MaxNLocator(nbins=4, prune='upper') )
         if ratio_range:
             ax2.set_ylim(ratio_range)
         else:
@@ -692,7 +692,6 @@ class HistContainer(object):
         for i in range(n_data_sets_eff):
             if self.err_dict['err_color'] == 'auto' and not self.stacked:
                 if self.histtype == 'marker':
-                    # err_color = colors.to_rgba(vis_object[i]._get_rgba_face())
                     err_color = colors.to_rgba(vis_object[i].get_markerfacecolor(),
                                                vis_object[i]._alpha)
                 elif self.histtype in ['stepfilled', 'bar']:
