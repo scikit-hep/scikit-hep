@@ -34,21 +34,21 @@ class ParseResultsWrapper(object):
     @property
     def lhs(self):
         ret = self._result.lhs
-        if len(ret) == 1:
+        if isinstance(ret, pyparsing.ParseResults) and len(ret) == 1:
             return ret[0]
         return ret
 
     @property
     def rhs(self):
         ret = self._result.rhs
-        if len(ret) == 1:
+        if isinstance(ret, pyparsing.ParseResults) and len(ret) == 1:
             return ret[0]
         return ret
 
     @property
     def operator(self):
         ret = self._result.operator
-        if len(ret) == 1:
+        if isinstance(ret, pyparsing.ParseResults) and len(ret) == 1:
             return ret[0]
         return ret
 
