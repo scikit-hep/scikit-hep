@@ -10,10 +10,11 @@ Tests for the skhep.math.kinematics module.
 import pytest
 from pytest import approx
 
+from hepunits.units import GeV, ps
+from hepunits.constants import hbar
+
 from skhep.math.kinematics import *
 from skhep.math.vectors import Vector3D
-from skhep.units import GeV, ps
-from skhep.constants import hbar
 from skhep.utils.py23 import *
 
 # -----------------------------------------------------------------------------
