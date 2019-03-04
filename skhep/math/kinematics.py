@@ -9,8 +9,8 @@ Mathematical functions relevant to kinematics
 # -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from ..units import MeV, ns
-from ..constants import hbar
+from hepunits.units import MeV, ns
+from hepunits.constants import hbar
 
 from .numeric import isequal
 
@@ -37,7 +37,7 @@ def Kallen_function(x, y, z):
     :math:`P (M) \\to p1 (m1) + p2 (m2)`, the momenta of 1 and 2 given by :math:`p = |\\mathbf{p1}| = |\\mathbf{p2}|`:
 
         >>> from skhep.math  import Kallen_function
-        >>> from skhep.units import MeV, GeV
+        >>> from hepunits.units import MeV, GeV
         >>> from math import sqrt
         >>> M = 5.279 * GeV; m1 = 493.7 * MeV; m2 = 139.6 * MeV
         >>> p = sqrt( Kallen_function( M**2, m1**2, m2**2 ) ) / (2*M)
