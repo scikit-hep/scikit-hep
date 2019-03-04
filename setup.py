@@ -39,6 +39,7 @@ os.chdir(LOCAL_PATH)
 sys.path.insert(0, LOCAL_PATH)
 
 INSTALL_REQUIRES = [
+    'hepunits',
     'PyPDT>={0}'.format(PYPDT_MIN_VERSION),
     'numpy>={0};python_version>="2.7"'.format(NUMPY_MIN_VERSION),
     'pandas<0.21;python_version=="3.4.*"',
