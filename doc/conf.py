@@ -36,8 +36,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Scikit-HEP'
-copyright = u'2016-2017, The Scikit-HEP Developers'
-author = u'The Scikit-HEP Developers'
+copyright = u'2016-2019, The Scikit-HEP Administrators'
+author = u'The Scikit-HEP Administrators'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -80,18 +80,18 @@ html_theme = 'alabaster'
 #
 html_sidebars = {
     '**': [
-        'about.html',
+        #'about.html',
         'navigation.html',
         'relations.html',
-        'searchbox.html',
+        #'searchbox.html',
         'donate.html',
     ]
 }
 html_theme_options = {
-    'github_user': 'scikit-hep',
-    'github_repo': 'scikit-hep',
-    'github_type': 'star',
-    'github_banner': True,
+    #'github_user': 'scikit-hep',
+    #'github_repo': 'scikit-hep',
+    #'github_type': 'star',
+    #'github_banner': True,
     'logo': 'logo.svg',
     'fixed_sidebar': True,
     'show_powered_by': False,

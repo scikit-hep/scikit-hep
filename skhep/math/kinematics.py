@@ -16,10 +16,7 @@ from ..constants import hbar
 def Kallen_function(x, y, z):
     """
     The Kallen function, aka triangle or lambda function,
-    named after physicist Anders Olof Gunnar Kallen [Kallen]_.
-
-    Definition
-    ----------
+    named after physicist Anders Olof Gunnar Kallen [Kallen]_:
 
     .. math::
 
@@ -28,6 +25,7 @@ def Kallen_function(x, y, z):
                       &=& (x-y-z)^2 - 4 y z \\\\
                       &=& [ x - (\\sqrt{y}+\\sqrt{z})^2 ] [ x - (\\sqrt{y}-\\sqrt{z})^2 ] \\,\\,\\,\\mathrm{if} \\,\\,\\,y, z > 0
       \\end{eqnarray}
+
     Example
     -------
     Calculate in the rest frame of a particle of mass M decaying to 2 particles labeled 1 and 2,
