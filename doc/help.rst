@@ -16,5 +16,4 @@ Forum for general matters, announcements and discussions concerning the Scikit-H
 On GitHub
 ----------
 
-You can also get help via the
-`GitHub pages <https://github.com/scikit-hep/scikit-hep/>`_, e.g. filing `an issue <https://github.com/scikit-hep/scikit-hep/issues>`_.
+You can also get help via the GitHub pages of the package of interest, e.g. filing an issue.

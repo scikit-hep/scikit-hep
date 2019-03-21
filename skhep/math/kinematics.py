@@ -18,10 +18,7 @@ from .numeric import isequal
 def Kallen_function(x, y, z):
     """
     The Kallen function, aka triangle or lambda function,
-    named after physicist Anders Olof Gunnar Kallen [Kallen]_.
-
-    Definition
-    ----------
+    named after physicist Anders Olof Gunnar Kallen [Kallen]_:
 
     .. math::
 
