@@ -12,6 +12,7 @@ import colorsys
 
 import numpy as np
 
+import matplotlib as mpl
 from matplotlib import pyplot as plt
 from matplotlib import colors, gridspec
 import matplotlib.cbook as cbook
@@ -57,6 +58,10 @@ class MplPlotter(object):
                         'blocks' : use bayesian blocks for dynamic bin widths.
 
                         'auto' : use 'auto' feature from numpy.histogram.
+
+                        'fd', 'doane', 'scott', 'rice', 'sturges', 'sqrt' : see numpy.histogram for
+                            details.
+                            (https://docs.scipy.org/doc/numpy/reference/generated/numpy.histogram.html)
 
                 Defaults to 'auto'.
 
@@ -204,7 +209,7 @@ class MplPlotter(object):
         gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1])
         ax1 = fig.add_subplot(gs[0])
         if logx:
-            ax1.set_xscale("log", nonposy='clip')
+            ax1.set_xscale("log", nonposx='clip')
         ax2 = fig.add_subplot(gs[1], sharex=ax1)
         # ax1.grid(True)
         # ax2.grid(True)
@@ -234,8 +239,9 @@ class MplPlotter(object):
         berr1 = getattr(hist_con1, 'bin_err', np.zeros(len(bc1)))
         berr2 = getattr(hist_con2, 'bin_err', np.zeros(len(bc2)))
 
-        ratio = bc1/bc2
-        ratio_err = ratio*np.sqrt((berr1/bc1)**2+(berr2/bc2)**2)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            ratio = bc1/bc2
+            ratio_err = ratio*np.sqrt((berr1/bc1)**2+(berr2/bc2)**2)
         ratio_err_hi = ratio + ratio_err
         ratio_err_low = ratio - ratio_err
 
@@ -251,7 +257,7 @@ class MplPlotter(object):
 
         if unity_line:
             ax2.axhline(1, linewidth=3, color=unity_line, zorder=0)
-        ax2.yaxis.set_major_locator(MaxNLocator(nbins=4, prune='upper'))
+        ax2.yaxis.set_major_locator(MaxNLocator(nbins=4, prune='upper') )
         if ratio_range:
             ax2.set_ylim(ratio_range)
         else:
@@ -351,14 +357,19 @@ class HistContainer(object):
         # Massage 'x' for processing.
         if input_empty:
             x = np.array([[]])
-        else:
+        elif mpl.__version__ < '2.1.0':
             x = cbook._reshape_2D(x)
+        else:
+            x = cbook._reshape_2D(x, 'x')
 
         self.n_data_sets = len(x)  # number of datasets
 
         # We need to do to 'weights' what was done to 'x'
         if w is not None:
-            w = cbook._reshape_2D(w)
+            if mpl.__version__ < '2.1.0':
+                w = cbook._reshape_2D(w)
+            else:
+                w = cbook._reshape_2D(w, 'w')
 
         if w is not None and len(w) != self.n_data_sets:
             raise ValueError('weights should have the same shape as x')
@@ -401,12 +412,6 @@ class HistContainer(object):
             self.err_dict['err_style'] = kwargs.pop('err_style', 'line')
 
         self.err_dict['err_color'] = kwargs.pop('err_color', 'auto')
-
-        # err_color='auto' is not currently supported in python 2.6 due to matplotlib
-        # incompatibilities.  If an error bar color is not defined, then it will be set to black by
-        # default.
-        if sys.version_info < (2, 7):
-            self.err_dict['err_color'] = 'k'
 
         self.err_dict['suppress_zero'] = kwargs.pop('suppress_zero', False)
 
@@ -463,12 +468,26 @@ class HistContainer(object):
         '''Do an initial binning to get bin edges, total hist range, and break each set of data and
         weights into a dataframe (easier to handle errorbar calculation moving forward)'''
 
+        # If a range is given, mask data using that range to allow smart binning algos to
+        # bin data properly.  This will impact a predetermined bin-edge input.
+
+        if self.bin_range is not None:
+            for d in range(self.n_data_sets):
+                range_mask = (data[d]>=self.bin_range[0])&(data[d]<=self.bin_range[-1])
+                data[d] = data[d][range_mask]
+            if weights is not None:
+                weights[d] = weights[d][range_mask]
+
         # If bin edges are already determined, than skip initial histogramming
         self.bin_edges = None
         if isinstance(self.bins, Iterable) and not isinstance(self.bins, str):
             self.bin_edges = self.bins
             if self.bin_range is None:
                 self.bin_range = (self.bin_edges[0], self.bin_edges[-1])
+            else:
+                # If range is given, it gets priority over self-defined bins
+                range_mask = (self.bin_edges>=self.bin_range[0])&(self.bin_edges<=self.bin_range[-1])
+                self.bin_edges = self.bin_edges[range_mask]
 
         # If bin edges need to be determined, there's a few different cases to consider
         else:
@@ -624,19 +643,7 @@ class HistContainer(object):
             elif self.err_dict['err_type'] == 'sumW2':
                 bin_err_tmp = []
                 if self.stacked:
-                    # bug in pd.concat for py26 with categorical objects (which are created by
-                    # pd.cut, for instance).  This bug is fixed in pandas 0.17.0, but that py26
-                    # support was dropped in that version (and subsequent versions).  Solution is
-                    # to concatinate the dataframes without the 'bins' column, and then recalculate
-                    if sys.version_info < (2, 7):
-                        df_list_tmp = [self.df_list[0].drop('bins', axis=1)]
-                        for df in self.df_list[1:]:
-                            df_list_tmp.append(df.drop('bins', axis=1))
-                        df_list_tmp = [pd.concat(df_list_tmp, ignore_index=True)]
-                        df_bins = pd.cut(df_list_tmp[0].data, self.bin_edges, include_lowest=True)
-                        df_list_tmp[0]['bins'] = df_bins
-                    else:
-                        df_list_tmp = [pd.concat(self.df_list, ignore_index=True)]
+                    df_list_tmp = [pd.concat(self.df_list, ignore_index=True)]
                 else:
                     df_list_tmp = self.df_list
 
@@ -699,7 +706,8 @@ class HistContainer(object):
         for i in range(n_data_sets_eff):
             if self.err_dict['err_color'] == 'auto' and not self.stacked:
                 if self.histtype == 'marker':
-                    err_color = colors.to_rgba(vis_object[i]._get_rgba_face())
+                    err_color = colors.to_rgba(vis_object[i].get_markerfacecolor(),
+                                               vis_object[i]._alpha)
                 elif self.histtype in ['stepfilled', 'bar']:
                     err_color = colors.to_rgba(vis_object[i][0].get_facecolor())
                 elif self.histtype == 'step':
@@ -745,7 +753,8 @@ class HistContainer(object):
                                                   zorder=0))
 
     def redraw(self):
-        self.bc_scales = np.divide(self.bin_content, self.bin_content_orig)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            self.bc_scales = np.divide(self.bin_content, self.bin_content_orig)
         self.bc_scales[-1] = np.nan_to_num(self.bc_scales[-1])
         self.do_redraw = False
         if self.n_data_sets == 1:
@@ -795,7 +804,10 @@ class HistContainer(object):
         self.ax.set_yscale('log', nonposy='clip')
         logbase = self.ax.yaxis._scale.base
         ymin = np.min(self.bin_content[np.nonzero(self.bin_content)])
-        self.ax.set_ylim(ymin=min(self.ax.get_ylim()[0], ymin/logbase))
+        try:
+            self.ax.set_ylim(bottom=min(self.ax.get_ylim()[0], ymin/logbase))
+        except TypeError:
+            self.ax.set_ylim(ymin=min(self.ax.get_ylim()[0], ymin/logbase))
 
 
 def poisson_error(bin_content, suppress_zero=False):

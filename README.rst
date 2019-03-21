@@ -1,3 +1,6 @@
+.. image:: https://zenodo.org/badge/73710584.svg
+   :target: https://zenodo.org/badge/latestdoi/73710584
+
 ==========
 Scikit-HEP
 ==========
@@ -19,9 +22,6 @@ The development is occurring at the
 `project's GitHub page <http://github.com/scikit-hep/scikit-hep>`_.
 
 Python versions supported:
-
-.. image:: https://img.shields.io/badge/python-2.6-blue.svg
-   :target: https://badge.fury.io/py/scikit-hep
 
 .. image:: https://img.shields.io/badge/python-2.7-blue.svg
    :target: https://badge.fury.io/py/scikit-hep

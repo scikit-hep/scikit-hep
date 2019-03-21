@@ -46,7 +46,6 @@ class Provenance(object):
         """
         raise NotImplementedError
 
-
 class Origin(Provenance):
     """
     Abstract base class for all classes describing the first object in a provenance list.
@@ -92,10 +91,9 @@ class ObjectOrigin(Origin):
     @property
     def detail(self):
         return self._detail
-
+    
     def __repr__(self):
         return "<ObjectOrigin>"
-
 
 class FileOrigin(Origin):
     """
@@ -135,8 +133,7 @@ class FileOrigin(Origin):
 
     def __repr__(self):
         return "<FileOrigin ({0} file{1})>".format(len(self.files),'s' if len(self.files)>1 else '')
-
-
+        
 class Transformation(Provenance):
     """
     Declares that the dataset was transformed by some mathematical operation.
@@ -156,29 +153,116 @@ class Transformation(Provenance):
     <Transformation(all elms * 2)>
     """
 
-    def __init__(self, name, args=[]):
-        self.name = name
-        self.args = args
+    def __init__(self, name, *args):
+        self.name     = name
+        self.args     = args
 
     @property
     def detail(self):
-        return "{0} ({1})".format(self.name,
-                                 ",".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
-
+        detail = self.name
+        if len(self.args) > 0:
+            subdetail = ""
+            for x in self.args:
+                if isinstance(x, Provenance):
+                    subdetail += ", {0}".format(x.detail)
+                else:
+                    subdetail += ", {0}".format(x)
+                if x == self.args[0]:
+                    subdetail = subdetail.replace(", ","")
+            detail += " ({0})".format(subdetail)
+        return detail
+            
     def __repr__(self):
         return "<Transformation({0})>".format(self.name)
-
 
 class Formatting(Provenance):
     """
     Declares that the dataset was reformatted, keeping its semantic meaning, but changed in representation.
     """
 
-    def __init__(self, format, args):
+    def __init__(self, format, *args):
         self.format = format
         self.args = args
 
     @property
     def detail(self):
-        return "{0}({1})".format(self.format,
-                                 ",".format(x.detail if isinstance(x, Provenance) else repr(x) for x in self.args))
+        detail = self.format
+        if len(self.args) > 0:
+            subdetail = ""
+            for x in self.args:
+                if isinstance(x, Provenance):
+                    subdetail += ", {0}".format(x.detail)
+                else:
+                    subdetail += ", {0}".format(x)
+                if x == self.args[0]:
+                    subdetail = subdetail.replace(", ","")
+            detail += "({0})".format(subdetail)
+        return detail
+    
+    def __repr__(self):
+        return "<Formatting to {0}>".format(self.detail)
+      
+   
+class MultiProvenance(object):
+    """
+    Class for collecting history of provenances.
+    """
+
+    def __init__(self, *args):
+        if not all(isinstance(arg, (Provenance, MultiProvenance )) for arg in args):
+            raise ValueError("Inputs must be Provenance types!")
+        if len(args) == 1 and isinstance(args[0], MultiProvenance):
+            args = args[0]
+        self._provenances = list(args)
+          
+    def copy(self):
+        return MultiProvenance(*self._provenances)
+        
+    def __getitem__(self, i):
+        return self._provenances[i]
+        
+    def __repr__(self):
+        if len(self._provenances) == 1:
+            return repr(self._provenances[0])
+        else:
+            rep = ""
+            for i,provenance in enumerate(self._provenances):
+                rep += "{0}: {1}".format(i, provenance)
+                rep += "\n" if provenance != self._provenances[-1] else ""
+            return rep
+            
+    @property
+    def detail(self):
+        if len(self._provenances) == 1:
+            return getattr( self._provenances[0], "detail", "")
+        else:
+            rep = ""
+            for i,provenance in enumerate(self._provenances):
+                if "\n" in provenance.detail:
+                    details = provenance.detail.split("\n")
+                    for j, d in enumerate(details):
+                        if j == 0:
+                            rep += "{0}: {1}\n".format(i, d)
+                        else:
+                            rep += "   {0}".format(d)
+                            rep += "\n" if d != details[-1] else ""
+                else:
+                    rep += "{0}: {1}".format(i, provenance.detail)
+                    
+                rep += "\n" if provenance != self._provenances[-1] else ""
+                    
+            return rep
+        
+    def __iadd__(self, object):
+        if not isinstance( object, ( Provenance , MultiProvenance )):
+            raise ValueError("Cannot add a {0} to MultiProvenance!".format(type(object)))
+        elif isinstance( object, MultiProvenance):
+            self._provenances += object._provenances
+        else:
+            self._provenances += [object]
+        return self
+            
+    def __add__(self, object):
+        multiprov = self.copy()
+        multiprov += object
+        return multiprov

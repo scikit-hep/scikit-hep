@@ -4,7 +4,6 @@ os:
   - linux
 
 python:
-  - 2.6
   - 2.7
   - 3.4
   - 3.5
@@ -19,7 +18,8 @@ addons:
 
 install:
   - pip install --upgrade pip
-  - pip install coveralls 
+  - pip install -r requirements.txt 
+  - pip install coveralls
   - pip install pytest
 
 script:
