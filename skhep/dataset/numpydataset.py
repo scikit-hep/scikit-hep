@@ -50,7 +50,7 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
 
         assert self.isrecarray(data) or self.isdictof1d(data)
         self._data = data
-        
+
         if isinstance(data, dict):
             self.dicttoarray()
 
@@ -237,8 +237,6 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
     def to_file(self, base, **options):
         """
 
-        Parameters
-        ----------
         options: none
         """
         # always write column-wise: collection of 1d arrays in a zip file (.npz)
@@ -351,23 +349,23 @@ def can_override_ufunc ( ):
     version = version.split(".")
     version = [int(v) for v in version]
     return version[0] >= 1. and version[1] >= 13.
-    
+
 def concatenate(NumpyDatasets):
-  
+
     if isinstance(NumpyDatasets, (tuple, list)):
         if all(isinstance(nd, NumpyDataset) for nd in NumpyDatasets):
-          
+
           data_concatenated = numpy.concatenate([nd.data for nd in NumpyDatasets])
           provenance = MultiProvenance(*[nd.provenance for nd in NumpyDatasets])
           provenance = MultiProvenance(ObjectOrigin(provenance.detail))
-          
+
           return NumpyDataset( data_concatenated, provenance )
-            
+
         else:
             raise TypeError("Can only concatenate a list/tuple of NumpyDatasets")
     else:
         raise TypeError("Can only concatenate a list/tuple of NumpyDatasets")
-      
+
 
 # -----------------------------------------------------------------------------
 # SkhepNumpyArray
