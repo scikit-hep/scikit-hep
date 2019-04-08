@@ -1,14 +1,15 @@
-Welcome to the Scikit-HEP project!
-==================================
+Scikit-HEP project - welcome!
+=============================
 
 The `Scikit-HEP project` is a community-driven and community-oriented project
 with the aim of providing Particle Physics at large with a Python package
 containing core and common tools. The project started in Autumn 2016 and is under active development.
 
-It is not just about providing common tools for the community. It is also about improving on discoverability of utility packages.
+It is not just about providing common tools for the community. It is also about improving on discoverability of utility packages
+and projects.
 
-The project should be seen as a toolset of Python packages.
-It defines a set of five *pillars*, which are seen to embrace
+Scikit-HEP should be seen as a toolset of Python packages.
+The project defines a set of five *pillars*, which are seen to embrace
 all major topics involved in a physicist's work. These are:
 
   * **Datasets**: data in various sources, such as ROOT, Numpy/Pandas, databases, wrapped in a common interface.
@@ -16,6 +17,8 @@ all major topics involved in a physicist's work. These are:
   * **Modeling**: data models and fitting utilities.
   * **Simulation**: wrappers for Monte Carlo engines and other generators of simulated data.
   * **Visualization**: interface to graphics engines, from ROOT and Matplotlib to maybe even d3 or plot.ly.
+
+.. _index_toolset_packages:
 
 Toolset packages
 ----------------
@@ -76,8 +79,10 @@ from the Python scientific software stack.
    :maxdepth: 2
 
    index.rst
-   help.rst
-   scikit-hep/documentation.rst
+   faq.rst
+   get-in-touch.rst
+   documentation.rst
+   resources.rst
 
 ..   contributing.rst
 

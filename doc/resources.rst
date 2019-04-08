@@ -5,10 +5,14 @@ Miscellaneous resources
 
 A collection of presentations, videos and publications
 on, or related to, the Scikit-HEP project.
-The material hence includes resources about the affiliated packages.
+
 
 Presentations
 -------------
+
+* **7 July 2018:** `PyHEP 2018 Workshop <https://indico.cern.ch/event/694818/>`_, Sofia, Bulgaria:
+
+  * *The Scikit-HEP project*, Matthieu Marinangeli
 
 * **23 Oct. 2017:** `DIANA/HEP project`_ topical meeting (https://indico.cern.ch/event/664968/), CERN:
 

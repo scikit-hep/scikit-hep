@@ -174,6 +174,8 @@ class ToFiles(ToPersistent):
         """
         Save this dataset to a file or collection of files.
 
+        Parameters
+        ----------
         base: str or iterable of str
             String file name or iterable of string file names.
         """
@@ -194,7 +196,7 @@ class NewNumpy(ConvertibleCopy):
     def to_array(self, **options):
         """
         Copy this dataset into a new NumpyDataset, without sharing any underlying data.
-        
+
         A change in the NumpyDataset leaves the original untouched.
         """
         raise NotImplementedError
@@ -214,7 +216,7 @@ class NewROOT(ConvertibleCopy):
     def to_tree(self, **options):
         """
         Copy this dataset into a new ROOTDataset, without sharing any underlying data.
-        
+
         A change in the ROOTDataset leaves the original untouched.
         """
         raise NotImplementedError
