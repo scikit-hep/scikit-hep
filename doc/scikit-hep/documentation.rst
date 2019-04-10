@@ -8,7 +8,6 @@ This is the main page documenting the *scikit-hep* package, example usage, and t
 .. toctree::
     :maxdepth: 2
 
-    installation.rst
     api/api.rst
     examples/examples.rst
 

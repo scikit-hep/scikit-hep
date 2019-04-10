@@ -34,7 +34,7 @@ the READMEs still contain handy "getting started" sections.
     root_pandas             `README <https://github.com/scikit-hep/root_pandas/blob/master/README.md>`__
     root_numpy              `Read the Docs <http://scikit-hep.org/root_numpy/>`__ |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
                             `README <https://github.com/scikit-hep/root_numpy/blob/master/README.rst>`__
-    scikit-hep              `Read the Docs style <http://scikit-hep.org/scikit-hep/documentation.html>`__ |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
+    scikit-hep              |scikit_hep_RtD_style| |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
                             `README <https://github.com/scikit-hep/scikit-hep/blob/master/README.rst>`__
     scikit-hep-testdata     `README <https://github.com/scikit-hep/scikit-hep-testdata/blob/master/README.md>`__
     uproot                  `Read the Docs <https://uproot.readthedocs.io/>`__ |nbsp| |nbsp| |nbsp| |nbsp| |nbsp|
@@ -45,3 +45,7 @@ the READMEs still contain handy "getting started" sections.
 
 .. |nbsp| unicode:: 0xA0
    :trim:
+
+.. |scikit_hep_RtD_style| raw:: html
+
+    <a href="http://scikit-hep.org/scikit-hep/documentation.html" target="_blank">Read the Docs style</a>
