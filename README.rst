@@ -44,6 +44,35 @@ Project status
 .. image:: https://coveralls.io/repos/github/scikit-hep/scikit-hep/badge.svg?branch=master
    :target: https://coveralls.io/github/scikit-hep/scikit-hep?branch=master
 
+
+   Installation
+   ------------
+
+   Install ``scikit-hep`` like any other Python package:
+
+   .. code-block:: bash
+
+       pip install scikit-hep
+
+   or similar (use ``--user``, ``virtualenv``, etc. if you wish).
+
+
+Strict dependencies
+-------------------
+
++------------------------+----------+----------+
+| **Python**             | 2.7      | 3.x      |
++========================+==========+==========+
+| **PyPDT**              | >= 0.7.4            |
++------------------------+---------------------+
+| **NumPy**              | >= 1.11.0           |
++------------------------+---------------------+
+| **matplotlib**         | > 2.0.0 , < 2.1     |
++------------------------+---------------------+
+| **pandas**             | no requirement      |
++------------------------+---------------------+
+
+
 Documentation
 -------------
 
@@ -52,13 +81,14 @@ is in the ``doc/`` folder. `Sphinx`_ is required for building the HTML pages.
 Also `Pandoc`_ is needed so that the Jupyter notebooks providing numerous examples
 are nicely embedded in the documentation. The documentation is built with the command:
 
-::
+ .. code-block:: bash
 
-    $ make -C doc html
+     $ make -C doc html
 
 .. _Scikit-HEP website: http://scikit-hep.org/
 .. _Sphinx: http://www.sphinx-doc.org/en/stable/
 .. _Pandoc : http://pandoc.org/
+
 
 Getting in touch
 ----------------
