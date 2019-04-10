@@ -76,14 +76,12 @@ In some cases, the packages have to do with bridging between different technolog
 from the Python scientific software stack.
 
 .. toctree::
+   :hidden:
    :maxdepth: 1
 
-   index.rst
    documentation.rst
    faq.rst
    get-in-touch.rst
    resources.rst
-
-..   contributing.rst
 
 .. _GitHub repository : https://github.com/scikit-hep/
