@@ -7,9 +7,11 @@ Getting in touch
 Mailing lists
 -------------
 
-Mailing list to ping all admins at once: `scikit-hep-admins@googlegroups.com`_.
-
 Forum for general matters, announcements and discussions concerning the Scikit-HEP project : `scikit-hep-forum@googlegroups.com`_.
+Please go `here <https://groups.google.com/forum/#!forum/scikit-hep-forum>`_ to subscribe.
+
+Mailing list to ping all admins at once: `scikit-hep-admins@googlegroups.com`_.
+Note that this list is private but anyone can send an email to it without sign-up.
 
 .. _scikit-hep-admins@googlegroups.com: scikit-hep-admins@googlegroups.com
 .. _scikit-hep-forum@googlegroups.com: scikit-hep-forum@googlegroups.com
