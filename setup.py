@@ -22,7 +22,6 @@ VERSION = find_version('skhep/__init__.py')
 
 # Specification of minimal versions of required dependencies
 PYTHON_REQUIRES = '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4'
-PYPDT_MIN_VERSION = '0.7.4'
 NUMPY_MIN_VERSION = '1.11.0'
 
 # Prevent setup from trying to create hard links
@@ -40,7 +39,6 @@ sys.path.insert(0, LOCAL_PATH)
 
 INSTALL_REQUIRES = [
     'hepunits',
-    'PyPDT>={0}'.format(PYPDT_MIN_VERSION),
     'numpy>={0};python_version>="2.7"'.format(NUMPY_MIN_VERSION),
     'pandas<0.21;python_version=="3.4.*"',
     'pandas;python_version>="2.7"',

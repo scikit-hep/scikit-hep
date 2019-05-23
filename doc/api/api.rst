@@ -11,7 +11,5 @@ API
    dataset.rst
    math.rst
    modeling.rst
-   pdg.rst
-   simulation.rst
    utils.rst
    visual.rst
