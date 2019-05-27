@@ -1,25 +1,23 @@
-.. image:: https://zenodo.org/badge/73710584.svg
-   :target: https://zenodo.org/badge/latestdoi/73710584
 
-==========
 Scikit-HEP
 ==========
 
-The Scikit-HEP project (http://scikit-hep.org/) is a community-driven and community-oriented project
-with the aim of providing Particle Physics at large with a Python package containing core and common tools.
+.. image:: https://img.shields.io/pypi/v/scikit-hep.svg
+  :alt: PyPI
+  :target: https://pypi.python.org/pypi/scikit-hep
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1043949.svg
+  :target: https://doi.org/10.5281/zenodo.1043949
 
 Project info
 ------------
 
-The project started in Autumn 2016 and its core is actively being defined.
+The Scikit-HEP project (http://scikit-hep.org/) is a community-driven and community-oriented project
+with the aim of providing Particle Physics at large with a Python package containing core and common tools.
 
-The project and releases are `registered on PyPI <http://pypi.python.org/pypi/scikit-hep>`_.
+The project started in Autumn 2016 and its packages are actively developed and maintained.
 
-.. image:: https://badge.fury.io/py/scikit-hep.svg
-    :target: https://badge.fury.io/py/scikit-hep
-
-The development is occurring at the
-`project's GitHub page <http://github.com/scikit-hep/scikit-hep>`_.
+This scikit-hep package is under redesign, in order to become a metapackage for the project.
 
 Python versions supported:
 
@@ -97,8 +95,3 @@ Forum for general matters, announcements and discussions concerning the Scikit-H
 
 .. _scikit-hep-admins: scikit-hep-admins@googlegroups.com
 .. _scikit-hep-forum: scikit-hep-forum@googlegroups.com
-
-License
--------
-The scikit-hep project is licensed under a 3-clause BSD style license - see the
-``LICENSE`` file.
