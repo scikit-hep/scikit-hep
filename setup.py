@@ -63,7 +63,6 @@ setup(
     url=URL,
     license=LICENSE,
     packages=find_packages(),
-    package_data={'skhep': ['data/*.*']},
     py_modules=['setuputils'],
     install_requires=INSTALL_REQUIRES,
     tests_require=TESTS_REQUIRE,
