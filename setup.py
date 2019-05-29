@@ -7,9 +7,6 @@ import os
 from setuptools import setup, find_packages
 from setuputils import read, find_version
 
-# Check the Python version
-if sys.version_info < (2, 7):
-    sys.exit('scikit-hep only supports Python 2.7 and above!')
 
 # General information on the project
 PROJECT_NAME = 'scikit-hep'
