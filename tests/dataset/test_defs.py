@@ -33,6 +33,3 @@ def test_mixins():
     np = NewNumpy()
     with pytest.raises(NotImplementedError):
         np.to_array()
-    nr = NewROOT()
-    with pytest.raises(NotImplementedError):
-        nr.to_tree()
