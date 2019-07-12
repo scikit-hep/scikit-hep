@@ -9,4 +9,3 @@ Subpackage for the description of datasets.
 from __future__ import absolute_import
 
 from .numpydataset import NumpyDataset
-from .rootdataset import ROOTDataset
