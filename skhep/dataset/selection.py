@@ -285,19 +285,6 @@ class Selection(object):
 
         raise NotImplementedError
 
-    @property
-    def rootselection(self):
-        """
-        Return the selection readable for RootDataset.
-
-        The use the formulate package is consideed in the future
-        for better conversion between numexpr and ROOT expression styles.
-        """
-
-        selection = self._selection.replace(" & ", " && ")
-        selection = selection.replace(" | ", " || ")
-        return selection
-
     def __repr__(self):
         return self._selection
 

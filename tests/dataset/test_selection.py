@@ -21,10 +21,10 @@ from skhep.dataset.selection import Selection
 # Actual tests
 # -----------------------------------------------------------------------------
 
-def test_constructors():	
+def test_constructors():
 	s = Selection()
-	
-def test_methods():	
+
+def test_methods():
 	s1 = Selection("x > 1")
 	assert s1.__repr__() == "x > 1"
 	assert s1.parsed.lhs == "x"
@@ -56,6 +56,3 @@ def test_methods():
 	assert s7.__repr__() == "z <= x & x > 1 & y^2 < 2"
 	s8 = Selection("-x < 1")
 	s9 = ( s4 | s5 ) & s6
-
-	
-	

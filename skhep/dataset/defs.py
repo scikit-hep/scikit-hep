@@ -200,23 +200,3 @@ class NewNumpy(ConvertibleCopy):
         A change in the NumpyDataset leaves the original untouched.
         """
         raise NotImplementedError
-
-
-# Uncomment when actually using/implementing this
-#class AsROOT(ConvertibleInPlace):
-#    def as_tree(self, **options):
-#        """View this dataset as a ROOTDataset, sharing its underlying data.
-#
-#        A change in the ROOTDataset modifies the original.
-#        """
-#        raise NotImplementedError
-
-
-class NewROOT(ConvertibleCopy):
-    def to_tree(self, **options):
-        """
-        Copy this dataset into a new ROOTDataset, without sharing any underlying data.
-
-        A change in the ROOTDataset leaves the original untouched.
-        """
-        raise NotImplementedError

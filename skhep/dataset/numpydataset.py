@@ -31,13 +31,12 @@ from ..dataset.selection import Selection
 from .defs import *
 
 numpy = softimport("numpy")
-root_numpy = softimport("root_numpy")
 
 
 # -----------------------------------------------------------------------------
 # NumpyDataset
 # -----------------------------------------------------------------------------
-class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
+class NumpyDataset(FromFiles, ToFiles, Dataset):
     def __init__(self, data, provenance=None, **options):
         """Default constructor for NumpyDataset.
 
@@ -245,25 +244,6 @@ class NumpyDataset(FromFiles, ToFiles, NewROOT, Dataset):
                     for name in self.variables)
 
         numpy.savez(NumpyDataset._openSingleFile(base), **data)
-
-    @inheritdoc(NewROOT, gap='')
-    def to_tree(self, treename, **options):
-        """
-
-        Parameters
-        ----------
-        treename: str
-            Name of ROOT TTree to be created.
-        options: none
-
-        Returns
-        -------
-        ROOTDataset holding new ROOT TTree.
-        """
-
-        tree = root_numpy.array2tree(self.data, treename)
-        from .rootdataset import ROOTDataset
-        return ROOTDataset(tree, self.provenance+Formatting('ROOTDataset', treename))
 
     def __getitem__(self, object):
 
