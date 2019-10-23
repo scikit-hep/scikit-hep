@@ -20,9 +20,6 @@ Python versions supported:
 .. image:: https://img.shields.io/badge/python-2.7-blue.svg
   :target: https://badge.fury.io/py/scikit-hep
 
-.. image:: https://img.shields.io/badge/python-3.4-blue.svg
-  :target: https://badge.fury.io/py/scikit-hep
-
 .. image:: https://img.shields.io/badge/python-3.5-blue.svg
   :target: https://badge.fury.io/py/scikit-hep
 
@@ -67,7 +64,7 @@ or similar (use ``--user``, ``virtualenv``, etc. if you wish).
 Strict dependencies
 ...................
 
-- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (2.7+, 3.4+)
+- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (2.7+, 3.5+)
 - `Numpy <https://scipy.org/install.html>`_: the numerical library for Python (1.11.0+)
 - `matplotlib <https://matplotlib.org/>`_: a popular Python 2D plotting library (> 2.0.0 , < 2.1)
 

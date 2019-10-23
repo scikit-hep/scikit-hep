@@ -18,7 +18,6 @@ LICENSE = 'new BSD'
 VERSION = find_version('skhep/__init__.py')
 
 # Specification of minimal versions of required dependencies
-PYTHON_REQUIRES = '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4'
 NUMPY_MIN_VERSION = '1.11.0'
 
 # Prevent setup from trying to create hard links
@@ -37,7 +36,6 @@ sys.path.insert(0, LOCAL_PATH)
 INSTALL_REQUIRES = [
     'hepunits',
     'numpy>={0};python_version>="2.7"'.format(NUMPY_MIN_VERSION),
-    'pandas<0.21;python_version=="3.4.*"',
     'pandas;python_version>="2.7"',
     'matplotlib>2.0.0;python_version>="2.7"',
 ]
@@ -78,7 +76,6 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
