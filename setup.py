@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # Licensed under a 3-clause BSD style license, see LICENSE.
+
 import sys
 import os
 
@@ -17,9 +18,6 @@ URL = 'https://github.com/scikit-hep/scikit-hep/'
 LICENSE = 'new BSD'
 VERSION = find_version('skhep/__init__.py')
 
-# Specification of minimal versions of required dependencies
-NUMPY_MIN_VERSION = '1.11.0'
-
 # Prevent setup from trying to create hard links
 # which are not allowed on AFS between directories.
 # This is a hack to force copying.
@@ -33,12 +31,10 @@ LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 os.chdir(LOCAL_PATH)
 sys.path.insert(0, LOCAL_PATH)
 
-INSTALL_REQUIRES = [
-    'hepunits',
-    'numpy>={0};python_version>="2.7"'.format(NUMPY_MIN_VERSION),
-    'pandas;python_version>="2.7"',
-    'matplotlib>2.0.0;python_version>="2.7"',
-]
+PYTHON_REQUIRES = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+with open(os.path.join(LOCAL_PATH, 'requirements.txt')) as requirements_file:
+    INSTALL_REQUIRES = requirements_file.read().splitlines()
 
 TESTS_REQUIRE = [
     'pytest>3.0;python_version>="2.7"'
@@ -59,6 +55,7 @@ setup(
     license=LICENSE,
     packages=find_packages(),
     py_modules=['setuputils'],
+    python_requires=PYTHON_REQUIRES,
     install_requires=INSTALL_REQUIRES,
     tests_require=TESTS_REQUIRE,
     setup_requires=SETUP_REQUIRES,
