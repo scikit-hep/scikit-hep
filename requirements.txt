@@ -2,8 +2,8 @@ hepunits==1.0.*
 particle==0.6.*
 decaylanguage==0.5.*
 awkward==0.12.*
-uproot-methods>=0.7.0,<1.0
-uproot>=3.10.0,<4.0
+uproot-methods==0.7.*
+uproot==3.10.*
 boost-histogram==0.5.*
 iminuit==1.3.*
 numpy>=1.13.1
