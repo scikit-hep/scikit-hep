@@ -3,16 +3,18 @@
 A community-driven and oriented Python software project for High Energy Physics.
 """
 
-# -----------------------------------------------------------------------------
-# Import statements
-# -----------------------------------------------------------------------------
 from __future__ import absolute_import
+
+from .utils._show_versions import show_versions
+
 
 __all__ = ['banner',
            'project_url',
            'project_url_GitHub',
-           'project_url_PyPI'
+           'project_url_PyPI',
+           'show_versions'
            ]
+
 
 # -----------------------------------------------------------------------------
 # Project and package info
