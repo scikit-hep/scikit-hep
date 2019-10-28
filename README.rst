@@ -48,20 +48,19 @@ Install ``scikit-hep`` like any other Python package:
 
    pip install scikit-hep
 
-or similar (use ``--user``, ``virtualenv``, etc. if you wish).
+or similar (use ``virtualenv``, etc. if you wish).
 
 Strict dependencies
 ...................
 
-- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (2.7+, 3.6+)
-- `Numpy <https://scipy.org/install.html>`_: the numerical library for Python (1.11.0+)
-- `matplotlib <https://matplotlib.org/>`_: a popular Python 2D plotting library (> 2.0.0 , < 2.1)
-
+Please check the ``setup.py`` and ``requirements.txt`` files for the list
+of Python versions supported and the list of Scikit-HEP project packages
+and dependencies included, respectively.
 
 Documentation
 .............
 
-The project documentation is hosted on the `Scikit-HEP website`_, and the source code
-is in the ``doc/`` folder.
+The project documentation is hosted on the `Scikit-HEP website`_.
+
 
 .. _Scikit-HEP website: http://scikit-hep.org/
