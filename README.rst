@@ -1,6 +1,6 @@
 
-Scikit-HEP
-==========
+scikit-hep: metapackage for Scikit-HEP
+======================================
 
 .. image:: https://img.shields.io/pypi/v/scikit-hep.svg
   :alt: PyPI
@@ -14,17 +14,6 @@ Scikit-HEP
 
 .. image:: https://coveralls.io/repos/github/scikit-hep/scikit-hep/badge.svg?branch=master
    :target: https://coveralls.io/github/scikit-hep/scikit-hep?branch=master
-
-Python versions supported:
-
-.. image:: https://img.shields.io/badge/python-2.7-blue.svg
-  :target: https://badge.fury.io/py/scikit-hep
-
-.. image:: https://img.shields.io/badge/python-3.5-blue.svg
-  :target: https://badge.fury.io/py/scikit-hep
-
-.. image:: https://img.shields.io/badge/python-3.6-blue.svg
-  :target: https://badge.fury.io/py/scikit-hep
 
 
 Project info
@@ -64,7 +53,7 @@ or similar (use ``--user``, ``virtualenv``, etc. if you wish).
 Strict dependencies
 ...................
 
-- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (2.7+, 3.5+)
+- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (2.7+, 3.6+)
 - `Numpy <https://scipy.org/install.html>`_: the numerical library for Python (1.11.0+)
 - `matplotlib <https://matplotlib.org/>`_: a popular Python 2D plotting library (> 2.0.0 , < 2.1)
 
