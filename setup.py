@@ -31,7 +31,7 @@ LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 os.chdir(LOCAL_PATH)
 sys.path.insert(0, LOCAL_PATH)
 
-PYTHON_REQUIRES = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+PYTHON_REQUIRES = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 with open(os.path.join(LOCAL_PATH, 'requirements.txt')) as requirements_file:
     INSTALL_REQUIRES = requirements_file.read().splitlines()
@@ -73,7 +73,6 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: C++',
