@@ -1,5 +1,5 @@
 hepunits==1.1.*
-particle==0.8.*
+particle==0.6.*
 decaylanguage==0.5.*
 awkward==0.12.*
 uproot-methods==0.7.*
