@@ -22,29 +22,17 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pytest-cov coveralls
+        pip install pytest pytest-cov coveralls>=1.9.2
     - name: Install package
       run: pip install .
     - name: Test with pytest
       run: pytest --cov=skhep tests
-    - name: Convert to coveralls
-      run: |
-        coveralls --output coveralls.lcov
-    - name: Coveralls Parallel
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        parallel: true
-        path-to-lcov: coveralls.lcov
+    - name: Send to coveralls
+      if: matrix.python-version == 3.6
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      run: coveralls
 
-  coverage:
-    name: Notify coverage
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-    - name: Coveralls Finished
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        parallel-finished: true
-     
+
+
+
