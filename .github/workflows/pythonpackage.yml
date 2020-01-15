@@ -1,12 +1,15 @@
 name: Python package
 
-on: [push, pull_request]
+on:
+  push:
+   branches:
+     - master
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
       matrix:
         python-version: [2.7, 3.6, 3.8]
 
@@ -29,6 +32,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         parallel: true
+        path-to-lcov: .coverage
 
   coverage:
     name: Notify coverage
