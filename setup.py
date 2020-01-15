@@ -13,7 +13,7 @@ from setuputils import read, find_version
 PROJECT_NAME = 'scikit-hep'
 AUTHOR = 'the scikit-hep developers'
 AUTHOR_EMAIL = 'scikit-hep-admins@googlegroups.com'
-DESCRIPTION = 'Toolset of interfaces and tools for Particle Physics.'
+DESCRIPTION = 'Metapackage of Scikit-HEP project tools for Particle Physics.'
 URL = 'https://github.com/scikit-hep/scikit-hep/'
 LICENSE = 'new BSD'
 VERSION = find_version('skhep/__init__.py')
