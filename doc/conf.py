@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Scikit-HEP'
-copyright = u'2016-2019, The Scikit-HEP Administrators'
+copyright = u'2016-2020, The Scikit-HEP Developers'
 author = u'The Scikit-HEP Administrators'
 
 # The version info for the project you're documenting, acts as replacement for
