@@ -12,7 +12,7 @@
   :target: https://doi.org/10.5281/zenodo.1043949
 
 .. image:: https://github.com/scikit-hep/scikit-hep/workflows/CI/badge.svg
-   :target: https://github.com/scikit-hep/pyhf/actions?query=workflow%3ACI+branch%3Amaster
+   :target: https://github.com/scikit-hep/scikit-hep/actions?query=workflow%3ACI+branch%3Amaster
 
 .. image:: https://coveralls.io/repos/github/scikit-hep/scikit-hep/badge.svg?branch=master
    :target: https://coveralls.io/github/scikit-hep/scikit-hep?branch=master
