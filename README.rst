@@ -1,9 +1,11 @@
 
-scikit-hep: metapackage for Scikit-HEP
-======================================
+``scikit-hep``: metapackage for Scikit-HEP
+==========================================
+
+.. image:: https://scikit-hep.org/assets/images/Scikit--HEP-Project-blue.svg
+   :target: https://scikit-hep.org
 
 .. image:: https://img.shields.io/pypi/v/scikit-hep.svg
-  :alt: PyPI
   :target: https://pypi.python.org/pypi/scikit-hep
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1043949.svg
