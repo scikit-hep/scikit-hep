@@ -1,6 +1,6 @@
 hepunits==1.1.*
 particle==0.9.*
-decaylanguage==0.6.*
+decaylanguage==0.6.*;python_version>="3.4"
 awkward==0.12.*
 uproot-methods==0.7.*
 uproot==3.11.*
