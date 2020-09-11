@@ -3,8 +3,8 @@ particle~=0.11.0
 decaylanguage~=0.7.0
 awkward~=0.12
 uproot-methods==0.7.*
-uproot==3.12.*
-boost-histogram==0.10.*
-iminuit==1.4.*
+uproot~=3.12.0
+boost-histogram~=0.10.0
+iminuit~=1.4.0
 numpy>=1.13.1
 matplotlib>2.0.0
