@@ -1,7 +1,7 @@
-hepunits==1.2.*
-particle==0.11.*
-decaylanguage==0.7.*
-awkward>=0.12.0,<1.0
+hepunits~=1.2.0
+particle~=0.11.0
+decaylanguage~=0.7.0
+awkward~=0.12
 uproot-methods==0.7.*
 uproot==3.12.*
 boost-histogram==0.10.*
