@@ -14,25 +14,21 @@ jobs:
         python-version: [2.7, 3.6, 3.8]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install pytest pytest-cov coveralls>=1.9.2
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install --use-feature=2020-resolver pytest pytest-cov coveralls>=1.9.2
     - name: Install package
-      run: pip install .
+      run: python -m pip install --use-feature=2020-resolver .
     - name: Test with pytest
       run: pytest --cov=skhep tests
     - name: Send to coveralls
-      if: matrix.python-version == 3.6
+      if: matrix.python-version == 3.8
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: coveralls
-
-
-
-
