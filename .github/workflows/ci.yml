@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        python -m pip install pytest pytest-cov coveralls>=1.9.2
+        python -m pip install --use-feature=2020-resolver pytest pytest-cov coveralls>=1.9.2
     - name: Install package
       run: python -m pip install --use-feature=2020-resolver .
     - name: Test with pytest
