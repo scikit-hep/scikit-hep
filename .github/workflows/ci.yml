@@ -28,7 +28,7 @@ jobs:
     - name: Test with pytest
       run: pytest --cov=skhep tests
     - name: Send to coveralls
-      if: matrix.python-version == 3.6
+      if: matrix.python-version == 3.8
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: coveralls
