@@ -1,6 +1,6 @@
 hepunits~=1.2.0
 particle~=0.12.0
-decaylanguage~=0.7.0
+decaylanguage~=0.8.0
 awkward~=0.12
 uproot-methods~=0.7.0
 uproot~=3.12.0
