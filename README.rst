@@ -62,7 +62,7 @@ of Python versions supported and the list of Scikit-HEP project packages
 and dependencies included, respectively.
 
 For any installed `scikit-hep` the following displays the actual versions
-of all Scikit-HEP dependent packages installed; for example:
+of all Scikit-HEP dependent packages installed, for example:
 
 .. code-block:: python
 
@@ -82,7 +82,7 @@ setuptools: 50.3.0
     pandas: 1.1.2
 matplotlib: 3.3.2
 
-Scikit-HEP package dependencies:
+Scikit-HEP package version and dependencies:
         awkward: 0.13.0
 boost_histogram: 0.11.0
   decaylanguage: 0.8.0
@@ -91,9 +91,6 @@ boost_histogram: 0.11.0
         iminuit: 1.5.2
          mplhep: 0.2.2
        particle: 0.12.0
+          skhep: 1.0.0
  uproot_methods: 0.7.4
          uproot: 3.12.0
-
-
-
-.. _Scikit-HEP website: http://scikit-hep.org/
