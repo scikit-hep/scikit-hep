@@ -29,6 +29,7 @@ skhep_deps = [
     "iminuit",
     "mplhep",
     "particle",
+    "skhep",
     "uproot_methods",
     "uproot"
 ]
@@ -98,6 +99,6 @@ def show_versions():
     for k, stat in deps_info.items():
         print("{k:>10}: {stat}".format(k=k, stat=stat))
 
-    print('\nScikit-HEP package dependencies:')
+    print('\nScikit-HEP package version and dependencies:')
     for k, stat in skhep_deps_info.items():
         print("{k:>15}: {stat}".format(k=k, stat=stat))
