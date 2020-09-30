@@ -25,7 +25,9 @@ skhep_deps = [
     "boost_histogram",
     "decaylanguage",
     "hepunits",
+    "hist",
     "iminuit",
+    "mplhep",
     "particle",
     "uproot_methods",
     "uproot"

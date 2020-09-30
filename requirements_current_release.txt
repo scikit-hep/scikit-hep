@@ -4,5 +4,7 @@ decaylanguage
 awkward
 uproot
 boost-histogram
+hist
 iminuit
 matplotlib
+mplhep
