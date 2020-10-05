@@ -9,3 +9,6 @@ recursive-include tests *
 
 # Include documentation in reStructuredText format
 recursive-include doc *
+
+# Required by setup.py script
+requirements.txt
