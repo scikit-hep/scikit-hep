@@ -38,7 +38,7 @@ setup(
     long_description=read('README.rst'),
     url=URL,
     license=LICENSE,
-    packages=find_packages(),
+    packages=find_packages(exclude=("tests",)),
     py_modules=['setuputils'],
     python_requires=PYTHON_REQUIRES,
     install_requires=INSTALL_REQUIRES,
