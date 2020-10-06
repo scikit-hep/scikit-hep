@@ -1,8 +1,4 @@
-# Include the license file
-include LICENSE
-
-# Include the MANIFEST itself
-include MANIFEST.in
+include LICENSE requirements.txt
 
 # Include directory with test suite
 recursive-include tests *
