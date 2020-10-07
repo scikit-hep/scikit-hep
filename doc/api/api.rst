@@ -10,6 +10,5 @@ API
 .. toctree::
    dataset.rst
    math.rst
-   modeling.rst
    utils.rst
    visual.rst
