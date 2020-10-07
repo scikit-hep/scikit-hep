@@ -8,3 +8,4 @@ hist
 iminuit
 matplotlib
 mplhep
+hepstats
