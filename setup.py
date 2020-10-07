@@ -20,13 +20,13 @@ VERSION = find_version('skhep/__init__.py')
 
 LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 
-PYTHON_REQUIRES = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
+PYTHON_REQUIRES = ">=3.6"
 
 with open(os.path.join(LOCAL_PATH, 'requirements.txt')) as requirements_file:
     INSTALL_REQUIRES = requirements_file.read().splitlines()
 
 TESTS_REQUIRE = [
-    'pytest>3.0;python_version>="2.7"'
+    'pytest>3.0'
 ]
 
 setup(
@@ -54,8 +54,6 @@ setup(
         'Operating System :: MacOS',
         'License :: OSI Approved',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
