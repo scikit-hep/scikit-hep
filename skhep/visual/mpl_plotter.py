@@ -21,7 +21,7 @@ from matplotlib.patches import Polygon
 
 import pandas as pd
 
-from skhep.modeling import bayesian_blocks
+from hepstats.modeling import bayesian_blocks
 from skhep.visual.fill_between_steps import fill_between_steps
 
 import warnings

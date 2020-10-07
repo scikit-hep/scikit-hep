@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import skhep
-from skhep.modeling import bayesian_blocks
+from hepstats.modeling import bayesian_blocks
 
 answer_dir = os.path.dirname(skhep.__file__)+'/../tests/data/modeling'
 
