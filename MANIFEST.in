@@ -1,7 +1,1 @@
 include LICENSE requirements.txt
-
-# Include directory with test suite
-recursive-include tests *
-
-# Include documentation in reStructuredText format
-recursive-include doc *
