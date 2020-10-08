@@ -91,6 +91,6 @@ of all Scikit-HEP dependent packages installed, for example:
             iminuit: 1.5.2
              mplhep: 0.2.2
            particle: 0.12.0
-              skhep: 1.0.0
+              skhep: 1.0.1
      uproot_methods: 0.7.4
              uproot: 3.12.0
