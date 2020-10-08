@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - py2-legacy
   release:
     types:
     - published
