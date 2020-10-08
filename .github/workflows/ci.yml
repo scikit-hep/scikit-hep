@@ -4,6 +4,7 @@ on:
   push:
    branches:
      - master
+     - py2-legacy
   pull_request:
   # Run daily at 0:01 UTC
   schedule:
