@@ -24,6 +24,7 @@ skhep_deps = [
     "awkward",
     "boost_histogram",
     "decaylanguage",
+    "hepstats",
     "hepunits",
     "hist",
     "iminuit",

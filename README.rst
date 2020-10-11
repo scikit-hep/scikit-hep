@@ -86,11 +86,12 @@ of all Scikit-HEP dependent packages installed, for example:
             awkward: 0.13.0
     boost_histogram: 0.11.0
       decaylanguage: 0.8.0
+           hepstats: 0.3.0
            hepunits: 2.0.0
                hist: 2.0.0
             iminuit: 1.5.2
              mplhep: 0.2.2
            particle: 0.12.0
-              skhep: 1.0.0
+              skhep: 1.1.0
      uproot_methods: 0.7.4
              uproot: 3.12.0
