@@ -97,7 +97,7 @@ html_theme_options = {
     #'github_repo': 'scikit-hep',
     #'github_type': 'star',
     #'github_banner': True,
-    'logo': 'images/logo.svg',
+    #'logo': 'images/logo.svg',
     #'fixed_sidebar': True,
     'show_powered_by': False,
     'link': '#7092C0',
@@ -119,7 +119,7 @@ html_short_title = 'Scikit-HEP'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = 'images/logo.svg'
+#html_logo = 'images/logo.svg'
 
 # -- Options for HTMLHelp output ------------------------------------------
 
