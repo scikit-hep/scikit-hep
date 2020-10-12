@@ -7,19 +7,21 @@ from __future__ import absolute_import
 
 from .utils._show_versions import show_versions
 
+from ._version import __version__
+
 
 __all__ = ['banner',
            'project_url',
            'project_url_GitHub',
-           'project_url_PyPI',
-           'show_versions'
+           'project_url_PyPI'
+           'show_versions',
+           '__version__',
            ]
 
 
 # -----------------------------------------------------------------------------
 # Project and package info
 # -----------------------------------------------------------------------------
-__version__ = '1.1.0'
 
 project_url = 'http://scikit-hep.org'
 project_url_GitHub = 'https://github.com/scikit-hep/scikit-hep'
