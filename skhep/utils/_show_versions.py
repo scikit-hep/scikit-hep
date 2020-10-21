@@ -27,6 +27,7 @@ skhep_deps = [
     "hepstats",
     "hepunits",
     "hist",
+    "histoprint",
     "iminuit",
     "mplhep",
     "particle",
