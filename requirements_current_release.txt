@@ -9,3 +9,4 @@ iminuit
 matplotlib
 mplhep
 hepstats
+histoprint

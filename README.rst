@@ -75,11 +75,11 @@ of all Scikit-HEP dependent packages installed, for example:
         machine: Linux-4.19.104-microsoft-standard-x86_64-with-glibc2.2.5
 
     Python dependencies:
-           pip: 20.2.3
-    setuptools: 50.3.0
+           pip: 20.2.4
+    setuptools: 50.3.2
          numpy: 1.19.2
-         scipy: 1.5.2
-        pandas: 1.1.2
+         scipy: 1.5.3
+        pandas: 1.1.3
     matplotlib: 3.3.2
 
     Scikit-HEP package version and dependencies:
@@ -88,7 +88,8 @@ of all Scikit-HEP dependent packages installed, for example:
       decaylanguage: 0.8.0
            hepstats: 0.3.0
            hepunits: 2.0.0
-               hist: 2.0.0
+               hist: 2.0.1
+         histoprint: 1.5.2
             iminuit: 1.5.2
              mplhep: 0.2.2
            particle: 0.12.0
