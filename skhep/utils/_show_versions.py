@@ -22,6 +22,7 @@ scipy_deps = [
 
 skhep_deps = [
     "awkward",
+    "awkward1",
     "boost_histogram",
     "decaylanguage",
     "hepstats",
@@ -33,7 +34,8 @@ skhep_deps = [
     "particle",
     "skhep",
     "uproot_methods",
-    "uproot"
+    "uproot",
+    "uproot4"
 ]
 
 
