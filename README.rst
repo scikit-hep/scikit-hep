@@ -5,6 +5,9 @@
 .. image:: https://scikit-hep.org/assets/images/Scikit--HEP-Project-blue.svg
    :target: https://scikit-hep.org
 
+.. image:: https://img.shields.io/gitter/room/gitterHQ/gitter.svg
+   :target: https://gitter.im/Scikit-HEP/community
+
 .. image:: https://img.shields.io/pypi/v/scikit-hep.svg
   :target: https://pypi.python.org/pypi/scikit-hep
 
