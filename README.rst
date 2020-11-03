@@ -87,6 +87,7 @@ of all Scikit-HEP dependent packages installed, for example:
 
     Scikit-HEP package version and dependencies:
             awkward: 0.13.0
+           awkward1: 0.4.0
     boost_histogram: 0.11.0
       decaylanguage: 0.8.0
            hepstats: 0.3.0
@@ -99,3 +100,4 @@ of all Scikit-HEP dependent packages installed, for example:
               skhep: 1.1.0
      uproot_methods: 0.7.4
              uproot: 3.12.0
+            uproot4: 0.1.0
