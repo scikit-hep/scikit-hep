@@ -5,6 +5,9 @@
 .. image:: https://scikit-hep.org/assets/images/Scikit--HEP-Project-blue.svg
    :target: https://scikit-hep.org
 
+.. image:: https://img.shields.io/gitter/room/gitterHQ/gitter.svg
+   :target: https://gitter.im/Scikit-HEP/community
+
 .. image:: https://img.shields.io/pypi/v/scikit-hep.svg
   :target: https://pypi.python.org/pypi/scikit-hep
 
@@ -75,23 +78,26 @@ of all Scikit-HEP dependent packages installed, for example:
         machine: Linux-4.19.104-microsoft-standard-x86_64-with-glibc2.2.5
 
     Python dependencies:
-           pip: 20.2.3
-    setuptools: 50.3.0
+           pip: 20.2.4
+    setuptools: 50.3.2
          numpy: 1.19.2
-         scipy: 1.5.2
-        pandas: 1.1.2
+         scipy: 1.5.3
+        pandas: 1.1.3
     matplotlib: 3.3.2
 
     Scikit-HEP package version and dependencies:
             awkward: 0.13.0
+           awkward1: 0.4.0
     boost_histogram: 0.11.0
       decaylanguage: 0.8.0
            hepstats: 0.3.0
            hepunits: 2.0.0
-               hist: 2.0.0
+               hist: 2.0.1
+         histoprint: 1.5.2
             iminuit: 1.5.2
              mplhep: 0.2.2
            particle: 0.12.0
-              skhep: 1.1.0
+              skhep: 1.2.0
      uproot_methods: 0.7.4
              uproot: 3.12.0
+            uproot4: 0.1.0
