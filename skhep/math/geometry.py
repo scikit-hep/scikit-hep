@@ -24,8 +24,9 @@ __all__  = (
 # =============================================================================
 # Import statements
 # =============================================================================
-from   skhep.math.vectors import Vector3D
-from   skhep.math.numeric import isequal
+from skhep.math.vectors import Vector3D
+from skhep.math.numeric import isequal
+import numpy as np
 
 # =============================================================================
 # 3D-point
@@ -133,29 +134,19 @@ class Point3D(object) :
     @property
     def rho(self):
         """Return the cylindrical coordinate rho."""
-        return self._vct.rho
+        return self._vct.rho()
 
     @property
-    def theta(self, deg=False):
+    def theta(self):
         """Return the spherical coordinate theta.
-
-        Parameters
-        ----------
-        deg : float, optional
-            Return the angle in degrees (default is radians).
         """
-        return self._vct.theta( deg )
+        return self._vct.theta( )
 
     @property
-    def phi(self, deg=False):
+    def phi(self):
         """Return the spherical or cylindrical coordinate phi.
-
-        Parameters
-        ----------
-        deg : float, optional
-            Return the angle in degrees (default is radians).
         """
-        return self._vct.phi( deg )
+        return self._vct.phi( )
 
     def copy  ( self ) :
         """Make a copy of this point."""
@@ -186,28 +177,6 @@ class Point3D(object) :
     def mag2(self):
         """Square of the magnitude, a.k.a. norm, of the point."""
         return self._vct.mag2
-
-    def __eq__  ( self , another ) :
-        """Equality of two points.
-
-        Example
-        -------
-        >>> p1 = ...
-        >>> p2 = ...
-        >>> print  p1 == p2
-        """
-        return self._vct ==  another._vct
-
-    def __ne__  ( self , another ) :
-        """Non-equality of two points.
-
-        Example
-        -------
-        >>> p1 = ...
-        >>> p2 = ...
-        >>> print  p1 != p2
-        """
-        return self._vct !=  another._vct
 
     ## operations
     def __iadd__ ( self , vector ) :
@@ -293,9 +262,9 @@ class Point3D(object) :
         >>> point1 == point2
         """
         if   isinstance ( other , Point3D ) :
-            return self._vct == other._vct
+            return np.all(self._vct == other._vct)
         elif isinstance ( other , ( float , int , long) ) :
-            return self._vct == other
+            return np.all(self._vct == other)
         return NotImplemented
 
     def __ne__ ( self , other ) :
@@ -307,7 +276,7 @@ class Point3D(object) :
         >>> point2 = ...
         >>> point1 != point2
         """
-        return not  ( self == other )
+        return not  np.all( self == other )
 
     def on_line  ( self , line ) :
         """In the point on the line?"""

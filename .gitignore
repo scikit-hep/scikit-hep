@@ -95,3 +95,12 @@ ENV/
 
 # Documentation artefacts
 doc/_build
+
+# Pipfile
+Pipfile.lock
+
+# PyCharm
+.idea/*
+
+# PyTest
+.pytest_cache
