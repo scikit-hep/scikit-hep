@@ -1,7 +1,7 @@
-awkward~=0.13
-awkward1~=0.4.0
+awkward0~=0.15
+awkward~=1.0.0
 boost-histogram~=0.11.0
-decaylanguage~=0.9.0
+decaylanguage~=0.10.0
 hepstats~=0.3.0
 hepunits~=2.0.0
 hist~=2.0.0
@@ -10,7 +10,7 @@ iminuit~=1.4.0
 matplotlib>2.0.0
 mplhep~=0.2.0
 numpy>=1.13.1
-particle~=0.13.0
-uproot-methods~=0.8.0
-uproot~=3.13.0
-uproot4~=0.1.0
+particle~=0.14.0
+uproot3-methods~=0.10.0
+uproot3~=3.14.0
+uproot~=4.0.0
