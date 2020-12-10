@@ -24,9 +24,3 @@ repos:
   hooks:
   - id: check-manifest
     stages: [manual]
-- repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v0.790
-  hooks:
-  - id: mypy
-    files: src
-    additional_dependencies: [attrs==19.3.0]
