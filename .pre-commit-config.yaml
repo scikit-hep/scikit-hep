@@ -1,0 +1,32 @@
+
+repos:
+- repo: https://github.com/psf/black
+  rev: 20.8b1
+  hooks:
+  - id: black
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v3.3.0
+  hooks:
+  - id: check-added-large-files
+    args: ['--maxkb=1000']
+  - id: mixed-line-ending
+  - id: trailing-whitespace
+  - id: check-merge-conflict
+  - id: check-case-conflict
+  - id: check-symlinks
+  - id: check-yaml
+  - id: requirements-txt-fixer
+  - id: debug-statements
+  - id: end-of-file-fixer
+  - id: fix-encoding-pragma
+- repo: https://github.com/mgedmin/check-manifest
+  rev: "0.45"
+  hooks:
+  - id: check-manifest
+    stages: [manual]
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: v0.790
+  hooks:
+  - id: mypy
+    files: src
+    additional_dependencies: [attrs==19.3.0]
