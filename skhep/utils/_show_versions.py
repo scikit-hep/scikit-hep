@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
 Utility methods to print system info and org packages info, for debugging.
@@ -10,19 +11,12 @@ import sys
 import importlib
 
 
-scipy_deps = [
-        "pip",
-        "setuptools",
-        "numpy",
-        "scipy",
-        "pandas",
-        "matplotlib"
-]
+scipy_deps = ["pip", "setuptools", "numpy", "scipy", "pandas", "matplotlib"]
 
 
 skhep_deps = [
+    "awkward0",
     "awkward",
-    "awkward1",
     "boost_histogram",
     "decaylanguage",
     "hepstats",
@@ -33,9 +27,9 @@ skhep_deps = [
     "mplhep",
     "particle",
     "skhep",
-    "uproot_methods",
+    "uproot3_methods",
+    "uproot3",
     "uproot",
-    "uproot4"
 ]
 
 
@@ -48,11 +42,11 @@ def _get_sys_info():
     sys_info : dict
         System and Python version information.
     """
-    python = sys.version.replace('\n', ' ')
+    python = sys.version.replace("\n", " ")
 
     blob = [
         ("python", python),
-        ('executable', sys.executable),
+        ("executable", sys.executable),
         ("machine", platform.platform()),
     ]
 
@@ -95,14 +89,14 @@ def show_versions():
     deps_info = _get_deps_info(scipy_deps)
     skhep_deps_info = _get_deps_info(skhep_deps)
 
-    print('\nSystem:')
+    print("\nSystem:")
     for k, stat in sys_info.items():
         print("{k:>10}: {stat}".format(k=k, stat=stat))
 
-    print('\nPython dependencies:')
+    print("\nPython dependencies:")
     for k, stat in deps_info.items():
         print("{k:>10}: {stat}".format(k=k, stat=stat))
 
-    print('\nScikit-HEP package version and dependencies:')
+    print("\nScikit-HEP package version and dependencies:")
     for k, stat in skhep_deps_info.items():
         print("{k:>15}: {stat}".format(k=k, stat=stat))

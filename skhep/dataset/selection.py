@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
 ***********************
@@ -20,7 +21,6 @@ pyparsing = softimport("pyparsing")
 
 
 class ParseResultsWrapper(object):
-
     def __init__(self, result):
         if not isinstance(result, pyparsing.ParseResults):
             raise TypeError("pyparsing.ParseResults expected!")
@@ -82,40 +82,46 @@ class Selection(object):
         Return the parsed selection
         """
 
-        Optional           = pyparsing.Optional
-        Suppress           = pyparsing.Suppress
-        Literal            = pyparsing.Literal
-        Word               = pyparsing.Word
-        nums               = pyparsing.nums
-        alphas             = pyparsing.alphas
-        oneOf              = pyparsing.oneOf
-        OneOrMore          = pyparsing.OneOrMore
-        Group              = pyparsing.Group
-        opAssoc            = pyparsing.opAssoc
+        Optional = pyparsing.Optional
+        Suppress = pyparsing.Suppress
+        Literal = pyparsing.Literal
+        Word = pyparsing.Word
+        nums = pyparsing.nums
+        alphas = pyparsing.alphas
+        oneOf = pyparsing.oneOf
+        OneOrMore = pyparsing.OneOrMore
+        Group = pyparsing.Group
+        opAssoc = pyparsing.opAssoc
         operatorPrecedence = pyparsing.operatorPrecedence
 
-        openpar    = Literal("(")
-        closepar   = Literal(")")
-        comma      = Literal(",")
-        expop      = Literal('^')
-        signop     = Literal('-')
-        multop     = oneOf('* / **')
-        plusop     = oneOf('+ -')
+        openpar = Literal("(")
+        closepar = Literal(")")
+        comma = Literal(",")
+        expop = Literal("^")
+        signop = Literal("-")
+        multop = oneOf("* / **")
+        plusop = oneOf("+ -")
 
         functions = Word(alphas)
 
-        number     = Word(nums+".")
-        variable   = Word(alphas+nums+"."+"-"+"_")
-        operations = operatorPrecedence(number | variable,
-                                        [("^", 2, opAssoc.RIGHT),
-                                         (signop, 1, opAssoc.RIGHT),
-                                         (multop, 2, opAssoc.LEFT),
-                                         (plusop, 2, opAssoc.LEFT), ])
+        number = Word(nums + ".")
+        variable = Word(alphas + nums + "." + "-" + "_")
+        operations = operatorPrecedence(
+            number | variable,
+            [
+                ("^", 2, opAssoc.RIGHT),
+                (signop, 1, opAssoc.RIGHT),
+                (multop, 2, opAssoc.LEFT),
+                (plusop, 2, opAssoc.LEFT),
+            ],
+        )
 
-        function = Group(functions + Suppress(openpar)
-                         + Group(OneOrMore((operations | variable)
-                                           + Suppress(Optional(comma))))
-                         + Suppress(closepar))
+        function = Group(
+            functions
+            + Suppress(openpar)
+            + Group(OneOrMore((operations | variable) + Suppress(Optional(comma))))
+            + Suppress(closepar)
+        )
 
         identifier = function | operations | number | variable
 
@@ -127,8 +133,13 @@ class Selection(object):
         _and = Literal("&")
         _or = Literal("|")
 
-        exp = operatorPrecedence(Group(subexpr), [(_and, 2, opAssoc.LEFT),
-                                                  (_or, 2, opAssoc.LEFT), ])
+        exp = operatorPrecedence(
+            Group(subexpr),
+            [
+                (_and, 2, opAssoc.LEFT),
+                (_or, 2, opAssoc.LEFT),
+            ],
+        )
 
         ret = exp.parseString(self._selection)[0]
         ret = ParseResultsWrapper(ret)
@@ -153,8 +164,7 @@ class Selection(object):
 
             if len(_operand) == 1 and not isinstance(_operand, str):
                 _operand = _operand[0]
-            elif len(_operand) > 1 and isinstance(_operand,
-                                                  pyparsing.ParseResults):
+            elif len(_operand) > 1 and isinstance(_operand, pyparsing.ParseResults):
 
                 # treatment of min/max as operand
                 if any(m in _operand.asList() for m in list(functions.keys())):
@@ -166,15 +176,17 @@ class Selection(object):
                     return func(*args)
 
                 # treatment with arithmetical operations as operand
-                if any(op in _operand.asList() for op in ["-", "+", "*", "/",
-                                                          "^", "**"]):
+                if any(
+                    op in _operand.asList() for op in ["-", "+", "*", "/", "^", "**"]
+                ):
                     if len(_operand) == 2:
-                        return operation(operator=_operand[0],
-                                         rhs=operand(_operand[1]))
+                        return operation(operator=_operand[0], rhs=operand(_operand[1]))
                     elif len(_operand) > 2:
-                        return operation(lhs=operand(_operand[0]),
-                                         operator=_operand[1],
-                                         rhs=operand(_operand[2:]))
+                        return operation(
+                            lhs=operand(_operand[0]),
+                            operator=_operand[1],
+                            rhs=operand(_operand[2:]),
+                        )
 
             if isinstance(_operand, str):
 
@@ -211,9 +223,9 @@ class Selection(object):
                     bitwiseoperators.append(s)
 
             while len(bitwiseoperators) > 0:
-                loopedselection = operation(suboperations[-2],
-                                            bitwiseoperators[-1],
-                                            suboperations[-1])
+                loopedselection = operation(
+                    suboperations[-2], bitwiseoperators[-1], suboperations[-1]
+                )
                 bitwiseoperators.pop()
                 suboperations.pop()
                 suboperations.pop()
@@ -238,12 +250,22 @@ class Selection(object):
         Return the selection readable for NumpyDataset
         """
 
-        operators = {">": numpy.greater, "<": numpy.less,
-                     ">=": numpy.greater_equal, "<=": numpy.less_equal,
-                     "==": numpy.equal, "!=": numpy.not_equal,
-                     "&": numpy.bitwise_and, "|": numpy.bitwise_or,
-                     "+": numpy.add, "-": numpy.subtract, "/": numpy.divide,
-                     "*": numpy.multiply, "^": numpy.power, "**": numpy.power}
+        operators = {
+            ">": numpy.greater,
+            "<": numpy.less,
+            ">=": numpy.greater_equal,
+            "<=": numpy.less_equal,
+            "==": numpy.equal,
+            "!=": numpy.not_equal,
+            "&": numpy.bitwise_and,
+            "|": numpy.bitwise_or,
+            "+": numpy.add,
+            "-": numpy.subtract,
+            "/": numpy.divide,
+            "*": numpy.multiply,
+            "^": numpy.power,
+            "**": numpy.power,
+        }
 
         def evaluateufunc(ufunc, *args):
             if len(args) == 2:
@@ -259,17 +281,29 @@ class Selection(object):
             ufunc = numpy.minimum
             return evaluateufunc(ufunc, *args)
 
-        functions = {"min": _min, "max": _max, "sin": numpy.sin,
-                     "cos": numpy.cos, "tan": numpy.cos,
-                     "arcsin": numpy.arcsin,
-                     "arccos": numpy.arccos, "arctan": numpy.arctan,
-                     "arctan2": numpy.arctan2, "sinh": numpy.sinh,
-                     "cosh": numpy.cosh, "tanh": numpy.tanh,
-                     "arcsinh": numpy.arcsinh, "arcosh": numpy.arccosh,
-                     "log": numpy.log, "log10": numpy.log10,
-                     "log1p": numpy.log1p, "exp": numpy.exp,
-                     "expm1": numpy.expm1, "sqrt": numpy.sqrt,
-                     "abs": numpy.absolute}
+        functions = {
+            "min": _min,
+            "max": _max,
+            "sin": numpy.sin,
+            "cos": numpy.cos,
+            "tan": numpy.cos,
+            "arcsin": numpy.arcsin,
+            "arccos": numpy.arccos,
+            "arctan": numpy.arctan,
+            "arctan2": numpy.arctan2,
+            "sinh": numpy.sinh,
+            "cosh": numpy.cosh,
+            "tanh": numpy.tanh,
+            "arcsinh": numpy.arcsinh,
+            "arcosh": numpy.arccosh,
+            "log": numpy.log,
+            "log10": numpy.log10,
+            "log1p": numpy.log1p,
+            "exp": numpy.exp,
+            "expm1": numpy.expm1,
+            "sqrt": numpy.sqrt,
+            "abs": numpy.absolute,
+        }
 
         def selection(numpydataset):
             # selection as a function of the numpy dataset

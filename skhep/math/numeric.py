@@ -11,13 +11,14 @@ and the previous version:
 """
 
 __all__ = (
-    'distance'      , ## distance in ULPs
-    'isclose'       , ## close in  terms of ULPs ?
-    'isequal'       , ## isequal using  ULPs and SCALE
-    'next_double'   , ## get next double
-    )
+    "distance",  ## distance in ULPs
+    "isclose",  ## close in  terms of ULPs ?
+    "isequal",  ## isequal using  ULPs and SCALE
+    "next_double",  ## get next double
+)
 
-def distance ( a ,  b ) :
+
+def distance(a, b):
     """
     Distance in ULPS between two (floating point) numbers.
     It is assumed here that  size(long)==size(double) for underlying C-library!
@@ -28,28 +29,31 @@ def distance ( a ,  b ) :
     >>> b = ...
     >>> print distance ( a , b )
     """
-    if   a == b : return 0
-    elif a >  b : return -distance (  b ,  a )
-    elif b <= 0 : return  distance ( -b , -a )
-    elif a <  0 :
-        return distance ( 0 , -a ) + distance ( 0 , b )
+    if a == b:
+        return 0
+    elif a > b:
+        return -distance(b, a)
+    elif b <= 0:
+        return distance(-b, -a)
+    elif a < 0:
+        return distance(0, -a) + distance(0, b)
 
     ## here a and b have same sign
 
     import ctypes
 
-    a , b =  abs ( a ) , abs ( b )
+    a, b = abs(a), abs(b)
 
-    aa = ctypes.c_double ( float ( a ) )
-    bb = ctypes.c_double ( float ( b ) )
+    aa = ctypes.c_double(float(a))
+    bb = ctypes.c_double(float(b))
 
-    al = ctypes.c_long.from_buffer ( aa ).value
-    bl = ctypes.c_long.from_buffer ( bb ).value
+    al = ctypes.c_long.from_buffer(aa).value
+    bl = ctypes.c_long.from_buffer(bb).value
 
     return bl - al
 
 
-def next_double ( a , ulps = 1 ) :
+def next_double(a, ulps=1):
     """
     Get the ``next-double'' by certain ULPs distance.
     It is assumed here that size(long)==size(double) for underlying C-library!
@@ -60,26 +64,29 @@ def next_double ( a , ulps = 1 ) :
     >>> print a , a - sys.float_info.epsilon
     """
 
-    a = float ( a )
-    if   0 == ulps : return  a
-    elif a < 0     : return -next_double ( -a , -ulps )
-    elif 0 > ulps  :
-        d =  distance ( a , 0.0 ) + ulps
-        if d < 0 : return -next_double ( 0.0 , -d )
+    a = float(a)
+    if 0 == ulps:
+        return a
+    elif a < 0:
+        return -next_double(-a, -ulps)
+    elif 0 > ulps:
+        d = distance(a, 0.0) + ulps
+        if d < 0:
+            return -next_double(0.0, -d)
 
     ## aply a trick  with casting
 
     import ctypes
 
-    aa  = ctypes.c_double ( a         )
-    al  = ctypes.c_long.from_buffer   ( aa ).value
-    al  = ctypes.c_long   ( al + ulps )
-    aa  = ctypes.c_double.from_buffer ( al ).value
+    aa = ctypes.c_double(a)
+    al = ctypes.c_long.from_buffer(aa).value
+    al = ctypes.c_long(al + ulps)
+    aa = ctypes.c_double.from_buffer(al).value
 
     return aa
 
 
-def isclose ( a  , b , ulps = 1000 ) :
+def isclose(a, b, ulps=1000):
     """
     Are two floating point numbers close enough (in units is ULPs)?
 
@@ -89,10 +96,10 @@ def isclose ( a  , b , ulps = 1000 ) :
     >>> b = ...
     >>> print isclose ( a , b , 1000 )
     """
-    return ( a == b ) or ulps >= abs ( distance ( a , b ) )
+    return (a == b) or ulps >= abs(distance(a, b))
 
 
-def isequal ( a , b , scale = 1.0 , absdiff = 0.0 , ulps = 1000 ) :
+def isequal(a, b, scale=1.0, absdiff=0.0, ulps=1000):
     """
     Are  two numbers ``a'' and ``b''  close enough ?
     Numbers are considered to be equal is :
@@ -109,4 +116,9 @@ def isequal ( a , b , scale = 1.0 , absdiff = 0.0 , ulps = 1000 ) :
     >>> isequal(1,1+sys.float_info.epsilon, scale = 100 , ulps = 0 )
     True
     """
-    return ( a == b ) or ( 0 < absdiff and abs ( a - b ) < absdiff ) or isclose ( a , b , ulps ) or ( scale and isclose ( ( a - b ) + scale , scale , ulps ) )
+    return (
+        (a == b)
+        or (0 < absdiff and abs(a - b) < absdiff)
+        or isclose(a, b, ulps)
+        or (scale and isclose((a - b) + scale, scale, ulps))
+    )

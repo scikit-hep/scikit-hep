@@ -24,18 +24,12 @@ Copyright: Christopher H. Barker
 License: Apache License 2.0 http://opensource.org/licenses/apache2.0.php
 
 """
-__all__ = (
-    'isclose'       , ## close using relative and absolute distances 
-    )
+__all__ = ("isclose",)  ## close using relative and absolute distances
 
 import cmath
 
 
-def isclose(a,
-            b,
-            rel_tol=1e-9,
-            abs_tol=0.0,
-            method='weak'):
+def isclose(a, b, rel_tol=1e-9, abs_tol=0.0, method="weak"):
     """
     returns True if a is close in value to b. False otherwise
 
@@ -76,11 +70,12 @@ def isclose(a,
 
     """
     if method not in ("asymmetric", "strong", "weak", "average"):
-        raise ValueError('method must be one of: "asymmetric",'
-                         ' "strong", "weak", "average"')
+        raise ValueError(
+            'method must be one of: "asymmetric",' ' "strong", "weak", "average"'
+        )
 
     if rel_tol < 0.0 or abs_tol < 0.0:
-        raise ValueError('error tolerances must be non-negative')
+        raise ValueError("error tolerances must be non-negative")
 
     if a == b:  # short-circuit exact equality
         return True
@@ -94,21 +89,21 @@ def isclose(a,
     if method == "asymmetric":
         return (diff <= abs(rel_tol * b)) or (diff <= abs_tol)
     elif method == "strong":
-        return (((diff <= abs(rel_tol * b)) and
-                 (diff <= abs(rel_tol * a))) or
-                (diff <= abs_tol))
+        return ((diff <= abs(rel_tol * b)) and (diff <= abs(rel_tol * a))) or (
+            diff <= abs_tol
+        )
     elif method == "weak":
-        return (((diff <= abs(rel_tol * b)) or
-                 (diff <= abs(rel_tol * a))) or
-                (diff <= abs_tol))
+        return ((diff <= abs(rel_tol * b)) or (diff <= abs(rel_tol * a))) or (
+            diff <= abs_tol
+        )
     elif method == "average":
-        return ((diff <= abs(rel_tol * (a + b) / 2) or
-                (diff <= abs_tol)))
+        return diff <= abs(rel_tol * (a + b) / 2) or (diff <= abs_tol)
     else:
-        raise ValueError('method must be one of:'
-                         ' "asymmetric", "strong", "weak", "average"')
+        raise ValueError(
+            "method must be one of:" ' "asymmetric", "strong", "weak", "average"'
+        )
 
-    
+
 # =============================================================================
 ## The END
 # =============================================================================

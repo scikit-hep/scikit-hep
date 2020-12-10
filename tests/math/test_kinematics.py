@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
 Tests for the skhep.math.kinematics module.
@@ -21,23 +22,27 @@ from skhep.utils.py23 import *
 # Actual tests
 # -----------------------------------------------------------------------------
 
+
 def test_kinematics_Kallen_function():
     assert Kallen_function(2, 1, 0) == 1
 
+
 def test_valid_Armenteros_Podolanski_variables():
-    d1 = Vector3D(1., 2., 3.)
-    d2 = Vector3D(1., -2., 3.)
+    d1 = Vector3D(1.0, 2.0, 3.0)
+    d2 = Vector3D(1.0, -2.0, 3.0)
     assert Armenteros_Podolanski_variables(d1, d2) == (2.0, 0.0)
 
+
 def test_invalid_Armenteros_Podolanski_variables():
-    d1 = Vector3D(1., 2., 3.)
-    d2 = Vector3D(-1., -2., -3.)
+    d1 = Vector3D(1.0, 2.0, 3.0)
+    d2 = Vector3D(-1.0, -2.0, -3.0)
     with pytest.raises(ValueError):
         Armenteros_Podolanski_variables(d1, d2)
 
+
 def test_width_lifetime_conversions():
-    assert lifetime_to_width(1.5*ps)/GeV == approx(4.388079676311604e-13)
-    assert 1.5*ps * lifetime_to_width(1.5*ps) == hbar
+    assert lifetime_to_width(1.5 * ps) / GeV == approx(4.388079676311604e-13)
+    assert 1.5 * ps * lifetime_to_width(1.5 * ps) == hbar
     assert width_to_lifetime(hbar) == 1 * MeV
     #
     with pytest.raises(ValueError):

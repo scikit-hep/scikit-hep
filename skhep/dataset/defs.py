@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
 **************************************
@@ -28,7 +29,8 @@ class Dataset(object):
 
     def __init__(self):
         raise TypeError(
-            "Dataset is an abstract base class; instantiate one of its subclasses insteadone of its subclasses instead.")
+            "Dataset is an abstract base class; instantiate one of its subclasses insteadone of its subclasses instead."
+        )
 
     @property
     def data(self):
@@ -104,7 +106,7 @@ class ToPersistent(object):
 
 
 # Uncomment when actually using/implementing this
-#class ConvertibleInPlace(object):
+# class ConvertibleInPlace(object):
 #    pass
 
 
@@ -142,8 +144,12 @@ class ToFiles(ToPersistent):
             # TODO: Rewrite this using os.path
             def rollover_pattern(base_pattern, number):
                 if "." in base_pattern:
-                    return (base_pattern[:base_pattern.rindex(".")] + "_" +
-                            str(number) + base_pattern[base_pattern.rindex("."):])
+                    return (
+                        base_pattern[: base_pattern.rindex(".")]
+                        + "_"
+                        + str(number)
+                        + base_pattern[base_pattern.rindex(".") :]
+                    )
                 else:
                     return base_pattern + "_" + str(number)
 
@@ -160,7 +166,7 @@ class ToFiles(ToPersistent):
                 name = rollover_pattern(base, n)
                 f = open(name, "wb")
             assert "w" in f.mode
-            yield f   # use the first file if given, otherwise start rollover with _0
+            yield f  # use the first file if given, otherwise start rollover with _0
             f = None  # second file in rollover is always _1 and continuing from there
 
     @staticmethod
@@ -183,7 +189,7 @@ class ToFiles(ToPersistent):
 
 
 # Uncomment when actually using/implementing this
-#class AsNumpy(ConvertibleInPlace):
+# class AsNumpy(ConvertibleInPlace):
 #    def as_array(self, **options):
 #        """View this dataset as a NumpyDataset, sharing its underlying data.
 #

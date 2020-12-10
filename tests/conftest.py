@@ -1,12 +1,18 @@
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license, see LICENSE.
 import numpy as np
 import pytest
 
 
 def pytest_addoption(parser):
-    parser.addoption("--cmdopt", action="store", default="test", help="option: 'test' or \
+    parser.addoption(
+        "--cmdopt",
+        action="store",
+        default="test",
+        help="option: 'test' or \
     'generate'. Only use 'generate' if you've changed the tests and need to update the expected \
-    output!")
+    output!",
+    )
 
 
 @pytest.fixture

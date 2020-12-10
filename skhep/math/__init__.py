@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
 Module for mathematical functions and utilities.
@@ -8,9 +9,9 @@ This module contains in particular:
   * Geometry classes.
 """
 
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Import statements
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
 from .kinematics import *
