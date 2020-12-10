@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
 Mathematical functions relevant to kinematics
@@ -94,15 +95,15 @@ def Armenteros_Podolanski_variables(pplus_3Dvec, pminus_3Dvec):
     .. [APPaper] J. Podolanski and R. Armenteros, III. Analysis of V-events, The London, Edinburgh, and Dublin Philosophical Magazine and Journal of Science 45 (1954) 13, http://dx.doi.org/10.1080/14786440108520416
     """
 
-    mother_mag = (pplus_3Dvec+pminus_3Dvec).mag
+    mother_mag = (pplus_3Dvec + pminus_3Dvec).mag
     if isequal(mother_mag, 0.0):
-        raise ValueError('Total momentum has zero magnitude!')
+        raise ValueError("Total momentum has zero magnitude!")
 
     # Longitudinal momentum asymmetry, i.e. imbalance
-    alpha = (pplus_3Dvec.mag2-pminus_3Dvec.mag2)/mother_mag**2
+    alpha = (pplus_3Dvec.mag2 - pminus_3Dvec.mag2) / mother_mag ** 2
 
     # Transverse momentum of positively-charged particle along the mother particle momentum direction
-    qT = (pplus_3Dvec.cross(pminus_3Dvec)).mag/mother_mag
+    qT = (pplus_3Dvec.cross(pminus_3Dvec)).mag / mother_mag
 
     return (qT, alpha)
 
@@ -121,7 +122,7 @@ def lifetime_to_width(tau):
     """
 
     if tau <= 0:
-        raise ValueError( 'Input provided, %s <= 0!'.format(tau) )
+        raise ValueError("Input provided, %s <= 0!".format(tau))
 
     # Just need to first make sure that the lifetime is in the standard unit ns
     return hbar / float(tau / ns)
@@ -140,8 +141,8 @@ def width_to_lifetime(Gamma):
     Particle lifetime, in the HEP standard time unit ns.
     """
 
-    if Gamma <= 0.:
-        raise ValueError( 'Input provided, %s <= 0!'.format(Gamma) )
+    if Gamma <= 0.0:
+        raise ValueError("Input provided, %s <= 0!".format(Gamma))
 
     # Just need to first make sure that the width is in the standard unit MeV
     return hbar / float(Gamma / MeV)

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license, see LICENSE.
 
 import os
@@ -7,7 +8,7 @@ from setuptools import setup
 
 LOCAL_PATH = os.path.dirname(os.path.abspath(__file__))
 
-with open(os.path.join(LOCAL_PATH, 'requirements.txt')) as requirements_file:
+with open(os.path.join(LOCAL_PATH, "requirements.txt")) as requirements_file:
     INSTALL_REQUIRES = requirements_file.read().splitlines()
 
 setup(

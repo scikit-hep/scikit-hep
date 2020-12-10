@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
 Submodule for helpers to the Dataset-like classes
@@ -37,7 +38,7 @@ class Provenance(object):
     """
 
     def __init__(self):
-        raise SkhepTypeError('Provenance')
+        raise SkhepTypeError("Provenance")
 
     @property
     def detail(self):
@@ -45,6 +46,7 @@ class Provenance(object):
         String providing detailed information about the origin, transformation, or formatting.
         """
         raise NotImplementedError
+
 
 class Origin(Provenance):
     """
@@ -54,7 +56,7 @@ class Origin(Provenance):
     """
 
     def __init__(self):
-        raise SkhepTypeError('Origin')
+        raise SkhepTypeError("Origin")
 
 
 class ObjectOrigin(Origin):
@@ -85,15 +87,16 @@ class ObjectOrigin(Origin):
 
     def __init__(self, detail):
         if not isinstance(detail, string_types):
-            assert False, 'Argument is not of string type!'
+            assert False, "Argument is not of string type!"
         self._detail = detail
 
     @property
     def detail(self):
         return self._detail
-    
+
     def __repr__(self):
         return "<ObjectOrigin>"
+
 
 class FileOrigin(Origin):
     """
@@ -123,8 +126,10 @@ class FileOrigin(Origin):
                 elif isinstance(x, string_types):
                     self.files.append(x)
                 else:
-                    assert False, ('Argument must be a string filename, an iterable of file objects, '
-                                   'or an iterable of string filenames!')
+                    assert False, (
+                        "Argument must be a string filename, an iterable of file objects, "
+                        "or an iterable of string filenames!"
+                    )
             self.files = tuple(self.files)
 
     @property
@@ -132,8 +137,11 @@ class FileOrigin(Origin):
         return ",".join(json.dumps(x) for x in self.files)
 
     def __repr__(self):
-        return "<FileOrigin ({0} file{1})>".format(len(self.files),'s' if len(self.files)>1 else '')
-        
+        return "<FileOrigin ({0} file{1})>".format(
+            len(self.files), "s" if len(self.files) > 1 else ""
+        )
+
+
 class Transformation(Provenance):
     """
     Declares that the dataset was transformed by some mathematical operation.
@@ -154,8 +162,8 @@ class Transformation(Provenance):
     """
 
     def __init__(self, name, *args):
-        self.name     = name
-        self.args     = args
+        self.name = name
+        self.args = args
 
     @property
     def detail(self):
@@ -168,12 +176,13 @@ class Transformation(Provenance):
                 else:
                     subdetail += ", {0}".format(x)
                 if x == self.args[0]:
-                    subdetail = subdetail.replace(", ","")
+                    subdetail = subdetail.replace(", ", "")
             detail += " ({0})".format(subdetail)
         return detail
-            
+
     def __repr__(self):
         return "<Transformation({0})>".format(self.name)
+
 
 class Formatting(Provenance):
     """
@@ -195,49 +204,49 @@ class Formatting(Provenance):
                 else:
                     subdetail += ", {0}".format(x)
                 if x == self.args[0]:
-                    subdetail = subdetail.replace(", ","")
+                    subdetail = subdetail.replace(", ", "")
             detail += "({0})".format(subdetail)
         return detail
-    
+
     def __repr__(self):
         return "<Formatting to {0}>".format(self.detail)
-      
-   
+
+
 class MultiProvenance(object):
     """
     Class for collecting history of provenances.
     """
 
     def __init__(self, *args):
-        if not all(isinstance(arg, (Provenance, MultiProvenance )) for arg in args):
+        if not all(isinstance(arg, (Provenance, MultiProvenance)) for arg in args):
             raise ValueError("Inputs must be Provenance types!")
         if len(args) == 1 and isinstance(args[0], MultiProvenance):
             args = args[0]
         self._provenances = list(args)
-          
+
     def copy(self):
         return MultiProvenance(*self._provenances)
-        
+
     def __getitem__(self, i):
         return self._provenances[i]
-        
+
     def __repr__(self):
         if len(self._provenances) == 1:
             return repr(self._provenances[0])
         else:
             rep = ""
-            for i,provenance in enumerate(self._provenances):
+            for i, provenance in enumerate(self._provenances):
                 rep += "{0}: {1}".format(i, provenance)
                 rep += "\n" if provenance != self._provenances[-1] else ""
             return rep
-            
+
     @property
     def detail(self):
         if len(self._provenances) == 1:
-            return getattr( self._provenances[0], "detail", "")
+            return getattr(self._provenances[0], "detail", "")
         else:
             rep = ""
-            for i,provenance in enumerate(self._provenances):
+            for i, provenance in enumerate(self._provenances):
                 if "\n" in provenance.detail:
                     details = provenance.detail.split("\n")
                     for j, d in enumerate(details):
@@ -248,20 +257,22 @@ class MultiProvenance(object):
                             rep += "\n" if d != details[-1] else ""
                 else:
                     rep += "{0}: {1}".format(i, provenance.detail)
-                    
+
                 rep += "\n" if provenance != self._provenances[-1] else ""
-                    
+
             return rep
-        
+
     def __iadd__(self, object):
-        if not isinstance( object, ( Provenance , MultiProvenance )):
-            raise ValueError("Cannot add a {0} to MultiProvenance!".format(type(object)))
-        elif isinstance( object, MultiProvenance):
+        if not isinstance(object, (Provenance, MultiProvenance)):
+            raise ValueError(
+                "Cannot add a {0} to MultiProvenance!".format(type(object))
+            )
+        elif isinstance(object, MultiProvenance):
             self._provenances += object._provenances
         else:
             self._provenances += [object]
         return self
-            
+
     def __add__(self, object):
         multiprov = self.copy()
         multiprov += object

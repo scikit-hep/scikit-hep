@@ -3,7 +3,8 @@
 # Add the directory above this one, containing the skhep module, to the Python PATH variable.
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+
+sys.path.insert(0, os.path.abspath(".."))
 
 # -- General configuration ------------------------------------------------
 
@@ -15,34 +16,34 @@ sys.path.insert(0, os.path.abspath('..'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.doctest',
-    'nbsphinx',
+    "sphinx.ext.autodoc",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.doctest",
+    "nbsphinx",
 ]
 
 # generate autosummary even if no references
 autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['templates']
+templates_path = ["templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
 # source_suffix = ['.rst', '.md']
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
-project = u'Scikit-HEP'
-copyright = u'2016-2020, The Scikit-HEP Developers'
-author = u'The Scikit-HEP Administrators'
+project = u"Scikit-HEP"
+copyright = u"2016-2020, The Scikit-HEP Developers"
+author = u"The Scikit-HEP Administrators"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -50,6 +51,7 @@ author = u'The Scikit-HEP Administrators'
 #
 # The short X.Y version.
 import skhep
+
 version = skhep.__version__
 # The full version, including alpha/beta/rc tags.
 release = version
@@ -64,10 +66,10 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build', 'templates', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "templates", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = False
@@ -78,18 +80,18 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = "alabaster"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 html_sidebars = {
-    '**': [
-        'navigation.html',
-        'relations.html',
+    "**": [
+        "navigation.html",
+        "relations.html",
         #'searchbox.html',
-        'donate.html',
+        "donate.html",
     ]
 }
 html_theme_options = {
@@ -99,32 +101,32 @@ html_theme_options = {
     #'github_banner': True,
     #'logo': 'images/logo.svg',
     #'fixed_sidebar': True,
-    'show_powered_by': False,
-    'link': '#7092C0',
-    'font_family': 'Source Sans Pro',
-    'head_font_family': 'Source Serif Pro',
-    'code_font_family': 'Consolas',
-    'code_font_size': '0.8em'
+    "show_powered_by": False,
+    "link": "#7092C0",
+    "font_family": "Source Sans Pro",
+    "head_font_family": "Source Serif Pro",
+    "code_font_family": "Consolas",
+    "code_font_size": "0.8em",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
-html_title = 'Scikit-HEP'
+html_title = "Scikit-HEP"
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-html_short_title = 'Scikit-HEP'
+html_short_title = "Scikit-HEP"
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-#html_logo = 'images/logo.svg'
+# html_logo = 'images/logo.svg'
 
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Scikit-HEPdoc'
+htmlhelp_basename = "Scikit-HEPdoc"
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -132,13 +134,10 @@ htmlhelp_basename = 'Scikit-HEPdoc'
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     # 'preamble': '',
-
     # Latex figure (float) alignment
     # 'figure_align': 'htbp',
 }
@@ -147,18 +146,20 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Scikit-HEP.tex', u'Scikit-HEP Documentation',
-     u'The Scikit-HEP Administrators', 'manual'),
+    (
+        master_doc,
+        "Scikit-HEP.tex",
+        u"Scikit-HEP Documentation",
+        u"The Scikit-HEP Administrators",
+        "manual",
+    ),
 ]
 
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'Scikit-HEP', u'Scikit-HEP Documentation',
-     [author], 1)
-]
+man_pages = [(master_doc, "Scikit-HEP", u"Scikit-HEP Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -167,13 +168,17 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Scikit-HEP', u'Scikit-HEP Documentation',
-     author, 'Scikit-HEP', 'One line description of project.',
-     'Miscellaneous'),
+    (
+        master_doc,
+        "Scikit-HEP",
+        u"Scikit-HEP Documentation",
+        author,
+        "Scikit-HEP",
+        "One line description of project.",
+        "Miscellaneous",
+    ),
 ]
 
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {
-    'https://docs.python.org/': None
-}
+intersphinx_mapping = {"https://docs.python.org/": None}
