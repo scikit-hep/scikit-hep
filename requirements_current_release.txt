@@ -1,5 +1,5 @@
+awkward0
 awkward
-awkward1
 boost-histogram
 decaylanguage
 hepstats
@@ -10,5 +10,6 @@ iminuit
 matplotlib
 mplhep
 particle
+uproot3-methods
+uproot3
 uproot
-uproot4
