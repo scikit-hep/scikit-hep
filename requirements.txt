@@ -1,11 +1,11 @@
-awkward~=1.0.0
+awkward~=1.1.0
 awkward0~=0.15
-boost-histogram~=0.11.0
+boost-histogram~=0.12.0
 decaylanguage~=0.10.0
 hepstats~=0.3.0
 hepunits~=2.0.0
 hist~=2.0.0
-histoprint~=1.5.0
+histoprint~=1.6.0
 iminuit~=1.4.0
 matplotlib>2.0.0
 mplhep~=0.2.0
