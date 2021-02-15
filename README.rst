@@ -11,6 +11,9 @@
 .. image:: https://img.shields.io/pypi/v/scikit-hep.svg
   :target: https://pypi.python.org/pypi/scikit-hep
 
+.. image:: https://img.shields.io/conda/vn/conda-forge/scikit-hep.svg
+  :target: https://anaconda.org/conda-forge/scikit-hep
+
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1043949.svg
   :target: https://doi.org/10.5281/zenodo.1043949
 
@@ -30,7 +33,7 @@ embracing all major topics involved in a physicist's work.
 The project started in Autumn 2016 and its packages are actively developed and maintained.
 
 It is not just about providing core and common tools for the community.
-It is also about improving the interoperability between HEP tools and the scientific ecosystem in Python,
+It is also about improving the interoperability between HEP tools and the Big Data scientific ecosystem in Python,
 and about improving on discoverability of utility packages and projects.
 
 For what concerns the project grand structure, it should be seen as a *toolset* rather than a toolkit.
@@ -44,18 +47,24 @@ with project admins and/or users and developers.
 scikit-hep package
 ------------------
 
-This ``scikit-hep package`` is under redesign, in order to become a metapackage for the project.
+``scikit-hep`` is a metapackage for the Scikit-HEP project.
 
 Installation
 .............
 
-Install ``scikit-hep`` like any other Python package:
+You can install this metapackage from PyPI with `pip`:
 
 .. code-block:: bash
 
    python -m pip install scikit-hep
 
-or similar (use ``venv``, etc. if you wish).
+or you can use Conda through conda-forge:
+
+.. code-block:: bash
+
+   conda install -c conda-forge scikit-hep
+
+All the normal best-practices for Python apply; you should be in a virtual environment, etc.
 
 Package version and dependencies
 ................................
