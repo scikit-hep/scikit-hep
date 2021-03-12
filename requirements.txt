@@ -5,7 +5,7 @@ decaylanguage~=0.10.0
 hepstats~=0.3.0
 hepunits~=2.1.0
 hist~=2.2.0
-histoprint~=1.6.0
+histoprint~=2.0.0
 iminuit~=2.4.0
 matplotlib>2.0.0
 mplhep~=0.2.0
