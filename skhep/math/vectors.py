@@ -746,12 +746,12 @@ class LorentzVector(object):
         self.set(px, py, pz, e)
 
     def setptetaphim(self, pt, eta, phi, m):
-        """ Set the transverse momentum, the pseudorapidity, the angle phi and the mass."""
+        """Set the transverse momentum, the pseudorapidity, the angle phi and the mass."""
         px, py, pz = pt * cos(phi), pt * sin(phi), pt * sinh(eta)
         self.setpxpypzm(px, py, pz, m)
 
     def setptetaphie(self, pt, eta, phi, e):
-        """ Set the transverse momentum, the pseudorapidity, the angle phi and the energy."""
+        """Set the transverse momentum, the pseudorapidity, the angle phi and the energy."""
         px, py, pz = pt * cos(phi), pt * sin(phi), pt * sinh(eta)
         self.setpxpypze(px, py, pz, e)
 
@@ -864,7 +864,7 @@ class LorentzVector(object):
 
     @property
     def pseudorapidity(self):
-        """"Return the pseudorapidity. Alternative to eta() method."""
+        """ "Return the pseudorapidity. Alternative to eta() method."""
         return self.eta
 
     @property
