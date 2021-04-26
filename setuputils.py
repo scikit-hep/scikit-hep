@@ -7,7 +7,7 @@ import re
 
 
 def read(*parts):
-    """ Read files """
+    """Read files"""
     file_path = os.path.join(os.path.dirname(__file__), *parts)
     with codecs.open(file_path, "r") as fobj:
         content = fobj.read()
@@ -15,7 +15,7 @@ def read(*parts):
 
 
 def find_version(*parts):
-    """ Find version string """
+    """Find version string"""
     version_file = read(*parts)
     version_match = re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]', version_file, re.M)
     if version_match:
