@@ -13,3 +13,4 @@ particle
 uproot
 uproot3
 uproot3-methods
+vector
