@@ -27,9 +27,10 @@ skhep_deps = [
     "mplhep",
     "particle",
     "skhep",
-    "uproot3_methods",
-    "uproot3",
     "uproot",
+    "uproot3",
+    "uproot3_methods",
+    "vector",
 ]
 
 
