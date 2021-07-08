@@ -9,4 +9,4 @@ Module for visualization tools.
 # -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from .mpl_plotter import MplPlotter
+from .fill_between_steps import fill_between_steps
