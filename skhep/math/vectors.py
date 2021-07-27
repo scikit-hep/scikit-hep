@@ -118,22 +118,34 @@ class Vector3D(object):
             if not isinstance(v, (int, float)):
                 raise ValueError("Component #{0} is not a number!".format(i))
         return cls(values[0], values[1], values[2])
-      
+
     @classmethod
     def contravariant(cls, x1, y1, z1, x_prime, y_prime, z_prime):
-      """ Transforms the components of a vector using a contravariant coordinate 
-      transformation. This can also be achieved using the Jacobian, but this is
-      basically the same thing
-      """
-      x = sympy.Symbol("x")
-      y = sympy.Symbol("y")
-      z = sympy.Symbol("z")
+        """Transforms the components of a vector using a contravariant coordinate
+        transformation. This can also be achieved using the Jacobian, but this is
+        basically the same thing
+        """
+        x = sympy.Symbol("x")
+        y = sympy.Symbol("y")
+        z = sympy.Symbol("z")
 
-      new_x1 = sympy.Derivative(x_prime, x) * x1 + sympy.Derivative(x_prime, y) * y1 + sympy.Derivative(x_prime, z) * z1 
-      new_y1 = sympy.Derivative(y_prime, x) * x1 + sympy.Derivative(y_prime, y) * y1 + sympy.Derivative(y_prime, z) * z1 
-      new_z1 = sympy.Derivative(z_prime, x) * x1 + sympy.Derivative(z_prime, y) * y1 + sympy.Derivative(z_prime, z) * z1 
+        new_x1 = (
+            sympy.Derivative(x_prime, x) * x1
+            + sympy.Derivative(x_prime, y) * y1
+            + sympy.Derivative(x_prime, z) * z1
+        )
+        new_y1 = (
+            sympy.Derivative(y_prime, x) * x1
+            + sympy.Derivative(y_prime, y) * y1
+            + sympy.Derivative(y_prime, z) * z1
+        )
+        new_z1 = (
+            sympy.Derivative(z_prime, x) * x1
+            + sympy.Derivative(z_prime, y) * y1
+            + sympy.Derivative(z_prime, z) * z1
+        )
 
-      return (new_x1, new_y1, new_z1)
+        return (new_x1, new_y1, new_z1)
 
     @property
     def x(self):
