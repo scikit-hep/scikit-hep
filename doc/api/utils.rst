@@ -12,6 +12,3 @@ Utilities (`skhep.utils`)
 
 .. automodule:: skhep.utils.dependencies
    :members:
-
-.. automodule:: skhep.utils.provenance
-   :members:
