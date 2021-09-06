@@ -10,4 +10,3 @@ API
 .. toctree::
    math.rst
    utils.rst
-   visual.rst
