@@ -1,0 +1,69 @@
+{
+    "description": "Metapackage of Scikit-HEP project data analysis packages for Particle Physics",
+    "license": "other-open",
+    "upload_type": "software",
+    "creators": [
+        {
+            "affiliation": "University of Liverpool",
+            "name": "Eduardo Rodrigues",
+            "orcid": "0000-0003-2846-7625"
+        },
+        {
+            "affiliation": "CERN",
+            "name": "Chris Burr"
+        },
+        {
+            "affiliation": "TU Dortmund",
+            "name": "Hans Dembinski"
+        },
+        {
+            "affiliation": "University of Zurich",
+            "name": "Jonas Eschle"
+        },
+        {
+            "affiliation": "University of Illinois at Urbana-Champaign",
+            "name": "Matthew Feickert",
+            "orcid": "0000-0003-4124-7862"
+        },
+        {
+        "affiliation": "CERN",
+        "name": "Lukas Heinrich",
+        "orcid": "0000-0002-4048-7584"
+        },
+        {
+            "affiliation": "University of Oxford",
+            "name": "Lukas Koch"
+        },
+        {
+            "name": "Matthieu Marinangeli"
+        },
+        {
+            "name": "Andrzej Novak"
+        },
+        {
+            "affiliation": "Princeton University",
+            "name": "Jim Pivarski"
+        },
+        {
+            "affiliation": "Princeton University",
+            "name": "Henry Schreiner",
+            "orcid": "0000-0002-7833-783X"
+        },
+            {
+            "affiliation": "SCIPP, University of California, Santa Cruz",
+            "name": "Giordon Stark",
+            "orcid": "0000-0001-6616-3433"
+        },
+        {
+            "name": "Louis Vaslin"
+        }
+    ],
+    "access_right": "open",
+    "keywords": [
+        "High Energy Physics",
+        "Particle Physics",
+        "Scikit-HEP",
+        "metapackage",
+        "data analysis"
+      ]
+}
