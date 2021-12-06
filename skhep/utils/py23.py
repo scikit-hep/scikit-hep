@@ -23,7 +23,6 @@ if sys.version_info[0] > 2:
     def head(x):
         return iter(x).__next__()
 
-
 else:
     string_types = (str, unicode)
 
