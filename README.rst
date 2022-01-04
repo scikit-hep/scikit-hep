@@ -115,8 +115,8 @@ of all Scikit-HEP dependent packages installed, for example:
 
 **Note on the versioning system:**
 
-- A version ```scikit-hep x.y`` is compatible with the releases of all package dependents
-  versions ```a.b.c`` for all ``c``.
+- A version ``scikit-hep x.y`` is compatible with the releases of all package dependents
+  versions ``a.b.c`` for all ``c``.
 - Major version updates are prepared every time (at least) a "package component" does the same.
-- Minor version updates are the typical updates, when (at least) a package goes from version ``a.b`` to ```a.(b+1)``.
+- Minor version updates are the typical updates, when (at least) a package goes from version ``a.b`` to ``a.(b+1)``.
 - Patch version updates are only done if there is some reason on the side of the metapackage itself.
