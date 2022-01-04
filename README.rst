@@ -82,35 +82,35 @@ of all Scikit-HEP dependent packages installed, for example:
     >>> skhep.show_versions()
 
     System:
-        python: 3.8.6 (default, Sep 24 2020, 21:45:12)  [GCC 8.3.0]
+        python: 3.9.9 (main, Dec 21 2021, 10:03:34)  [GCC 10.2.1 20210110]
     executable: /usr/local/bin/python
-       machine: Linux-4.19.104-microsoft-standard-x86_64-with-glibc2.2.5
+       machine: Linux-4.19.104-microsoft-standard-x86_64-with-glibc2.31
 
     Python dependencies:
-           pip: 20.2.3
-    setuptools: 50.3.0
-         numpy: 1.20.3
-         scipy: 1.6.3
-        pandas: 1.2.4
-    matplotlib: 3.4.2
+           pip: 21.3.1
+    setuptools: 57.5.0
+         numpy: 1.22.0
+         scipy: 1.7.3
+        pandas: 1.3.5
+    matplotlib: 3.5.1
 
     Scikit-HEP package version and dependencies:
            awkward0: 0.15.5
-            awkward: 1.2.3
-    boost_histogram: 1.0.2
-      decaylanguage: 0.11.0
-           hepstats: 0.4.0
-           hepunits: 2.1.1
-               hist: 2.3.0
-         histoprint: 2.1.0
-            iminuit: 2.6.1
-             mplhep: 0.3.7
-           particle: 0.15.0
-              skhep: 3.2.0
-             uproot: 4.0.8
+            awkward: 1.7.0
+    boost_histogram: 1.2.1
+      decaylanguage: 0.13.0
+           hepstats: 0.5.0
+           hepunits: 2.1.2
+               hist: 2.5.2
+         histoprint: 2.2.1
+            iminuit: 2.8.4
+             mplhep: 0.3.15
+           particle: 0.16.3
+              skhep: 3.5.0
+             uproot: 4.1.9
             uproot3: 3.14.4
     uproot3_methods: 0.10.1
-             vector: 0.8.2
+             vector: 0.8.4
 
 
 **Note on the versioning system:**
