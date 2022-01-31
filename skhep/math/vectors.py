@@ -152,7 +152,7 @@ class Vector3D(object):
     @property
     def rho(self):
         """Return the cylindrical coordinate rho."""
-        return sqrt(self.x ** 2 + self.y ** 2)
+        return sqrt(self.x**2 + self.y**2)
 
     @property
     def r(self):
@@ -222,7 +222,7 @@ class Vector3D(object):
     @property
     def mag2(self):
         """Square of the magnitude, a.k.a. norm, of the vector."""
-        return sum(v ** 2 for v in self.__values)
+        return sum(v**2 for v in self.__values)
 
     def __abs__(self):
         """Get the absolute value for the vector.
@@ -453,7 +453,7 @@ class Vector3D(object):
             if not isinstance(u, (int, float)):
                 raise ValueError("Component #{0} is not a number!".format(i))
 
-        norm = sqrt(ux ** 2 + uy ** 2 + uz ** 2)
+        norm = sqrt(ux**2 + uy**2 + uz**2)
         if norm != 1.0:
             ux = ux / norm
             uy = uy / norm
@@ -462,19 +462,19 @@ class Vector3D(object):
         c1 = 1.0 - c
 
         xp = (
-            (c + ux ** 2 * c1) * self.x
+            (c + ux**2 * c1) * self.x
             + (ux * uy * c1 - uz * s) * self.y
             + (ux * uz * c1 + uy * s) * self.z
         )
         yp = (
             (ux * uy * c1 + uz * s) * self.x
-            + (c + uy ** 2 * c1) * self.y
+            + (c + uy**2 * c1) * self.y
             + (uy * uz * c1 - ux * s) * self.z
         )
         zp = (
             (ux * uz * c1 - uy * s) * self.x
             + (uy * uz * c1 + ux * s) * self.y
-            + (c + uz ** 2 * c1) * self.z
+            + (c + uz**2 * c1) * self.z
         )
 
         return Vector3D(xp, yp, zp)
@@ -737,9 +737,9 @@ class LorentzVector(object):
         self.__vector3d.y = py
         self.__vector3d.z = pz
         if m > 0.0:
-            self.__t = sqrt(px ** 2 + py ** 2 + pz ** 2 + m ** 2)
+            self.__t = sqrt(px**2 + py**2 + pz**2 + m**2)
         else:
-            self.__t = sqrt(px ** 2 + py ** 2 + pz ** 2 - m ** 2)
+            self.__t = sqrt(px**2 + py**2 + pz**2 - m**2)
 
     def setpxpypze(self, px, py, pz, e):
         """Set the px,py,pz components and the energy."""
@@ -834,7 +834,7 @@ class LorentzVector(object):
     @property
     def transversemass2(self):
         """Return the square of the transverse mass."""
-        return self.e ** 2 - self.pz ** 2
+        return self.e**2 - self.pz**2
 
     @property
     def beta(self):
@@ -845,7 +845,7 @@ class LorentzVector(object):
     def gamma(self):
         """Return :math:`\\gamma = 1/\\sqrt{1-\\beta^2}`."""
         if self.beta < 1:
-            return 1.0 / sqrt(1.0 - self.beta ** 2)
+            return 1.0 / sqrt(1.0 - self.beta**2)
         else:
             return 10e10
 
@@ -881,12 +881,12 @@ class LorentzVector(object):
     @property
     def mag2(self):
         """Square of the magnitude, a.k.a. norm, of the Lorentz vector."""
-        return self.t ** 2 - self.__vector3d.mag2
+        return self.t**2 - self.__vector3d.mag2
 
     @property
     def perp2(self):
         """Square of the transverse component, in the (x,y) plane, of the spatial components."""
-        return self.x ** 2 + self.y ** 2
+        return self.x**2 + self.y**2
 
     @property
     def perp(self):
@@ -1080,7 +1080,7 @@ class LorentzVector(object):
             if not isinstance(b, (int, float)):
                 raise ValueError("Component #{0} is not a number!".format(i))
 
-        b2 = bx ** 2 + by ** 2 + bz ** 2
+        b2 = bx**2 + by**2 + bz**2
         gamma = 1.0 / sqrt(1.0 - b2)
         bp = bx * self.x + by * self.y + bz * self.z
         if b2 > 0.0:

@@ -360,7 +360,7 @@ def test_lorentz_vectors_properties():
     assert lv2.boostvector == Vector3D(0.5, 0.5, 0.5)
     lv3 = LorentzVector(0.0, 0.0, 1.0, 0.0)
     beta = 0.05
-    gamma = 1 / sqrt(1 - beta ** 2)
+    gamma = 1 / sqrt(1 - beta**2)
     lv4 = lv3.boost(0, 0, beta)
     assert lv4.z == lv3.z * gamma, "Check length contraction"
     assert lv4.x == lv3.x
@@ -401,10 +401,10 @@ def test_lorentz_vectors_properties():
     assert p1.mass == 5.0
     assert p1.m2 == 25.0
     assert p1.mass2 == 25.0
-    assert p1.pt == sqrt(p1.px ** 2 + p1.py ** 2)
-    assert p1.p == sqrt(p1.px ** 2 + p1.py ** 2 + p1.pz ** 2)
-    assert p1.p == sqrt(p1.pt ** 2 + p1.pz ** 2)
-    assert p1.e == sqrt(p1.m ** 2 + p1.p ** 2)
+    assert p1.pt == sqrt(p1.px**2 + p1.py**2)
+    assert p1.p == sqrt(p1.px**2 + p1.py**2 + p1.pz**2)
+    assert p1.p == sqrt(p1.pt**2 + p1.pz**2)
+    assert p1.e == sqrt(p1.m**2 + p1.p**2)
     assert p1.beta == p1.p / p1.e
     p2 = p1.boost(p1.px / p1.e, p1.y / p1.e, p1.z / p1.e)
     assert p2 == p1.boost(p1.boostvector)
@@ -416,7 +416,7 @@ def test_lorentz_vectors_properties():
     assert p3.py == 5.0
     assert p3.pz == 10.0
     assert p3.e == 20.0
-    assert p3.m == sqrt(p3.e ** 2 - p3.p ** 2)
+    assert p3.m == sqrt(p3.e**2 - p3.p**2)
     assert p3.beta == p3.p / p3.e
     p4 = LorentzVector()
     p4.setptetaphim(10.0, 3.5, pi / 3, 5.0)
@@ -435,8 +435,8 @@ def test_lorentz_vectors_properties():
     assert p4.deltaeta(p5) == approx(-0.4)
     assert p5.deltaphi(p4) == approx(-pi)
     assert p4.deltaphi(p5) == approx(pi)
-    assert p5.deltar(p4) == approx(sqrt(0.4 ** 2 + pi ** 2))
-    assert p4.deltar(p5) == approx(sqrt(0.4 ** 2 + pi ** 2))
+    assert p5.deltar(p4) == approx(sqrt(0.4**2 + pi**2))
+    assert p4.deltar(p5) == approx(sqrt(0.4**2 + pi**2))
     p6 = LorentzVector()
     p6.setptetaphie(10.0, 3.9, -pi, 20.0)
     assert p6.deltaphi(p4) == approx(2 * (pi / 3))
