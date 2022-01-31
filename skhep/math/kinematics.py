@@ -100,7 +100,7 @@ def Armenteros_Podolanski_variables(pplus_3Dvec, pminus_3Dvec):
         raise ValueError("Total momentum has zero magnitude!")
 
     # Longitudinal momentum asymmetry, i.e. imbalance
-    alpha = (pplus_3Dvec.mag2 - pminus_3Dvec.mag2) / mother_mag ** 2
+    alpha = (pplus_3Dvec.mag2 - pminus_3Dvec.mag2) / mother_mag**2
 
     # Transverse momentum of positively-charged particle along the mother particle momentum direction
     qT = (pplus_3Dvec.cross(pminus_3Dvec)).mag / mother_mag

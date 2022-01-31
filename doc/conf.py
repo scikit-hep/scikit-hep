@@ -41,9 +41,9 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"Scikit-HEP"
-copyright = u"2016-2020, The Scikit-HEP Developers"
-author = u"The Scikit-HEP Administrators"
+project = "Scikit-HEP"
+copyright = "2016-2020, The Scikit-HEP Developers"
+author = "The Scikit-HEP Administrators"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -149,8 +149,8 @@ latex_documents = [
     (
         master_doc,
         "Scikit-HEP.tex",
-        u"Scikit-HEP Documentation",
-        u"The Scikit-HEP Administrators",
+        "Scikit-HEP Documentation",
+        "The Scikit-HEP Administrators",
         "manual",
     ),
 ]
@@ -159,7 +159,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "Scikit-HEP", u"Scikit-HEP Documentation", [author], 1)]
+man_pages = [(master_doc, "Scikit-HEP", "Scikit-HEP Documentation", [author], 1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -171,7 +171,7 @@ texinfo_documents = [
     (
         master_doc,
         "Scikit-HEP",
-        u"Scikit-HEP Documentation",
+        "Scikit-HEP Documentation",
         author,
         "Scikit-HEP",
         "One line description of project.",
