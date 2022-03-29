@@ -12,7 +12,7 @@
   :target: https://pypi.python.org/pypi/scikit-hep
 
 .. image:: https://img.shields.io/conda/vn/conda-forge/scikit-hep.svg
-  :target: https://anaconda.org/conda-forge/scikit-hep
+  :target: https://github.com/conda-forge/scikit-hep-feedstock
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1043949.svg
   :target: https://doi.org/10.5281/zenodo.1043949
