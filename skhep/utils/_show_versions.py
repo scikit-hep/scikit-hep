@@ -15,7 +15,6 @@ scipy_deps = ["pip", "setuptools", "numpy", "scipy", "pandas", "matplotlib"]
 
 
 skhep_deps = [
-    "awkward0",
     "awkward",
     "boost_histogram",
     "decaylanguage",
@@ -28,8 +27,6 @@ skhep_deps = [
     "particle",
     "skhep",
     "uproot",
-    "uproot3",
-    "uproot3_methods",
     "vector",
 ]
 
