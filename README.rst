@@ -69,11 +69,11 @@ All the normal best-practices for Python apply; you should be in a virtual envir
 Package version and dependencies
 ................................
 
-Please check the ``setup.py`` and ``requirements.txt`` files for the list
+Please check the ``setup.cfg`` and ``requirements.txt`` files for the list
 of Python versions supported and the list of Scikit-HEP project packages
 and dependencies included, respectively.
 
-For any installed `scikit-hep` the following displays the actual versions
+For any installed ``scikit-hep`` the following displays the actual versions
 of all Scikit-HEP dependent packages installed, for example:
 
 .. code-block:: python
