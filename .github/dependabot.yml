@@ -1,0 +1,24 @@
+# dependabot.yml
+
+version: 2
+updates:
+
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "eduardo-rodrigues"
+      - "andrzejnovak"
+    prefix: "chore(deps): "
+
+  # Maintain dependencies for python
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "eduardo-rodrigues"
+      - "andrzejnovak"
+    prefix: "chore(deps): "
