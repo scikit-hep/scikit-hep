@@ -10,5 +10,5 @@ matplotlib>2.0.0
 mplhep~=0.3.0
 numpy>=1.13.1
 particle~=0.20.0
-uproot~=4.2.0
+uproot~=4.2.3
 vector~=0.8.0
