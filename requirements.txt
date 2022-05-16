@@ -11,4 +11,4 @@ mplhep~=0.3.0
 numpy>=1.13.1
 particle~=0.20.0
 uproot~=4.2.0
-vector~=0.8.0
+vector~=0.8.5
