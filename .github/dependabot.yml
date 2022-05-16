@@ -11,10 +11,10 @@ updates:
     reviewers:
       - "eduardo-rodrigues"
       - "andrzejnovak"
-    prefix: "chore(deps): "
     ignore:
       - dependency-name: "actions/*"
         update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+    prefix: "chore(deps): "
 
   # Maintain dependencies for python
   - package-ecosystem: "pip"
@@ -24,7 +24,7 @@ updates:
     reviewers:
       - "eduardo-rodrigues"
       - "andrzejnovak"
-    prefix: "chore(deps): "
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]
+    prefix: "chore(deps): "
