@@ -10,7 +10,6 @@ updates:
       interval: "monthly"
     reviewers:
       - "eduardo-rodrigues"
-      - "andrzejnovak"
     ignore:
       - dependency-name: "actions/*"
         update-types: ["version-update:semver-minor", "version-update:semver-patch"]
