@@ -14,7 +14,7 @@ updates:
       - dependency-name: "actions/*"
         update-types: ["version-update:semver-minor", "version-update:semver-patch"]
     commit-message:
-      prefix: "chore (GHA deps): "
+      prefix: "chore GHA deps:"
 
   # Maintain dependencies for python
   - package-ecosystem: "pip"
@@ -27,4 +27,4 @@ updates:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]
     commit-message:
-      prefix: "chore (pip deps): "
+      prefix: "chore pip deps:"
