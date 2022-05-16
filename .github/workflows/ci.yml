@@ -15,9 +15,9 @@ jobs:
     name: Check manifest
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-    - uses: pre-commit/action@v2.0.0
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+    - uses: pre-commit/action@v2.0.3
       with:
         extra_args: --all-files --hook-stage manual check-manifest
 
@@ -25,24 +25,24 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip install --use-feature=2020-resolver pytest pytest-cov coveralls>=1.9.2
+        python -m pip install pytest pytest-cov coveralls>=3.3
     - name: Install package
-      run: python -m pip install --use-feature=2020-resolver .
+      run: python -m pip install .
     - name: Test with pytest
       run: pytest --cov=skhep tests
     - name: Send to coveralls
       if: matrix.python-version == 3.8
       env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: coveralls
