@@ -14,7 +14,8 @@ updates:
     ignore:
       - dependency-name: "actions/*"
         update-types: ["version-update:semver-minor", "version-update:semver-patch"]
-    prefix: "chore(deps): "
+    commit-message:
+      prefix: "chore(deps): "
 
   # Maintain dependencies for python
   - package-ecosystem: "pip"
@@ -27,4 +28,5 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]
-    prefix: "chore(deps): "
+    commit-message:
+      prefix: "chore(deps): "
