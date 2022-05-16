@@ -12,6 +12,9 @@ updates:
       - "eduardo-rodrigues"
       - "andrzejnovak"
     prefix: "chore(deps): "
+    ignore:
+      - dependency-name: "actions/*"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
 
   # Maintain dependencies for python
   - package-ecosystem: "pip"
