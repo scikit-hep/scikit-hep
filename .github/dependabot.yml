@@ -24,7 +24,6 @@ updates:
       interval: "monthly"
     reviewers:
       - "eduardo-rodrigues"
-      - "andrzejnovak"
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]
