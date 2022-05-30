@@ -9,5 +9,6 @@ iminuit
 matplotlib
 mplhep
 particle
+resample
 uproot
 vector
