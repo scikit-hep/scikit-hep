@@ -22,3 +22,6 @@ updates:
       - "eduardo-rodrigues"
     commit-message:
       prefix: "chore pip deps:"
+    ignore:
+       - dependency-name: "*"
+         update-types: ["version-update:semver-patch"]
