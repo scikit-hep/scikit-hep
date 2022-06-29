@@ -10,9 +10,6 @@ updates:
       interval: "monthly"
     reviewers:
       - "eduardo-rodrigues"
-    ignore:
-      - dependency-name: "actions/*"
-        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
     commit-message:
       prefix: "chore GHA deps:"
 
@@ -23,8 +20,5 @@ updates:
       interval: "monthly"
     reviewers:
       - "eduardo-rodrigues"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-patch"]
     commit-message:
       prefix: "chore pip deps:"
