@@ -16,7 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
     - uses: pre-commit/action@v2.0.3
       with:
         extra_args: --all-files --hook-stage manual check-manifest
@@ -30,9 +32,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: "3.x"
     - name: Install dependencies
       run: |
         python -m pip install pytest pytest-cov coveralls>=3.3
