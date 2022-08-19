@@ -25,7 +25,6 @@ skhep_deps = [
     "iminuit",
     "mplhep",
     "particle",
-    "pylhe",
     "resample",
     "skhep",
     "uproot",
