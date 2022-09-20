@@ -37,13 +37,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install pytest pytest-cov coveralls>=3.3
+        python -m pip install pytest pytest-cov coveralls
     - name: Install package
       run: python -m pip install .
     - name: Test with pytest
       run: pytest --cov=skhep tests
     - name: Send to coveralls
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.9
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
