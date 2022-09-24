@@ -5,3 +5,20 @@ requires = [
 ]
 
 build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+xfail_strict = true
+addopts = [
+    "-ra",
+    "--cov=hepdata_lib",
+    "--cov-branch",
+    "--showlocals",
+    "--strict-markers",
+    "--strict-config",
+    "--cov-report=term-missing",
+    "--cov-report=xml",
+    "--cov-report=html",
+]
+log_cli_level = "info"
+testpaths = "tests"
