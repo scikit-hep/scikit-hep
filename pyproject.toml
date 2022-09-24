@@ -11,7 +11,7 @@ minversion = "6.0"
 xfail_strict = true
 addopts = [
     "-ra",
-    "--cov=hepdata_lib",
+    "--cov=skhep",
     "--cov-branch",
     "--showlocals",
     "--strict-markers",
