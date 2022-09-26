@@ -300,7 +300,7 @@ class Point3D(object):
         """
         if isinstance(other, Point3D):
             return self._vct == other._vct
-        elif isinstance(other, (float, int, long)):
+        elif isinstance(other, (float, int)):
             return self._vct == other
         return NotImplemented
 
