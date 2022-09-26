@@ -9,7 +9,6 @@ Tests for the skhep.math.geometry module.
 # Import statements
 # -----------------------------------------------------------------------------
 from skhep.math.geometry import *
-from skhep.utils.py23 import *
 
 import pytest
 from pytest import approx

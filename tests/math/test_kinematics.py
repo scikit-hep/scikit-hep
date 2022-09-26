@@ -16,7 +16,6 @@ from hepunits.constants import hbar
 
 from skhep.math.kinematics import *
 from skhep.math.vectors import Vector3D
-from skhep.utils.py23 import *
 
 # -----------------------------------------------------------------------------
 # Actual tests

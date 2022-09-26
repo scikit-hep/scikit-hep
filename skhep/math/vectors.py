@@ -17,8 +17,6 @@ Two vector classes are available:
 # -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from skhep.utils.py23 import *
-
 from skhep.utils.exceptions import *
 
 from math import sqrt, atan2, cos, sin, acos, degrees, log, pi, sinh
@@ -386,7 +384,7 @@ class Vector3D(object):
         from skhep.math.numeric import isequal
 
         ## comparsion with scalar zero, very useful  in practice
-        if isinstance(other, (float, int, long)) and isequal(other, 0):
+        if isinstance(other, (float, int)) and isequal(other, 0):
             return isequal(self[0], 0) and isequal(self[1], 0) and isequal(self[2], 0)
         elif not isinstance(other, Vector3D):
             return NotImplemented
@@ -1031,7 +1029,7 @@ class LorentzVector(object):
         from skhep.math.numeric import isequal
 
         ## comparsion with scalar zero, very useful  in practice
-        if isinstance(other, (float, int, long)) and isequal(other, 0):
+        if isinstance(other, (float, int)) and isequal(other, 0):
             return (
                 isequal(self[0], 0)
                 and isequal(self[1], 0)
