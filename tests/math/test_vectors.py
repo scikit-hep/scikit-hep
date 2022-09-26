@@ -12,7 +12,6 @@ import pytest
 from pytest import approx
 
 from skhep.math.vectors import *
-from skhep.utils.py23 import *
 from skhep.utils.exceptions import *
 from math import pi, sqrt
 

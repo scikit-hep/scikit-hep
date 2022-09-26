@@ -17,8 +17,6 @@ Two vector classes are available:
 # -----------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from skhep.utils.py23 import *
-
 from skhep.utils.exceptions import *
 
 from math import sqrt, atan2, cos, sin, acos, degrees, log, pi, sinh
