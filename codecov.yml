@@ -1,0 +1,2 @@
+ignore:
+  - "skhep/utils/_show_versions.py"
