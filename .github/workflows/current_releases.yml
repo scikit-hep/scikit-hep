@@ -25,11 +25,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install --use-feature=2020-resolver pytest pytest-cov coveralls>=1.9.2
+        python -m pip install pytest pytest-cov coveralls>=1.9.2
     - name: Install package and upgrade dependencies to PyPI current release
       run: |
-        python -m pip install --use-feature=2020-resolver .
-        python -m pip install --upgrade --use-feature=2020-resolver -r requirements_current_release.txt
+        python -m pip install .
+        python -m pip install --upgrade -r requirements_current_release.txt
         python -m pip list
     - name: Test with pytest
       run: pytest --cov=skhep tests
