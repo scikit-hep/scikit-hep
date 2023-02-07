@@ -21,6 +21,7 @@ from skhep.utils.exceptions import *
 
 from math import sqrt, atan2, cos, sin, acos, degrees, log, pi, sinh
 
+
 # -----------------------------------------------------------------------------
 # Vector class in 3D
 # -----------------------------------------------------------------------------
