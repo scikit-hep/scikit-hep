@@ -27,6 +27,7 @@ __all__ = (
 from skhep.math.vectors import Vector3D
 from skhep.math.numeric import isequal
 
+
 # =============================================================================
 # 3D-point
 # =============================================================================
@@ -343,7 +344,6 @@ class Line3D(object):
     """
 
     def __init__(self, point=Point3D(0, 0, 0), vector=Vector3D(0, 0, 1)):
-
         if not isinstance(point, Point3D):
             raise NotImplementedError("Line3D: invalid ``point'' argument")
         if not isinstance(vector, Vector3D):
@@ -568,7 +568,6 @@ class Line3D(object):
                 return None
 
         elif isinstance(other, Plane3D):
-
             if self.direction.isperpendicular(other.normal):
                 if self.on_plane(other):
                     return self
@@ -593,7 +592,6 @@ class Plane3D(object):
     """Plane in 3D space, defined by a point on plane and by the normal vector."""
 
     def __init__(self, point=Point3D(0, 0, 0), normal=Vector3D(0, 0, 1)):
-
         if not isinstance(point, Point3D):
             raise NotImplementedError("Plane3D: invalid ``point'' argument")
         if not isinstance(normal, Vector3D):
@@ -748,11 +746,9 @@ class Plane3D(object):
             return other.intersect(self)
 
         elif isinstance(other, Plane3D):
-
             if self.isparallel(other):
                 return None
             else:
-
                 N1, N2 = self.normal, other.normal
                 d1, d2 = N1 * self.point._vct, N2 * other.point._vct
 
@@ -793,7 +789,6 @@ def distance(obj1, obj2):
 
 # ===========================================================================
 if "__main__" == __name__:
-
     v = Vector3D(1, 2, 3)
     p = Point3D(1, 2, 3)
     p += 0.5 * v

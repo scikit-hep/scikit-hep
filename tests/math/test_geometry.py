@@ -15,11 +15,11 @@ from pytest import approx
 
 from math import pi
 
+
 # -----------------------------------------------------------------------------
 # Actual tests
 # -----------------------------------------------------------------------------
 def test_geometry_constructors():
-
     v1 = Vector3D()
     p1 = Point3D()
     assert str(p1) == "Point3D(x=0.0,y=0.0,z=0.0)"
@@ -114,7 +114,6 @@ def test_contains():
 
 
 def test_distance():
-
     with pytest.raises(NotImplementedError):
         Point3D.distance(Point3D(), 2.0)
     with pytest.raises(NotImplementedError):
@@ -155,7 +154,6 @@ def test_distance():
 
 
 def test_angle():
-
     p0 = Point3D()
 
     with pytest.raises(NotImplementedError):
@@ -188,7 +186,6 @@ def test_angle():
 
 
 def test_intersect():
-
     with pytest.raises(NotImplementedError):
         Line3D.intersect(Line3D(), 1)
     with pytest.raises(NotImplementedError):
