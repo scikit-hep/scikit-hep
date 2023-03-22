@@ -40,7 +40,7 @@ For what concerns the project grand structure, it should be seen as a *toolset* 
 **Getting in touch**
 
 There are various ways to
-`get in touch <http://scikit-hep.org/getting-in-touch.html>`_
+`get in touch <https://scikit-hep.org/getting-in-touch.html>`_
 with project admins and/or users and developers.
 
 scikit-hep package
