@@ -1,7 +1,7 @@
 awkward~=2.1.0
 boost-histogram~=1.3.0
 decaylanguage~=0.15.0
-hepstats~=0.6.0
+hepstats~=0.6.1
 hepunits~=2.3.0
 hist~=2.6.0
 histoprint~=2.4.0
