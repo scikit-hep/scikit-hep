@@ -81,40 +81,34 @@ of all Scikit-HEP dependent packages installed, for example:
     >>> skhep.show_versions()
 
     System:
-        python: 3.9.12 (main, Apr  4 2022, 05:22:27) [MSC v.1916 64 bit (AMD64)]
-    executable: C:\home\sw\anaconda3\python.exe
-       machine: Windows-10-10.0.19044-SP0
+        python: 3.10.10 | packaged by conda-forge | (main, Mar 24 2023, 20:08:06) [GCC 11.3.0]
+    executable: /srv/conda/envs/notebook/bin/python
+       machine: Linux-5.15.0-72-generic-x86_64-with-glibc2.27
 
     Python dependencies:
-           pip: 21.2.4
-    setuptools: 61.2.0
-         numpy: 1.21.5
-         scipy: 1.7.3
-        pandas: 1.4.2
-    matplotlib: 3.5.1
+           pip: 23.1.2
+         numpy: 1.24.3
+         scipy: 1.10.1
+        pandas: 2.0.2
+    matplotlib: 3.7.1
 
     Scikit-HEP package version and dependencies:
-            awkward: 1.8.0
-    boost_histogram: 1.3.1
-      decaylanguage: 0.14.2
-           hepstats: 0.5.0
-           hepunits: 2.2.1
-               hist: 2.6.1
+            awkward: 2.2.2
+    boost_histogram: 1.3.2
+      decaylanguage: 0.15.3
+           hepstats: 0.6.1
+           hepunits: 2.3.2
+               hist: 2.6.3
          histoprint: 2.4.0
-            iminuit: 2.16.0
-             mplhep: 0.3.26
-           particle: 0.20.1
-              pylhe: 0.4.0
-           resample: 1.5.1
-              skhep: 4.1.0
-             uproot: 4.3.5
-             vector: 0.8.5
-
+            iminuit: 2.21.3
+             mplhep: 0.3.28
+           particle: 0.22.0
+              pylhe: 0.6.0
+           resample: 1.6.0
+              skhep: 2023.06.09
+             uproot: 5.0.8
+             vector: 1.0.0
 
 **Note on the versioning system:**
 
-- A version ``scikit-hep x.y`` is compatible with the releases of all package dependents
-  versions ``a.b.c`` for all ``c``.
-- Major version updates are prepared every time (at least) a "package component" does the same.
-- Minor version updates are the typical updates, when (at least) a package goes from version ``a.b`` to ``a.(b+1)``.
-- Patch version updates are only done if there is some reason on the side of the metapackage itself.
+This package uses `Calendar Versioning <https://calver.org/>`_ (CalVer).
