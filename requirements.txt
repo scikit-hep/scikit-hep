@@ -3,7 +3,7 @@ boost-histogram~=1.3.0
 decaylanguage~=0.15.0
 hepstats~=0.6.0
 hepunits~=2.3.0
-hist~=2.7.1
+hist~=2.7.0
 histoprint~=2.4.0
 iminuit~=2.22.0
 matplotlib>3.4.0
