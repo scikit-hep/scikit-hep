@@ -1,4 +1,4 @@
-awkward~=2.3.0
+awkward~=2.4.4
 boost-histogram~=1.4.0
 decaylanguage~=0.16.0
 hepstats~=0.7.0
