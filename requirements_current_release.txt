@@ -1,5 +1,4 @@
 awkward
-boost-histogram
 decaylanguage
 hepstats
 hepunits
