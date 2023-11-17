@@ -1,5 +1,4 @@
 [build-system]
-
 requires = [
     "setuptools>=42.0",
 ]
@@ -22,3 +21,12 @@ addopts = [
 ]
 log_cli_level = "info"
 testpaths = "tests"
+
+[tool.check-sdist]
+git-only = [
+    ".pre-commit-config.yaml",
+    "doc/**",
+    "requirements_current_release.txt",
+    "scripts/skhep-info",
+    ".gitignore",
+]
