@@ -8,10 +8,10 @@ Heavily inspired from :func:`sklearn.show_versions`.
 
 import platform
 import sys
-import importlib
+import importlib.metadata
 
 
-scipy_deps = ["pip", "setuptools", "numpy", "scipy", "pandas", "matplotlib"]
+scipy_deps = ["setuptools", "pip", "numpy", "scipy", "pandas", "matplotlib"]
 
 
 skhep_deps = [
@@ -67,13 +67,8 @@ def _get_deps_info(pkgs_list):
 
     for modname in pkgs_list:
         try:
-            if modname in sys.modules:
-                mod = sys.modules[modname]
-            else:
-                mod = importlib.import_module(modname)
-            ver = mod.__version__
-            deps_info[modname] = ver
-        except ImportError:
+            deps_info[modname] = importlib.metadata.version(modname)
+        except ModuleNotFoundError:
             deps_info[modname] = None
 
     return deps_info
