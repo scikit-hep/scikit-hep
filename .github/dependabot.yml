@@ -11,7 +11,7 @@ updates:
     reviewers:
       - "eduardo-rodrigues"
     commit-message:
-      prefix: "chore GHA deps:"
+      prefix: "chore(GHA deps):"
 
   # Maintain dependencies for python
   - package-ecosystem: "pip"
@@ -21,7 +21,5 @@ updates:
     reviewers:
       - "eduardo-rodrigues"
     commit-message:
-      prefix: "chore pip deps:"
-    ignore:
-       - dependency-name: "*"
-         update-types: ["version-update:semver-patch"]
+      prefix: "chore(pip deps):"
+    versioning-strategy: "increase-if-necessary"
