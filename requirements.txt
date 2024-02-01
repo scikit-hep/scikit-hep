@@ -12,4 +12,4 @@ particle~=0.23.0
 pylhe~=0.7.0
 resample~=1.6.0
 uproot~=5.2.0
-vector~=1.1.0
+vector~=1.2.0
