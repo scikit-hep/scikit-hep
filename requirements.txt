@@ -11,5 +11,5 @@ numpy>=1.13.1
 particle~=0.23.0
 pylhe~=0.7.0
 resample~=1.7.0
-uproot~=5.2.0
+uproot~=5.3.0
 vector~=1.2.0
