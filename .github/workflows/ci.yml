@@ -4,7 +4,7 @@ on:
   push:
    branches:
      - master
-     - py2-legacy
+     - main
   pull_request:
   # Run daily at 0:01 UTC
   schedule:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
 
     steps:
     - uses: actions/checkout@v4
