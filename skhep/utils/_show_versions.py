@@ -27,7 +27,7 @@ skhep_deps = [
     "particle",
     "pylhe",
     "resample",
-    "skhep",
+    "scikit-hep",
     "uproot",
     "vector",
 ]
