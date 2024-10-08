@@ -1,12 +1,12 @@
 
 repos:
 - repo: https://github.com/psf/black
-  rev: 24.8.0
+  rev: 24.10.0
   hooks:
   - id: black
 
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.6.0
+  rev: v5.0.0
   hooks:
   - id: check-added-large-files
     args: ['--maxkb=1000']
@@ -22,7 +22,7 @@ repos:
   - id: fix-encoding-pragma
 
 - repo: https://github.com/henryiii/check-sdist
-  rev: "v1.0.0rc2"
+  rev: "v1.0.0"
   hooks:
   - id: check-sdist
     args: [--inject-junk]
