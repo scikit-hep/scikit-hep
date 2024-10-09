@@ -3,7 +3,7 @@ name: Current releases
 on:
   push:
    branches:
-     - master
+     - main
   pull_request:
   # Run daily at 0:01 UTC
   schedule:
