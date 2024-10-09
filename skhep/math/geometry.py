@@ -13,6 +13,7 @@ Three geometry classes are available:
 * ``Plane3D``      : a plane in 3-dimensional space
 
 """
+
 # =============================================================================
 __all__ = (
     "Vector3D",  ## 3D-vector

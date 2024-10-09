@@ -1,10 +1,5 @@
 
 repos:
-- repo: https://github.com/psf/black
-  rev: 24.10.0
-  hooks:
-  - id: black
-
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v5.0.0
   hooks:
@@ -20,6 +15,11 @@ repos:
   - id: debug-statements
   - id: end-of-file-fixer
   - id: fix-encoding-pragma
+
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.6.9
+  hooks:
+  - id: ruff-format
 
 - repo: https://github.com/henryiii/check-sdist
   rev: "v1.0.0"
