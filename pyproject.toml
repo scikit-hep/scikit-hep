@@ -1,8 +1,52 @@
 [build-system]
-requires = [
-    "setuptools>=42.0",
-]
+requires = ["setuptools>=62.6"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "scikit-hep"
+dynamic = ["version", "dependencies"]
+description = "Metapackage of Scikit-HEP project libraries for Particle Physics."
+readme = "README.rst"
+license.text = "BSD 3-Clause License"
+requires-python = ">=3.9"
+authors = [
+    { name = "the scikit-hep admins", email = "scikit-hep-admins@googlegroups.com" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: C++",
+    "Programming Language :: Cython",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development",
+    "Topic :: Utilities",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest >=7.0",
+    "pytest-cov",
+]
+
+[project.urls]
+Homepage = "https://github.com/scikit-hep/scikit-hep/"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "skhep._version.__version__"}
+dependencies = {file = "requirements.txt"}
 
 [tool.pytest.ini_options]
 minversion = "6.0"
