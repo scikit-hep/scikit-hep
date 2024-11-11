@@ -1,6 +1,6 @@
 awkward~=2.6.0
 decaylanguage~=0.18.0
-hepstats~=0.8.0
+hepstats~=0.9.0
 hepunits~=2.3.0
 hist~=2.8.0
 histoprint~=2.5.0
