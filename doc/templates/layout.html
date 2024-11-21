@@ -1,7 +1,0 @@
-{#
-  Jinja2 template file that extends the default Sphinx theme to include our
-  JavaScript file.
-#}
-{% extends "!layout.html" %}
-{% set script_files = script_files + ["static/mathjax_conf.js"] %}
-{% set css_files = css_files + ["static/scikit-hep.css"] %}
