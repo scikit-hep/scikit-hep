@@ -72,7 +72,7 @@ def isclose(a, b, rel_tol=1e-9, abs_tol=0.0, method="weak"):
     """
     if method not in ("asymmetric", "strong", "weak", "average"):
         raise ValueError(
-            'method must be one of: "asymmetric",' ' "strong", "weak", "average"'
+            'method must be one of: "asymmetric", "strong", "weak", "average"'
         )
 
     if rel_tol < 0.0 or abs_tol < 0.0:
@@ -101,7 +101,7 @@ def isclose(a, b, rel_tol=1e-9, abs_tol=0.0, method="weak"):
         return diff <= abs(rel_tol * (a + b) / 2) or (diff <= abs_tol)
     else:
         raise ValueError(
-            "method must be one of:" ' "asymmetric", "strong", "weak", "average"'
+            'method must be one of: "asymmetric", "strong", "weak", "average"'
         )
 
 

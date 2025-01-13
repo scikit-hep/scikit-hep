@@ -15,7 +15,7 @@ __all__ = [
     "banner",
     "project_url",
     "project_url_GitHub",
-    "project_url_PyPI" "show_versions",
+    "project_url_PyPIshow_versions",
     "__version__",
 ]
 
