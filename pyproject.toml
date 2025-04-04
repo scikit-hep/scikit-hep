@@ -37,7 +37,6 @@ classifiers = [
 [project.optional-dependencies]
 test = [
     "pytest >=7.0",
-    "pytest-cov",
 ]
 
 [project.urls]
@@ -53,14 +52,9 @@ minversion = "6.0"
 xfail_strict = true
 addopts = [
     "-ra",
-    "--cov=skhep",
-    "--cov-branch",
     "--showlocals",
     "--strict-markers",
     "--strict-config",
-    "--cov-report=term-missing",
-    "--cov-report=xml",
-    "--cov-report=html",
 ]
 log_cli_level = "info"
 testpaths = "tests"

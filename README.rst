@@ -20,9 +20,6 @@
 .. image:: https://github.com/scikit-hep/scikit-hep/workflows/CI/badge.svg
    :target: https://github.com/scikit-hep/scikit-hep/actions?query=workflow%3ACI+branch%3Amain
 
-.. image:: https://codecov.io/gh/scikit-hep/scikit-hep/graph/badge.svg?branch=main
-   :target: https://codecov.io/gh/scikit-hep/scikit-hep?branch=main
-
 Project info
 ------------
 
