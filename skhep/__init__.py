@@ -6,7 +6,7 @@ A community-driven and oriented Python software project for High Energy Physics.
 
 from __future__ import absolute_import
 
-from .utils._show_versions import show_versions
+from ._show_versions import show_versions
 
 from ._version import __version__
 
