@@ -127,6 +127,7 @@ We would like to acknowledge the contributors that made this project possible ([
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/HDembinski"><img src="https://avatars.githubusercontent.com/u/2631586?v=4?s=100" width="100px;" alt="Hans Dembinski"/><br /><sub><b>Hans Dembinski</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=HDembinski" title="Code">💻</a> <a href="https://github.com/scikit-hep/scikit-hep/commits?author=HDembinski" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jeremymcrae"><img src="https://avatars.githubusercontent.com/u/1767732?v=4?s=100" width="100px;" alt="Jeremy McRae"/><br /><sub><b>Jeremy McRae</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=jeremymcrae" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
