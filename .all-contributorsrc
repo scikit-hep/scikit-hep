@@ -48,6 +48,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "pollackscience",
+      "name": "Brian Pollack",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5065341?v=4",
+      "profile": "https://github.com/pollackscience",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
