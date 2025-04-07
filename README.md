@@ -121,6 +121,7 @@ We would like to acknowledge the contributors that made this project possible ([
       <td align="center" valign="top" width="14.28%"><a href="http://andrzejnovak.github.io/"><img src="https://avatars.githubusercontent.com/u/13226500?v=4?s=100" width="100px;" alt="Andrzej Novak"/><br /><sub><b>Andrzej Novak</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=andrzejnovak" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://alex.pearwin.com"><img src="https://avatars.githubusercontent.com/u/540853?v=4?s=100" width="100px;" alt="Alex Pearwin"/><br /><sub><b>Alex Pearwin</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=alexpearce" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://ch.linkedin.com/in/mazurov"><img src="https://avatars.githubusercontent.com/u/75759?v=4?s=100" width="100px;" alt="Alexander Mazurov"/><br /><sub><b>Alexander Mazurov</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=mazurov" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/chrisburr"><img src="https://avatars.githubusercontent.com/u/5220533?v=4?s=100" width="100px;" alt="Chris Burr"/><br /><sub><b>Chris Burr</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=chrisburr" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
