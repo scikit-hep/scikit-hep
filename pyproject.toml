@@ -16,7 +16,6 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved",
     "Operating System :: MacOS",
     "Operating System :: POSIX",
     "Operating System :: Unix",
