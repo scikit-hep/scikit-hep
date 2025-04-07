@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "scikit-hep"
 dynamic = ["version", "dependencies"]
 description = "Metapackage of Scikit-HEP project libraries for Particle Physics."
-readme = "README.rst"
+readme = "README.md"
 license.text = "BSD 3-Clause License"
 requires-python = ">=3.9"
 authors = [
