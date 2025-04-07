@@ -106,6 +106,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "mazurov",
+      "name": "Alexander Mazurov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/75759?v=4",
+      "profile": "https://ch.linkedin.com/in/mazurov",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
