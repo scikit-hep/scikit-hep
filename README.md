@@ -116,6 +116,9 @@ We would like to acknowledge the contributors that made this project possible ([
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/VanyaBelyaev"><img src="https://avatars.githubusercontent.com/u/17701591?v=4?s=100" width="100px;" alt="VanyaBelyaev"/><br /><sub><b>VanyaBelyaev</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=VanyaBelyaev" title="Code">💻</a> <a href="https://github.com/scikit-hep/scikit-hep/commits?author=VanyaBelyaev" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://nils-braun.github.io/"><img src="https://avatars.githubusercontent.com/u/6116188?v=4?s=100" width="100px;" alt="Nils Braun"/><br /><sub><b>Nils Braun</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=nils-braun" title="Code">💻</a> <a href="https://github.com/scikit-hep/scikit-hep/commits?author=nils-braun" title="Documentation">📖</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://www.matthewfeickert.com/"><img src="https://avatars.githubusercontent.com/u/5142394?v=4?s=100" width="100px;" alt="Matthew Feickert"/><br /><sub><b>Matthew Feickert</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=matthewfeickert" title="Code">💻</a> <a href="https://github.com/scikit-hep/scikit-hep/commits?author=matthewfeickert" title="Documentation">📖</a></td>
+    </tr>
   </tbody>
 </table>
 
