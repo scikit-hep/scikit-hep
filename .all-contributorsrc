@@ -17,6 +17,17 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "henryiii",
+      "name": "Henry Schreiner",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4616906?v=4",
+      "profile": "http://iscinumpy.dev",
+      "contributions": [
+        "maintenance",
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
