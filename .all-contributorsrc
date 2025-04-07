@@ -58,6 +58,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "VanyaBelyaev",
+      "name": "VanyaBelyaev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17701591?v=4",
+      "profile": "https://github.com/VanyaBelyaev",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
