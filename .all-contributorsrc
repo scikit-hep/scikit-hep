@@ -68,6 +68,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "nils-braun",
+      "name": "Nils Braun",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6116188?v=4",
+      "profile": "https://nils-braun.github.io/",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
