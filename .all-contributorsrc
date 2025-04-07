@@ -28,6 +28,16 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "marinang",
+      "name": "Matthieu Marinangeli",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24250309?v=4",
+      "profile": "https://github.com/marinang",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
