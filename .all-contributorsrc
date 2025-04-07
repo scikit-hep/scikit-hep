@@ -1,0 +1,28 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "eduardo-rodrigues",
+      "name": "Eduardo Rodrigues",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5013581?v=4",
+      "profile": "http://cern.ch/eduardo.rodrigues",
+      "contributions": [
+        "maintenance",
+        "code",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "scikit-hep",
+  "projectOwner": "scikit-hep"
+}
