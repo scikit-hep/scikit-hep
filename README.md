@@ -125,6 +125,9 @@ We would like to acknowledge the contributors that made this project possible ([
       <td align="center" valign="top" width="14.28%"><a href="https://www.linkedin.com/in/noeldawe/"><img src="https://avatars.githubusercontent.com/u/202816?v=4?s=100" width="100px;" alt="Noel Dawe"/><br /><sub><b>Noel Dawe</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=ndawe" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://orcid.org/0000-0002-2966-7461"><img src="https://avatars.githubusercontent.com/u/5884065?v=4?s=100" width="100px;" alt="Lukas Koch"/><br /><sub><b>Lukas Koch</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=ast0815" title="Code">💻</a> <a href="https://github.com/scikit-hep/scikit-hep/commits?author=ast0815" title="Documentation">📖</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/HDembinski"><img src="https://avatars.githubusercontent.com/u/2631586?v=4?s=100" width="100px;" alt="Hans Dembinski"/><br /><sub><b>Hans Dembinski</b></sub></a><br /><a href="https://github.com/scikit-hep/scikit-hep/commits?author=HDembinski" title="Code">💻</a> <a href="https://github.com/scikit-hep/scikit-hep/commits?author=HDembinski" title="Documentation">📖</a></td>
+    </tr>
   </tbody>
 </table>
 
