@@ -97,6 +97,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "alexpearce",
+      "name": "Alex Pearwin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/540853?v=4",
+      "profile": "https://alex.pearwin.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
