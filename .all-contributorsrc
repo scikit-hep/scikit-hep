@@ -133,6 +133,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ast0815",
+      "name": "Lukas Koch",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5884065?v=4",
+      "profile": "https://orcid.org/0000-0002-2966-7461",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
