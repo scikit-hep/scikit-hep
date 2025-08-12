@@ -14,7 +14,6 @@ repos:
   - id: requirements-txt-fixer
   - id: debug-statements
   - id: end-of-file-fixer
-  - id: fix-encoding-pragma
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.12.8
