@@ -13,14 +13,12 @@ authors = [
     { name = "the scikit-hep admins", email = "scikit-hep-admins@googlegroups.com" },
 ]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "Operating System :: MacOS",
     "Operating System :: POSIX",
     "Operating System :: Unix",
-    "Programming Language :: C++",
-    "Programming Language :: Cython",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
@@ -47,7 +45,7 @@ version = {attr = "skhep._version.__version__"}
 dependencies = {file = "requirements.txt"}
 
 [tool.pytest.ini_options]
-minversion = "6.0"
+minversion = "7.0"
 xfail_strict = true
 addopts = [
     "-ra",
