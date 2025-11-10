@@ -53,7 +53,7 @@ addopts = [
     "--strict-markers",
     "--strict-config",
 ]
-log_cli_level = "info"
+log_level = "INFO"
 testpaths = "tests"
 
 [tool.check-sdist]
