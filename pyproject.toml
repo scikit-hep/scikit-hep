@@ -7,7 +7,7 @@ name = "scikit-hep"
 dynamic = ["version", "dependencies"]
 description = "Metapackage of Scikit-HEP project libraries for Particle Physics."
 readme = "README.md"
-license.text = "BSD 3-Clause License"
+license = "BSD-3-Clause"
 requires-python = ">=3.9"
 authors = [
     { name = "the scikit-hep admins", email = "scikit-hep-admins@googlegroups.com" },
