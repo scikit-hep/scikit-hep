@@ -53,7 +53,7 @@ virtual environment, etc.
 
 ### Package version and dependencies
 
-Please check the `setup.cfg` and `requirements.txt` files for the list
+Please check the `requirements.txt` files for the list
 of Python versions supported and the list of Scikit-HEP project packages
 and dependencies included, respectively.
 
