@@ -1,8 +1,8 @@
-awkward~=2.8.0
+awkward~=2.9.0
 decaylanguage~=0.20.0
 hepstats~=0.9.0
 hepunits~=2.4.0
-hist~=2.9.0
+hist~=2.10.0
 histoprint~=2.6.0
 iminuit~=2.32.0
 matplotlib>3.4.0
