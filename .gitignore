@@ -96,3 +96,7 @@ ENV/
 
 # Documentation artefacts
 doc/_build
+
+# Symlink to AGENTS.md
+CLAUDE.md
+.claude/
