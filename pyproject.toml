@@ -61,4 +61,5 @@ git-only = [
     "requirements_current_release.txt",
     "scripts/skhep-info",
     ".gitignore",
+    "AGENTS.md",
 ]
