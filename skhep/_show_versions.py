@@ -71,6 +71,12 @@ def _get_deps_info(pkgs_list):
     return deps_info
 
 
+def _print_section(title, info, width):
+    print(f"\n{title}:")
+    for k, stat in info.items():
+        print(f"{k:>{width}}: {stat}")
+
+
 def show_versions():
     """
     Overview of the installed versions of main dependencies on the
@@ -81,14 +87,6 @@ def show_versions():
     deps_info = _get_deps_info(scipy_deps)
     skhep_deps_info = _get_deps_info(skhep_deps)
 
-    print("\nSystem:")
-    for k, stat in sys_info.items():
-        print("{k:>10}: {stat}".format(k=k, stat=stat))
-
-    print("\nPython dependencies:")
-    for k, stat in deps_info.items():
-        print("{k:>10}: {stat}".format(k=k, stat=stat))
-
-    print("\nScikit-HEP package version and dependencies:")
-    for k, stat in skhep_deps_info.items():
-        print("{k:>15}: {stat}".format(k=k, stat=stat))
+    _print_section("System", sys_info, 10)
+    _print_section("Python dependencies", deps_info, 10)
+    _print_section("Scikit-HEP package version and dependencies", skhep_deps_info, 15)
