@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
 Utility methods to print system info and org packages info, for debugging.
@@ -6,9 +5,9 @@ Utility methods to print system info and org packages info, for debugging.
 Heavily inspired from :func:`sklearn.show_versions`.
 """
 
+import importlib.metadata
 import platform
 import sys
-import importlib.metadata
 
 
 scipy_deps = ["setuptools", "pip", "numpy", "scipy", "pandas", "matplotlib"]
@@ -44,13 +43,11 @@ def _get_sys_info():
     """
     python = sys.version.replace("\n", " ")
 
-    blob = [
-        ("python", python),
-        ("executable", sys.executable),
-        ("machine", platform.platform()),
-    ]
-
-    return dict(blob)
+    return {
+        "python": python,
+        "executable": sys.executable,
+        "machine": platform.platform(),
+    }
 
 
 def _get_deps_info(pkgs_list):
@@ -68,7 +65,7 @@ def _get_deps_info(pkgs_list):
     for modname in pkgs_list:
         try:
             deps_info[modname] = importlib.metadata.version(modname)
-        except ModuleNotFoundError:
+        except importlib.metadata.PackageNotFoundError:
             deps_info[modname] = None
 
     return deps_info
