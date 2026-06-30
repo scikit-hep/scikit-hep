@@ -8,7 +8,7 @@ iminuit~=2.32.0
 matplotlib>3.4.0
 mplhep~=1.2.0
 numpy>=1.13.1
-particle~=0.26.0
+particle~=1.0.0
 pylhe~=1.0.0
 resample~=1.10.0
 uproot~=5.7.0
