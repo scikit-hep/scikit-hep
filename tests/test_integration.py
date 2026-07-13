@@ -83,14 +83,14 @@ def test_hist_with_numpy():
     import numpy as np
     
     # Create histogram
-    h = hist.Hist.regular(10, 0, 1, name="test")
+    h = hist.Hist(hist.axis.Regular(10, 0, 1, name="test"))
     
     # Fill with random data
     data = np.random.uniform(0, 1, 100)
     h.fill(data)
     
     # Verify histogram created correctly
-    assert len(h) > 0
+    assert h.sum() > 0
     assert sum(h.view()) == 100
 
 
@@ -113,11 +113,12 @@ def test_multi_package_workflow():
     })
     
     # Create histograms from awkward data
-    h_x = hist.Hist.regular(10, 0, 1)
+    h_x = hist.Hist(hist.axis.Regular(10, 0, 1, name="x"))
     h_x.fill(data["x"])
     
-    h_y = hist.Hist.regular(10, 0, 1)
+    h_y = hist.Hist(hist.axis.Regular(10, 0, 1, name="y"))
     h_y.fill(data["y"])
+
     
     # Verify both histograms filled correctly
     assert sum(h_x.view()) == 100
