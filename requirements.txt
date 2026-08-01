@@ -9,7 +9,7 @@ matplotlib>3.4.0
 mplhep~=1.2.0
 numpy>=1.13.1
 particle~=1.0.0
-pylhe~=1.0.0
+pylhe~=2.0.0
 resample~=1.10.0
 uproot~=5.7.0
 vector~=1.8.0
