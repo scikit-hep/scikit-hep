@@ -1,13 +1,10 @@
-"""Integration tests for scikit-hep metapackage.
+"""
+Integration tests for the scikit-hep metapackage.
 
 These tests verify that all scikit-hep sub-packages
 work correctly together when installed as a group.
 
-Issue: https://github.com/scikit-hep/scikit-hep/issues/398
-
-AI Usage: This test file was developed with assistance from
-Claude AI for brainstorming test structure, code generation,
-and documentation. All code has been reviewed and understood.
+Issue: https://github.com/scikit-hep/scikit-hep/issues/398.
 """
 
 import pytest
