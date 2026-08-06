@@ -13,10 +13,24 @@ and documentation. All code has been reviewed and understood.
 import pytest
 
 
-# Test that all key packages can be imported
+# Test that all required packages can be imported
 @pytest.mark.parametrize(
     "module_name",
-    ["uproot", "awkward", "hist", "vector", "mplhep"]
+    [
+        "uproot",
+        "awkward",
+        "hist",
+        "vector",
+        "mplhep",
+        "decaylanguage",
+        "hepstats",
+        "hepunits",
+        "histoprint",
+        "iminuit",
+        "particle",
+        "pylhe",
+        "resample",
+    ]
 )
 def test_package_imports(module_name):
     """Test that a package can be imported without errors.
@@ -41,9 +55,21 @@ def test_no_import_conflicts():
     import hist
     import vector
     import mplhep
+    import decaylanguage
+    import hepstats
+    import hepunits
+    import histoprint
+    import iminuit
+    import particle
+    import pylhe
+    import resample
     
     # If we got here without ImportError, no conflicts!
-    assert all([uproot, awkward, hist, vector, mplhep])
+    assert all([
+        uproot, awkward, hist, vector, mplhep,
+        decaylanguage, hepstats, hepunits, histoprint,
+        iminuit, particle, pylhe, resample
+    ])
 
 
 def test_awkward_vector_integration():
@@ -118,8 +144,55 @@ def test_multi_package_workflow():
     
     h_y = hist.Hist(hist.axis.Regular(10, 0, 1, name="y"))
     h_y.fill(data["y"])
-
     
     # Verify both histograms filled correctly
     assert sum(h_x.view()) == 100
     assert sum(h_y.view()) == 100
+
+
+def test_decaylanguage():
+    """Test decaylanguage package can be imported and used."""
+    import decaylanguage
+    assert decaylanguage is not None
+
+
+def test_hepstats():
+    """Test hepstats package can be imported and used."""
+    import hepstats
+    assert hepstats is not None
+
+
+def test_hepunits():
+    """Test hepunits package can be imported and used."""
+    import hepunits
+    assert hepunits is not None
+
+
+def test_histoprint():
+    """Test histoprint package can be imported and used."""
+    import histoprint
+    assert histoprint is not None
+
+
+def test_iminuit():
+    """Test iminuit package can be imported and used."""
+    import iminuit
+    assert iminuit is not None
+
+
+def test_particle():
+    """Test particle package can be imported and used."""
+    import particle
+    assert particle is not None
+
+
+def test_pylhe():
+    """Test pylhe package can be imported and used."""
+    import pylhe
+    assert pylhe is not None
+
+
+def test_resample():
+    """Test resample package can be imported and used."""
+    import resample
+    assert resample is not None
