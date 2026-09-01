@@ -1,4 +1,4 @@
-awkward~=2.12.0
+awkward~=2.13.0
 decaylanguage~=1.1.0
 hepstats~=0.10.0
 hepunits~=2.4.0
