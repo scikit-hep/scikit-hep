@@ -1,7 +1,6 @@
 # `scikit-hep`: metapackage for Scikit-HEP
 
 [![Scikit-HEP](https://scikit-hep.org/assets/images/Scikit--HEP-Project-blue.svg)](https://scikit-hep.org/)
-[![Gitter](https://img.shields.io/gitter/room/gitterHQ/gitter.svg)](https://gitter.im/Scikit-HEP/community)
 [![PyPI Package latest release](https://img.shields.io/pypi/v/scikit-hep.svg)](https://pypi.python.org/pypi/scikit-hep)
 [![Conda latest release](https://img.shields.io/conda/vn/conda-forge/scikit-hep.svg)](https://github.com/conda-forge/scikit-hep-feedstock)
 [![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1043949.svg)](https://doi.org/10.5281/zenodo.1043949)
