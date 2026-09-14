@@ -13,6 +13,7 @@ This file intentionally stays small: it is a fast smoke test that a
 
 Issue: https://github.com/scikit-hep/scikit-hep/issues/398
 """
+
 import importlib
 import sys
 
@@ -71,9 +72,7 @@ def test_awkward_vector_integration():
     import vector
 
     vector.register_awkward()
-    arr = ak.Array(
-        [{"x": 1.0, "y": 2.0, "z": 3.0}, {"x": 4.0, "y": 5.0, "z": 6.0}]
-    )
+    arr = ak.Array([{"x": 1.0, "y": 2.0, "z": 3.0}, {"x": 4.0, "y": 5.0, "z": 6.0}])
     vec_arr = ak.with_name(arr, "Vector3D")
     assert vec_arr.mag[0] == pytest.approx((1.0**2 + 2.0**2 + 3.0**2) ** 0.5)
 
