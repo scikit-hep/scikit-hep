@@ -4,7 +4,7 @@ hepstats~=0.10.0
 hepunits~=2.4.0
 hist~=2.11.0
 histoprint~=2.7.0
-iminuit~=2.32.0
+iminuit~=2.33.0
 matplotlib>3.4.0
 mplhep~=1.2.0
 numpy>=1.13.1
