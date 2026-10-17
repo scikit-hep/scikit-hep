@@ -43,7 +43,7 @@ pre-commit run -a
 
 ## CI notes
 
-- `ci.yml` tests on Python 3.10–3.13 with `pytest tests` after `pip install .[test]`.
+- `ci.yml` tests on Python 3.11–3.13 with `pytest tests` after `pip install .[test]`.
 - `current_releases.yml` installs the metapackage then upgrades dependencies to
   the versions listed in `requirements_current_release.txt` to catch upstream
   breakages early.
