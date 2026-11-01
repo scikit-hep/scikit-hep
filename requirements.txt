@@ -6,7 +6,7 @@ hist~=2.12.0
 histoprint~=2.7.0
 iminuit~=2.33.0
 matplotlib>3.4.0
-mplhep~=1.2.0
+mplhep~=1.3.3
 numpy>=1.13.1
 particle~=1.0.0
 pylhe~=2.1.0
